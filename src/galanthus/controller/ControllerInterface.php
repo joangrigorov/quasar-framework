@@ -1,5 +1,5 @@
 <?php
-namespace Galanthus\Controller;
+namespace galanthus\controller;
 
 interface ControllerInterface
 {

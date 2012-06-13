@@ -1,7 +1,7 @@
 <?php
 namespace app\controllers;
 
-use Galanthus\Controller\ControllerInterface;
+use galanthus\controller\ControllerInterface;
 
 class TestController implements ControllerInterface
 {
