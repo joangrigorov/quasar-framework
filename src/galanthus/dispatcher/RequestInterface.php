@@ -4,9 +4,9 @@ namespace galanthus\dispatcher;
 /**
  * @todo Parses the requested url and finds the requested controller and etc.
  */
-interface UrlResolverInterface
+interface RequestInterface
 {
     
-    public function getController();
+    public function getQuery();
     
 }

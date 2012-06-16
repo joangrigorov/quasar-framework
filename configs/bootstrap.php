@@ -10,3 +10,14 @@ defined('DS') || define('DS', DIRECTORY_SEPARATOR);
 
 // register the autoloader function
 spl_autoload_register(include ROOT_PATH . '/configs/autoloader.php');
+
+// create the injector
+$injector = new galanthus\di\Container(include ROOT_PATH . '/configs/di/global.php');
+// set the container to inject itself and use single instance
+$injector->forVariable('injector')->willUse($injector);
+
+// create the dispatcher object
+/* @var $dispatcher galanthus\dispatcher\Dispatcher */
+$dispatcher = $injector->create('dispatcher');
+$dispatcher->dispatch()
+           ->output();

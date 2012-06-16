@@ -2,13 +2,15 @@
 
 namespace galanthus\dispatcher;
 
-use galanthus\dispatcher\UrlResolverInterface;
-
 interface DispatcherInterface
 {
-    public function setUrlResolver(UrlResolverInterface $urlResolver);
-    
-    public function getUrlResolver();
+        
+    public function getRequest();
     
     public function dispatch();
+    
+    public function getResponse();
+    
+    public function output();
+    
 }
