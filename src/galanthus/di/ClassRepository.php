@@ -30,7 +30,7 @@ class ClassRepository
     /**
      * Using reflection could be very expensive. Cache is necessary
      *
-     * @var galanthus\di\ReflectionCache
+     * @var ReflectionCache
      */
     protected static $_reflection = null;
 
