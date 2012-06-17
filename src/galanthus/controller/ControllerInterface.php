@@ -28,7 +28,6 @@ use galanthus\dispatcher\request\Query,
  * @package    Galanthus Controller
  * @copyright  Copyright (c) 2012 Sasquatch, Elegance Team
  */
-
 interface ControllerInterface
 {
     
@@ -41,12 +40,26 @@ interface ControllerInterface
     public function setRequest(RequestInterface $request);
     
     /**
+     * Retrieve the request object
+     * 
+     * @return RequestInterface
+     */
+    public function getRequest();
+    
+    /**
      * Sets the response object
      * 
      * @param ResponseInterface $response
      * @return ControllerInterface
      */
     public function setResponse(ResponseInterface $response);
+    
+    /**
+     * Retrieve the response object
+     * 
+     * @return ResponseInterface
+     */
+    public function getResponse();
     
     /**
      * Find the next controller
