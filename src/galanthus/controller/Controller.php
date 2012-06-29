@@ -34,6 +34,20 @@ abstract class Controller implements ControllerInterface
 {
     
     /**
+     * GET parameters map
+     * 
+     * @var array
+     */
+    protected $_paramsMap = array();
+    
+    /**
+     * Assigned GET parameters
+     * 
+     * @var array
+     */
+    protected $_params = array();
+    
+    /**
      * The request object
      * 
      * @var RequestInterface
@@ -69,6 +83,7 @@ abstract class Controller implements ControllerInterface
     public function __construct(Container $injector)
     {
         $this->_injector = $injector;
+        $this->_params = $this->_paramsMap;
     }
     
     /**
@@ -127,9 +142,53 @@ abstract class Controller implements ControllerInterface
         return $reflection->getNamespaceName();
     }
     
+    /**
+     * Map paramters from the query
+     * 
+     * @param Query $query
+     * @return boolean
+     */
+    protected function _mapParams(Query $query)
+    {
+        $paramsMapped = false;
+        $query->rewind();
+        foreach ($query as $key => $param) {
+            
+            if ($key&1) {
+                continue;
+            }
+            
+            if (array_key_exists($param, $this->_paramsMap)) {
+                $query->next();
+                $this->_params[$param] = $query->current();
+                $paramsMapped = true;
+            }
+        }
+        
+        return $paramsMapped;
+    }
+    
+    /**
+     * Get param
+     * 
+     * @param string $param
+     * @param mixed $defaultValue
+     * @return mixed
+     */
+    protected function _getParam($param, $defaultValue = null)
+    {
+        if (array_key_exists($param, $this->_params)) {
+            return $this->_params[$param];
+        } else {
+            return $defaultValue;
+        }
+    }
+    
     public function forward(Query $query)
     {
-        if (!count($query)) {
+        $paramsMapped = $this->_mapParams($query);
+        
+        if (!count($query) || $paramsMapped) {
             return $this->execute();
         }
         

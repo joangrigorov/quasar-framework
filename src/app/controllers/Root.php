@@ -6,8 +6,10 @@ use galanthus\dispatcher\request\Query,
 
 class Root extends Controller
 {
+    protected $_paramsMap = array('test' => null, 'bot' => null);
+    
     public function execute()
     {
-        
+        echo $this->_getParam('test');
     }
 }

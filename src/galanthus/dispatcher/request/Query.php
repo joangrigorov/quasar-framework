@@ -2,7 +2,7 @@
 
 namespace galanthus\dispatcher\request;
 
-class Query extends \SplStack
+class Query extends \SplQueue
 {
 
 }

@@ -19,7 +19,11 @@ class Request implements RequestInterface
     
     protected function _resolveUri()
     {
-        $requestQuery = parse_url(str_replace($_SERVER['SCRIPT_NAME'], '', $_SERVER['REQUEST_URI']));
+        $requestQuery = parse_url(
+            str_replace(dirname($_SERVER['SCRIPT_NAME']), '', 
+                    str_replace($_SERVER['SCRIPT_NAME'], '', $_SERVER['REQUEST_URI'])
+            )
+        );
         
         $path = explode('/', $requestQuery['path']);
         
