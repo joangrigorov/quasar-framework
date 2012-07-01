@@ -65,6 +65,7 @@ interface ControllerInterface
      * Find the next controller
      * 
      * @param Query $query
+     * @return ControllerInterface
      */
     public function forward(Query $query);
     

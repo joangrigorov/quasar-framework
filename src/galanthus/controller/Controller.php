@@ -74,7 +74,7 @@ abstract class Controller implements ControllerInterface
      * @var ControllerInterface
      */
     protected $_previous;
-    
+        
     /**
      * Sets the dependency injection container instance
      * 
@@ -184,12 +184,19 @@ abstract class Controller implements ControllerInterface
         }
     }
     
+    /**
+     * Custom functionality before forwarding
+     */
+    public function _hook()
+    {
+    }
+    
     public function forward(Query $query)
     {
         $paramsMapped = $this->_mapParams($query);
         
         if (!count($query) || $paramsMapped) {
-            return $this->execute();
+            return $this;
         }
         
         $next = $query->shift();
@@ -198,8 +205,12 @@ abstract class Controller implements ControllerInterface
         $controller = $this->_injector->create($this->_getNamespace() . '\\' . ucfirst($next));
         $controller->setRequest($this->getRequest())
                    ->setResponse($this->getResponse())
-                   ->setPrevious($this)
-                   ->forward($query);
+                   ->setPrevious($this);
+        
+        // invoke the forward hook
+        $this->_hook();
+        
+        return $controller->forward($query);
     }
     
 }

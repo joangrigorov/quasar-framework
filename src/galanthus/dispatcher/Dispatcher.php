@@ -42,7 +42,8 @@ class Dispatcher implements DispatcherInterface
         
         $controller->setRequest($this->_request)
                    ->setResponse($this->_response)
-                   ->forward($query);
+                   ->forward($query)
+                   ->execute();
         
         return $this;
     }

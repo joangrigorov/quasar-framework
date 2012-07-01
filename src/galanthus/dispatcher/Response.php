@@ -7,11 +7,6 @@ namespace galanthus\dispatcher;
 class Response implements ResponseInterface
 {
     
-    public function __construct()
-    {
-        ob_start();
-    }
-
     public function output()
     {
         ob_end_flush();
