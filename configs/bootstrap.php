@@ -11,6 +11,10 @@ defined('DS') || define('DS', DIRECTORY_SEPARATOR);
 // register the autoloader function
 spl_autoload_register(include ROOT_PATH . '/configs/autoloader.php');
 
+// turn on error reporting
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+
 // create the injector
 $injector = new galanthus\di\Container(include ROOT_PATH . '/configs/di/global.php');
 // set the container to inject itself and use single instance

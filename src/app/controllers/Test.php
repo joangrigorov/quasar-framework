@@ -1,8 +1,7 @@
 <?php
 namespace app\controllers;
 
-use galanthus\dispatcher\request\Query,
-    galanthus\controller\Controller;
+use galanthus\controller\Controller;
 
 class Test extends Controller
 {

@@ -27,12 +27,43 @@ namespace galanthus\dispatcher;
 interface DispatcherInterface
 {
     
+    /**
+     * Default root controller
+     * 
+     * The root(index) controller is the first controller
+     * to be dispatched
+     * 
+     * @var string
+     */
+    const DEFAULT_ROOT_CONTROLLER = 'app\controllers\Root';
+    
+    /**
+     * Get the request object
+     * 
+     * @return \galanthus\dispatcher\RequestInterface
+     */
     public function getRequest();
     
-    public function dispatch();
-    
+    /**
+     * Get the response object
+     * 
+     * @return \galanthus\dispatcher\ResponseInterface
+     */
     public function getResponse();
     
+    /**
+     * Dispatch controllers
+     * 
+     * @param string $rootController
+     * @return DispatcherInterface
+     */
+    public function dispatch($rootController = self::DEFAULT_ROOT_CONTROLLER);
+    
+    /**
+     * Output the response
+     * 
+     * @return string
+     */
     public function output();
     
 }

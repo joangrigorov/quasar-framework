@@ -67,7 +67,7 @@ interface ControllerInterface
      * @param Query $query
      * @return ControllerInterface
      */
-    public function forward(Query $query);
+    public function forward();
     
     /**
      * Execute action controller

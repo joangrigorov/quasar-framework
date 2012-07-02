@@ -7,6 +7,11 @@ namespace galanthus\dispatcher;
 interface RequestInterface
 {
     
+    /**
+     * Get the request query object
+     * 
+     * @return \galanthus\dispatcher\request\Query
+     */
     public function getQuery();
     
 }

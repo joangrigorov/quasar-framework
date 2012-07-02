@@ -7,14 +7,36 @@ use galanthus\di\Container;
 class Dispatcher implements DispatcherInterface
 {
     
-    const DEFAULT_ROOT_CONTROLLER = 'app\controllers\Root';
-    
+    /**
+     * The request object
+     * 
+     * @var RequestInterface
+     */
     protected $_request;
     
+    /**
+     * The response object
+     * 
+     * @var ResponseInterface
+     */
     protected $_response;
     
+    /**
+     * The dependency injection container
+     * 
+     * @var Container
+     */
     protected $_injector;
     
+    /**
+     * Constructor 
+     * 
+     * Sets dependencies
+     * 
+     * @param Request $request
+     * @param Response $response
+     * @param Container $injector
+     */
     public function __construct(Request $request, Response $response, Container $injector)
     {
         $this->_request = $request;
@@ -23,6 +45,8 @@ class Dispatcher implements DispatcherInterface
     }
     
     /**
+     * Get the request object
+     * 
      * @return Request
      */
     public function getRequest()
@@ -30,10 +54,24 @@ class Dispatcher implements DispatcherInterface
         return $this->_request;
     }
     
+    /**
+     * Get the response object
+     * 
+     * @return Response
+     */
+    public function getResponse()
+    {
+        return $this->_response;
+    }
+    
+    /**
+     * Dispatch controllers
+     * 
+     * @param string $rootController The first controller to dispatch
+     * @return Dispatcher
+     */
     public function dispatch($rootController = self::DEFAULT_ROOT_CONTROLLER)
     {
-        $query = $this->getRequest()->getQuery();
-        
         $controller = $this->_injector->create($rootController);
         
         if (!$controller instanceof \galanthus\controller\ControllerInterface) {
@@ -42,20 +80,17 @@ class Dispatcher implements DispatcherInterface
         
         $controller->setRequest($this->_request)
                    ->setResponse($this->_response)
-                   ->forward($query)
+                   ->forward()
                    ->execute();
         
         return $this;
     }
     
     /**
-     * @return Response
+     * Output the response
+     * 
+     * @return string
      */
-    public function getResponse()
-    {
-        return $this->_response;
-    }
-    
     public function output()
     {
         $this->getResponse()->output();

@@ -74,7 +74,7 @@ abstract class Controller implements ControllerInterface
      * @var ControllerInterface
      */
     protected $_previous;
-        
+    
     /**
      * Sets the dependency injection container instance
      * 
@@ -130,12 +130,43 @@ abstract class Controller implements ControllerInterface
         return $this->_response;
     }
     
+    /**
+     * Sets the previous controller
+     * 
+     * @param ControllerInterface $controller
+     * @return Controller
+     */
     public function setPrevious(ControllerInterface $controller)
     {
         $this->_previous = $controller;
         return $this;
     }
     
+    /**
+     * Gets the previous controller
+     * 
+     * @return ControllerInterface
+     */
+    public function getPrevious()
+    {
+        return $this->_previous;
+    }
+    
+    /**
+     * Get the request query object
+     * 
+     * @return Query
+     */
+    public function getQuery()
+    {
+        return $this->getRequest()->getQuery();
+    }
+    
+    /**
+     * Get namespace of the current controller
+     * 
+     * @return string
+     */
     protected function _getNamespace()
     {
         $reflection = new \ReflectionClass(get_class($this));
@@ -148,8 +179,9 @@ abstract class Controller implements ControllerInterface
      * @param Query $query
      * @return boolean
      */
-    protected function _mapParams(Query $query)
+    protected function _mapParams()
     {
+        $query = $this->getQuery();
         $paramsMapped = false;
         $query->rewind();
         foreach ($query as $key => $param) {
@@ -187,12 +219,17 @@ abstract class Controller implements ControllerInterface
     /**
      * Custom functionality before forwarding
      */
-    public function _hook()
+    protected function _hook()
     {
     }
     
-    public function forward(Query $query)
+    public function forward()
     {
+        $query = $this->getQuery();
+        
+        // invoke the forward hook
+        $this->_hook();
+        
         $paramsMapped = $this->_mapParams($query);
         
         if (!count($query) || $paramsMapped) {
@@ -207,8 +244,6 @@ abstract class Controller implements ControllerInterface
                    ->setResponse($this->getResponse())
                    ->setPrevious($this);
         
-        // invoke the forward hook
-        $this->_hook();
         
         return $controller->forward($query);
     }
