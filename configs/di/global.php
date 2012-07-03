@@ -1,11 +1,13 @@
 <?php
 return array(
+        
+    // dispatcher configuration
     'galanthus\dispatcher\Dispatcher' => array(
         'alias' => 'dispatcher'
     ),
     
+    // response object configuration
     'galanthus\dispatcher\Response' => array(
-        'call' => array('setInjector'),
         'params' => array(
             'decorators' => array(
                 'renderer', 
@@ -19,6 +21,7 @@ return array(
         )
     ),
     
+    // standart view renderer configuration
     'galanthus\view\Renderer' => array(
         'params' => array(
             'paths' => array(
