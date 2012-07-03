@@ -34,21 +34,21 @@ class Shared implements LifecycleInterface
      *
      * @var string
      */
-    protected $_class;
+    protected $class;
     
     /**
      * Single instance
      *
      * @var string
      */
-    protected $_instance = null;
+    protected $instance = null;
     
     /**
      * Number of instantiation
      * 
      * @var integer
      */
-    protected $_timesInstiantiated = 0;
+    protected $timesInstiantiated = 0;
     
     /**
      * Constructor
@@ -59,7 +59,7 @@ class Shared implements LifecycleInterface
      */
     public function __construct($class)
     {
-        $this->_class = $class;
+        $this->class = $class;
     }
     
     /**
@@ -69,7 +69,7 @@ class Shared implements LifecycleInterface
      */
     public function getClass()
     {
-        return $this->_class;
+        return $this->class;
     }
     
     /**
@@ -80,7 +80,7 @@ class Shared implements LifecycleInterface
      */
     public function isOneOf($candidates)
     {
-        return in_array($this->_class, $candidates);
+        return in_array($this->class, $candidates);
     }
 
     /**
@@ -91,17 +91,17 @@ class Shared implements LifecycleInterface
      */
     public function instantiate($dependencies)
     {
-        $this->_timesInstiantiated++;
+        $this->timesInstiantiated++;
         
-        if (null == $this->_instance) {
-            $this->_instance = call_user_func_array(
+        if (null == $this->instance) {
+            $this->instance = call_user_func_array(
                 array(
-                    new \ReflectionClass($this->_class), 'newInstance'
+                    new \ReflectionClass($this->class), 'newInstance'
                 ), 
                 $dependencies
             );
         }
-        return $this->_instance;
+        return $this->instance;
     }
     
     /**
@@ -111,7 +111,7 @@ class Shared implements LifecycleInterface
      */
     public function shouldInvokeSetters()
     {
-        if (1 < $this->_timesInstiantiated) {
+        if (1 < $this->timesInstiantiated) {
             return false;
         }
         

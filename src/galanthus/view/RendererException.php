@@ -16,7 +16,9 @@
  * @copyright  Copyright (c) 2012 Sasquatch, Elegance Team
  */
 
-namespace galanthus\dispatcher;
+namespace galanthus\view;
+
+use galanthus\exception\ErrorException;
 
 /**
  * @author     Joan-Alexander Grigorov http://bgscripts.com
@@ -24,14 +26,6 @@ namespace galanthus\dispatcher;
  * @package    Galanthus Dispatcher
  * @copyright  Copyright (c) 2012 Sasquatch, Elegance Team
  */
-interface RequestInterface
+class RendererException extends ErrorException
 {
-    
-    /**
-     * Get the request query object
-     * 
-     * @return \galanthus\dispatcher\request\Query
-     */
-    public function getQuery();
-    
 }

@@ -1,9 +1,33 @@
 <?php
+/**
+ * Galanthus Framework © 2012
+ * Copyright © 2012 Sasquatch <Joan-Alexander Grigorov>
+ *                              http://bgscripts.com
+ *
+ * LICENSE
+ *
+ * This source file is subject to the GNU General Public License v3
+ * that is bundled with this package in the file LICENSE.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.gnu.org/copyleft/gpl.html
+ *
+ * @category   Galanthus
+ * @package    Galanthus Dispatcher
+ * @copyright  Copyright (c) 2012 Sasquatch, Elegance Team
+ */
 
 namespace galanthus\dispatcher;
 
 use galanthus\di\Container;
 
+/**
+ * The standard dispatcher object
+ *
+ * @author     Joan-Alexander Grigorov http://bgscripts.com
+ * @category   Galanthus
+ * @package    Galanthus Dispatcher
+ * @copyright  Copyright (c) 2012 Sasquatch, Elegance Team
+ */
 class Dispatcher implements DispatcherInterface
 {
     
@@ -12,21 +36,21 @@ class Dispatcher implements DispatcherInterface
      * 
      * @var RequestInterface
      */
-    protected $_request;
+    protected $request;
     
     /**
      * The response object
      * 
      * @var ResponseInterface
      */
-    protected $_response;
+    protected $response;
     
     /**
      * The dependency injection container
      * 
      * @var Container
      */
-    protected $_injector;
+    protected $injector;
     
     /**
      * Constructor 
@@ -39,9 +63,9 @@ class Dispatcher implements DispatcherInterface
      */
     public function __construct(Request $request, Response $response, Container $injector)
     {
-        $this->_request = $request;
-        $this->_response = $response;
-        $this->_injector = $injector;
+        $this->request = $request;
+        $this->response = $response;
+        $this->injector = $injector;
     }
     
     /**
@@ -51,7 +75,7 @@ class Dispatcher implements DispatcherInterface
      */
     public function getRequest()
     {
-        return $this->_request;
+        return $this->request;
     }
     
     /**
@@ -61,7 +85,7 @@ class Dispatcher implements DispatcherInterface
      */
     public function getResponse()
     {
-        return $this->_response;
+        return $this->response;
     }
     
     /**
@@ -72,14 +96,14 @@ class Dispatcher implements DispatcherInterface
      */
     public function dispatch($rootController = self::DEFAULT_ROOT_CONTROLLER)
     {
-        $controller = $this->_injector->create($rootController);
+        $controller = $this->injector->create($rootController);
         
         if (!$controller instanceof \galanthus\controller\ControllerInterface) {
             throw new DispatcherException('The requested controller must implement ControllerInterface');
         }
         
-        $controller->setRequest($this->_request)
-                   ->setResponse($this->_response)
+        $controller->setRequest($this->request)
+                   ->setResponse($this->response)
                    ->forward()
                    ->execute();
         
@@ -93,7 +117,7 @@ class Dispatcher implements DispatcherInterface
      */
     public function output()
     {
-        $this->getResponse()->output();
+        return $this->getResponse()->output();
     }
     
 }

@@ -13,25 +13,21 @@
  *
  * @category   Galanthus
  * @package    Galanthus Dispatcher
+ * @subpackage Response
  * @copyright  Copyright (c) 2012 Sasquatch, Elegance Team
  */
 
-namespace galanthus\dispatcher;
+namespace galanthus\dispatcher\response;
+
+use galanthus\exception\ErrorException;
 
 /**
  * @author     Joan-Alexander Grigorov http://bgscripts.com
  * @category   Galanthus
  * @package    Galanthus Dispatcher
+ * @subpackage Response
  * @copyright  Copyright (c) 2012 Sasquatch, Elegance Team
  */
-interface RequestInterface
+class ResponseException extends ErrorException
 {
-    
-    /**
-     * Get the request query object
-     * 
-     * @return \galanthus\dispatcher\request\Query
-     */
-    public function getQuery();
-    
 }

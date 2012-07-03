@@ -34,7 +34,7 @@ class Type
      * 
      * @var array
      */
-    protected $_setters = array();
+    protected $setters = array();
     
     /**
      * Get setter methods
@@ -43,7 +43,7 @@ class Type
      */
     public function getSetters()
     {
-        return $this->_setters;
+        return $this->setters;
     }
     
     /**
@@ -54,7 +54,7 @@ class Type
      */
     public function call($method)
     {
-        array_unshift($this->_setters, $method);
+        array_unshift($this->setters, $method);
         return $this;
     }
 }

@@ -28,6 +28,13 @@ interface ResponseInterface
 {
     
     /**
+     * Response decorators default namespace
+     * 
+     * @var string
+     */
+    const DECORATORS_NAMESPACE = 'galanthus\dispatcher\response\decorators\\';
+    
+    /**
      * Set response parameters
      * 
      * @param array $params

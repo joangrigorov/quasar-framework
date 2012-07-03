@@ -18,7 +18,9 @@
 
 namespace galanthus\dispatcher;
 
-use galanthus\dispatcher\response\DecoratorInterface;
+use galanthus\di\Container,
+    galanthus\dispatcher\response\ResponseException,
+    galanthus\dispatcher\response\DecoratorInterface;
 
 /**
  * @author     Joan-Alexander Grigorov http://bgscripts.com
@@ -30,11 +32,70 @@ class Response implements ResponseInterface
 {
     
     /**
+     * Dependency injection container
+     *
+     * @var Container
+     */
+    protected $injector;
+    
+    /**
      * Response parameters
      * 
      * @var array
      */
-    protected $_params = array();
+    protected $params = array();
+    
+    /**
+     * Response decorators
+     * 
+     * @var array
+     */
+    protected $decorators = array();
+    
+    /**
+     * Constructor
+     * 
+     * Sets dependencies
+     * 
+     * @param Container $injector
+     */
+    public function __construct(Container $injector, 
+                                array $decorators = null,
+                                array $params = null)
+    {
+        $this->injector = $injector;
+        
+        if (null !== $decorators) {
+            $this->setDecorators($decorators);
+        }
+        
+        if (null != $params)  {
+            $this->setParams($params);
+        }
+        
+    }
+    
+    /**
+     * Set the dependency injection container instance
+     * 
+     * @param Container $injector
+     * @return Response
+     */
+    public function setInjector(Container $injector)
+    {
+        $this->injector = $injector;
+        return $this;
+    }
+    
+    /**
+     * Get the dependency injection container instance
+     * 
+     * @return Container
+     */
+    public function getInjector()
+    {
+        return $this->injector;
+    }
     
     /**
      * Set response parameters
@@ -44,7 +105,7 @@ class Response implements ResponseInterface
      */
     public function setParams(array $params)
     {
-        $this->_params = $params;
+        $this->params = $params;
         return $this;
     }
     
@@ -55,7 +116,7 @@ class Response implements ResponseInterface
      */
     public function getParams()
     {
-        return $this->_params;
+        return $this->params;
     }
     
     /**
@@ -67,7 +128,7 @@ class Response implements ResponseInterface
      */
     public function setParam($name, $value)
     {
-        $this->_params[$name] = $value;
+        $this->params[$name] = $value;
         return $this;
     }
     
@@ -79,8 +140,8 @@ class Response implements ResponseInterface
      */
     public function getParam($name)
     {
-        if (array_key_exists($name, $this->_params)) {
-            return $this->_params[$name];
+        if (array_key_exists($name, $this->params)) {
+            return $this->params[$name];
         }
         return null;
     }
@@ -92,8 +153,38 @@ class Response implements ResponseInterface
      */
     public function clearParams()
     {
-        $this->_params = array();
+        $this->params = array();
         return $this;
+    }
+    
+    /**
+     * Overriding: allowing property access
+     * 
+     * Accessing response parameters
+     * 
+     * @param string $name
+     * @return mixed|NULL
+     */
+    public function __get($name)
+    {
+        if (array_key_exists($name, $this->params)) {
+            return $this->params[$name];
+        }
+        return null;
+    }
+    
+    /**
+     * Overriding: allowing property access
+     *
+     * Setting response parameters
+     *
+     * @param string $name
+     * @param mixed $value
+     * @return void
+     */
+    public function __set($name, $value)
+    {
+        $this->params[$name] = $value;
     }
     
     /**
@@ -102,14 +193,23 @@ class Response implements ResponseInterface
      * @param array $decorators Array of decorators with options
      * @return Response
      */
-    public function setDecorators(Array $decorators);
+    public function setDecorators(Array $decorators)
+    {
+        $this->clearDecorators()
+             ->addDecorators($decorators);
+        
+        return $this;
+    }
     
     /**
      * Get registered decorators
      *
-     * @return array
+     * @return multitype:DecoratorInterface
      */
-    public function getDecorators();
+    public function getDecorators()
+    {
+        return $this->decorators;
+    }
     
     /**
      * Add decorator with options
@@ -117,32 +217,114 @@ class Response implements ResponseInterface
      * @param string|DecoratorInterface $decorator Decorator name or decorator object itself
      * @param mixed $options Options to set to the decorator.
      *                       Can be an array object with toArray method.
-     * @return ResponseInterface
+     * @return Response
+     * @throws ResponseException When the decorator class doesn't implement DecoratorInterface
+     * @throws ResponseException When the decorator is not string or DecoratorInterface instance
      */
-    public function addDecorator($decorator, $options = null);
+    public function addDecorator($decorator, $options = null)
+    {
+        if (is_string($decorator)) {
+            $name = $decorator;
+            
+            if (class_exists($name, true)) {
+                $decoratorClass = $name;
+            } else {
+                $decoratorClass = self::DECORATORS_NAMESPACE . ucfirst($name);
+                if (!class_exists($decoratorClass, true)) {
+                    throw new ResponseException('Decorator class not found');
+                }
+            }
+            
+            // use the dependency injection container to create the decorator
+            $decorator = $this->getInjector()->create($decoratorClass);
+            
+            if (!$decorator instanceof DecoratorInterface) {
+                throw new ResponseException("'$decoratorClass' must implement galanthus\dispatcher\response\DecoratorInterface");
+            }
+            
+            $decorator->setResponse($this);
+            
+            if (null !== $options) {
+                $decorator->setOptions($options);
+            }
+            
+            $this->decorators[$name] = $decorator;
+        } else if (is_object($decorator)) {
+            if ($decorator instanceof DecoratorInterface) {
+                if (null !== $options) {
+                    $decorator->setOptions($options);
+                }
+                $decorator->setResponse($this);
+                $this->decorators[get_class($decorator)] = $decorator;
+            } else {
+                throw new ResponseException("'$decorator' must implement galanthus\dispatcher\response\DecoratorInterface");
+            }
+        } else {
+            throw new ResponseException("'$decorator' must be decorator name or galanthus\dispatcher\response\DecoratorInterface implementation");
+        }
+        
+        return $this;
+    }
     
     /**
      * Add many decorators at once
      *
      * @param  array $decorators
-     * @return ResponseInterface
+     * @return Response
+     * @throws ResponseException When invalid decorator is passed
      */
-    public function addDecorators(Array $decorators);
+    public function addDecorators(Array $decorators)
+    {
+        foreach ($decorators as $decoratorName => $decoratorInfo) {
+            if (is_string($decoratorInfo) ||
+                    $decoratorInfo instanceof DecoratorInterface) {
+                if (!is_numeric($decoratorName)) {
+                    $this->addDecorator($decoratorName, $decoratorInfo);
+                } else {
+                    $this->addDecorator($decoratorInfo);
+                }
+            } elseif (is_array($decoratorInfo)) {
+                $argc    = count($decoratorInfo);
+                $options = array();
+                if (isset($decoratorInfo['name'])) {
+                    $decorator = $decoratorInfo['name'];
+                    $this->addDecorator($decorator, $decoratorInfo);
+                } else {
+                    if (is_string($decoratorName)) {
+                        $this->addDecorator($decoratorName, $decoratorInfo);
+                    }
+                }
+            } else {
+                throw new ResponseException('Invalid decorator passed to addDecorators()');
+            }
+        }
+    }
     
     /**
      * Remove single decorator
      *
      * @param string $decorator
-     * @return ResponseInterface
+     * @return Response
      */
-    public function removeDecorator($decorator);
+    public function removeDecorator($decorator)
+    {
+        if (array_key_exists($decorator, $this->decorators)) {
+            unset($this->decorators[$decorator]);
+        }
+        
+        return $this;
+    }
     
     /**
      * Remove all registered decorators
      *
-     * @return ResponseInterface
+     * @return Response
      */
-    public function clearDecorators();
+    public function clearDecorators()
+    {
+        $this->decorators = array();
+        return $this;
+    }
     
     /**
      * Get decorated output
@@ -151,7 +333,13 @@ class Response implements ResponseInterface
      */
     public function output()
     {
-        ob_end_flush();
+        $content = '';
+        
+        foreach ($this->getDecorators() as $decorator) {
+            /* @var $decorator DecoratorInterface */
+            $content = $decorator->decorate($content);
+        }
+        return $content;
     }
     
 }

@@ -32,35 +32,35 @@ class ReflectionCache
      * 
      * @var array
      */
-    protected $_implementationsOf = array();
+    protected $implementationsOf = array();
 
     /**
      * Class interfaces
      * 
      * @var array
      */
-    protected $_interfacesOf = array();
+    protected $interfacesOf = array();
 
     /**
      * Reflections cache
      * 
      * @var array
      */
-    protected $_reflections = array();
+    protected $reflections = array();
 
     /**
      * Subclasses
      * 
      * @var array
      */
-    protected $_subclasses = array();
+    protected $subclasses = array();
 
     /**
      * Classes parents
      * 
      * @var array
      */
-    protected $_parents = array();
+    protected $parents = array();
 
     /**
      * Update index
@@ -68,7 +68,7 @@ class ReflectionCache
     public function refresh()
     {
         $this->_buildIndex(array_diff(get_declared_classes(), $this->_indexed()));
-        $this->_subclasses = array();
+        $this->subclasses = array();
     }
 
     /**
@@ -80,8 +80,8 @@ class ReflectionCache
     public function implementationsOf($interface)
     {
         
-        return isset($this->_implementationsOf[$interface]) ? 
-               $this->_implementationsOf[$interface] : 
+        return isset($this->implementationsOf[$interface]) ? 
+               $this->implementationsOf[$interface] : 
                array();
     }
 
@@ -93,8 +93,8 @@ class ReflectionCache
      */
     public function interfacesOf($class)
     {
-        return isset($this->_interfacesOf[$class]) ? 
-               $this->_interfacesOf[$class] : 
+        return isset($this->interfacesOf[$class]) ? 
+               $this->interfacesOf[$class] : 
                array();
     }
 
@@ -109,17 +109,17 @@ class ReflectionCache
         if (!class_exists($class)) {
             return array();
         }
-        if (!isset($this->_subclasses[$class])) {
-            $this->_subclasses[$class] = $this->_isConcrete($class) ? array(
+        if (!isset($this->subclasses[$class])) {
+            $this->subclasses[$class] = $this->_isConcrete($class) ? array(
                 $class
             ) : array();
             foreach ($this->_indexed() as $candidate) {
                 if (is_subclass_of($candidate, $class) && $this->_isConcrete($candidate)) {
-                    $this->_subclasses[$class][] = $candidate;
+                    $this->subclasses[$class][] = $candidate;
                 }
             }
         }
-        return $this->_subclasses[$class];
+        return $this->subclasses[$class];
     }
 
     /**
@@ -130,10 +130,10 @@ class ReflectionCache
      */
 	public function parentsOf($class)
 	{
-		if (! isset($this->_parents[$class])) {
-			$this->_parents[$class] = class_parents($class);
+		if (! isset($this->parents[$class])) {
+			$this->parents[$class] = class_parents($class);
 		}
-		return $this->_parents[$class];
+		return $this->parents[$class];
 	}
 
 	/**
@@ -144,10 +144,10 @@ class ReflectionCache
 	 */
 	public function getReflection($class)
 	{
-		if (! isset($this->_reflections[$class])) {
-			$this->_reflections[$class] = new \ReflectionClass($class);
+		if (! isset($this->reflections[$class])) {
+			$this->reflections[$class] = new \ReflectionClass($class);
 		}
-		return $this->_reflections[$class];
+		return $this->reflections[$class];
 	}
 
 	/**
@@ -169,7 +169,7 @@ class ReflectionCache
 	 */
 	protected function _indexed()
 	{
-		return array_keys($this->_interfacesOf);
+		return array_keys($this->interfacesOf);
 	}
 
 	/**
@@ -182,7 +182,7 @@ class ReflectionCache
 	{
 		foreach ($classes as $class) {
 			$interfaces = array_values(class_implements($class));
-			$this->_interfacesOf[$class] = $interfaces;
+			$this->interfacesOf[$class] = $interfaces;
 			foreach ($interfaces as $interface) {
 				$this->crossReference($interface, $class);
 			}
@@ -198,11 +198,11 @@ class ReflectionCache
 	 */
 	protected function crossReference($interface, $class)
 	{
-		if (! isset($this->_implementationsOf[$interface])) {
-			$this->_implementationsOf[$interface] = array();
+		if (! isset($this->implementationsOf[$interface])) {
+			$this->implementationsOf[$interface] = array();
 		}
-		$this->_implementationsOf[$interface][] = $class;
-		$this->_implementationsOf[$interface] = array_values(
-				array_unique($this->_implementationsOf[$interface]));
+		$this->implementationsOf[$interface][] = $class;
+		$this->implementationsOf[$interface] = array_values(
+				array_unique($this->implementationsOf[$interface]));
 	}
 }

@@ -34,14 +34,14 @@ class Value implements LifecycleInterface
      *
      * @var string
      */
-    protected $_class;
+    protected $class;
     
     /**
      * Class instance
      *
      * @var string
      */
-    protected $_instance;
+    protected $instance;
     
     /**
      * Constructor
@@ -52,7 +52,7 @@ class Value implements LifecycleInterface
      */
     public function __construct($instance)
     {
-        $this->_instance = $instance;
+        $this->instance = $instance;
     }
     
     /**
@@ -62,7 +62,7 @@ class Value implements LifecycleInterface
      */
     public function getClass()
     {
-        return $this->_class;
+        return $this->class;
     }
     
     /**
@@ -73,7 +73,7 @@ class Value implements LifecycleInterface
      */
     public function isOneOf($candidates)
     {
-        return in_array($this->_class, $candidates);
+        return in_array($this->class, $candidates);
     }
     
     /**
@@ -84,7 +84,7 @@ class Value implements LifecycleInterface
      */
     public function instantiate($dependencies)
     {
-        return $this->_instance;
+        return $this->instance;
     }
     
     /**

@@ -34,7 +34,7 @@ class Factory implements LifecycleInterface
      *
      * @var string
      */
-    protected $_class;
+    protected $class;
     
     /**
      * Constructor
@@ -45,7 +45,7 @@ class Factory implements LifecycleInterface
      */
     public function __construct($class)
     {
-        $this->_class = $class;
+        $this->class = $class;
     }
     
     /**
@@ -55,7 +55,7 @@ class Factory implements LifecycleInterface
      */
     public function getClass()
     {
-        return $this->_class;
+        return $this->class;
     }
     
     /**
@@ -66,7 +66,7 @@ class Factory implements LifecycleInterface
      */
     public function isOneOf($candidates)
     {
-        return in_array($this->_class, $candidates);
+        return in_array($this->class, $candidates);
     }
     
     /**
@@ -79,7 +79,7 @@ class Factory implements LifecycleInterface
     {
         return call_user_func_array(
             array(
-                new \ReflectionClass($this->_class), 'newInstance'
+                new \ReflectionClass($this->class), 'newInstance'
             ), $dependencies
         );
     }

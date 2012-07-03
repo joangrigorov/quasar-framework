@@ -6,10 +6,10 @@ use galanthus\controller\Controller;
 class Test extends Controller
 {
     
-    protected $_paramsMap = array('name' => null, 'bot' => null);
+    protected $paramsMap = array('name' => null);
     
     public function execute()
     {
-        echo $this->_getParam('name') . ' - ' . $this->_getParam('bot');
+        $this->response->name = $this->_getParam('name');
     }
 }

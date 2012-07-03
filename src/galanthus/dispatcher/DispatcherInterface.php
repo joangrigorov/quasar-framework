@@ -19,6 +19,8 @@
 namespace galanthus\dispatcher;
 
 /**
+ * Dispatcher interface
+ * 
  * @author     Joan-Alexander Grigorov http://bgscripts.com
  * @category   Galanthus
  * @package    Galanthus Controller

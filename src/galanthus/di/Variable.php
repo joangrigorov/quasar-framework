@@ -35,13 +35,13 @@ class Variable
      * 
      * @var LifecycleInterface
      */
-    protected $_preference;
+    protected $preference;
 
     /**
      * 
      * @var ContextInterface
      */
-    protected $_context;
+    protected $context;
 
     /**
      * Constructor
@@ -52,7 +52,7 @@ class Variable
      */
     public function __construct(ContextInterface $context)
     {
-        $this->_context = $context;
+        $this->context = $context;
     }
     
     /**
@@ -62,7 +62,7 @@ class Variable
      */
     public function getPreference()
     {
-        return $this->_preference;
+        return $this->preference;
     }
 
     /**
@@ -73,8 +73,8 @@ class Variable
      */
     public function willUse($preference)
     {
-        $this->_preference = $preference;
-        return $this->_context;
+        $this->preference = $preference;
+        return $this->context;
     }
 
     /**
@@ -85,7 +85,7 @@ class Variable
      */
     public function useString($string)
     {
-        $this->_preference = new Value($string);
-        return $this->_context;
+        $this->preference = new Value($string);
+        return $this->context;
     }
 }

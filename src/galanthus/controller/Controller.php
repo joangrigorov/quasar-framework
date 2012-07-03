@@ -38,42 +38,42 @@ abstract class Controller implements ControllerInterface
      * 
      * @var array
      */
-    protected $_paramsMap = array();
+    protected $paramsMap = array();
     
     /**
      * Assigned GET parameters
      * 
      * @var array
      */
-    protected $_params = array();
+    protected $params = array();
     
     /**
      * The request object
      * 
      * @var RequestInterface
      */
-    protected $_request;
+    protected $request;
     
     /**
      * The response object
      * 
      * @var ResponseInterface
      */
-    protected $_response;
+    protected $response;
     
     /**
      * Dependency Injection container
      * 
      * @var Container
      */
-    protected $_injector;
+    protected $injector;
     
     /**
      * The previous controller in the chain
      * 
      * @var ControllerInterface
      */
-    protected $_previous;
+    protected $previous;
     
     /**
      * Sets the dependency injection container instance
@@ -82,8 +82,8 @@ abstract class Controller implements ControllerInterface
      */
     public function __construct(Container $injector)
     {
-        $this->_injector = $injector;
-        $this->_params = $this->_paramsMap;
+        $this->injector = $injector;
+        $this->params = $this->paramsMap;
     }
     
     /**
@@ -94,7 +94,7 @@ abstract class Controller implements ControllerInterface
      */
     public function setRequest(RequestInterface $request)
     {
-        $this->_request = $request;
+        $this->request = $request;
         return $this;
     }
     
@@ -105,7 +105,7 @@ abstract class Controller implements ControllerInterface
      */
     public function getRequest()
     {
-        return $this->_request;
+        return $this->request;
     }
     
     /**
@@ -116,7 +116,7 @@ abstract class Controller implements ControllerInterface
      */
     public function setResponse(ResponseInterface $response)
     {
-        $this->_response = $response;
+        $this->response = $response;
         return $this;
     }
     
@@ -127,7 +127,7 @@ abstract class Controller implements ControllerInterface
      */
     public function getResponse()
     {
-        return $this->_response;
+        return $this->response;
     }
     
     /**
@@ -138,7 +138,7 @@ abstract class Controller implements ControllerInterface
      */
     public function setPrevious(ControllerInterface $controller)
     {
-        $this->_previous = $controller;
+        $this->previous = $controller;
         return $this;
     }
     
@@ -149,7 +149,7 @@ abstract class Controller implements ControllerInterface
      */
     public function getPrevious()
     {
-        return $this->_previous;
+        return $this->previous;
     }
     
     /**
@@ -190,9 +190,9 @@ abstract class Controller implements ControllerInterface
                 continue;
             }
             
-            if (array_key_exists($param, $this->_paramsMap)) {
+            if (array_key_exists($param, $this->paramsMap)) {
                 $query->next();
-                $this->_params[$param] = $query->current();
+                $this->params[$param] = $query->current();
                 $paramsMapped = true;
             }
         }
@@ -209,8 +209,8 @@ abstract class Controller implements ControllerInterface
      */
     protected function _getParam($param, $defaultValue = null)
     {
-        if (array_key_exists($param, $this->_params)) {
-            return $this->_params[$param];
+        if (array_key_exists($param, $this->params)) {
+            return $this->params[$param];
         } else {
             return $defaultValue;
         }
@@ -223,13 +223,26 @@ abstract class Controller implements ControllerInterface
     {
     }
     
+    /**
+     * This is only used with the {@see \galanthus\view\Renderer}
+     * 
+     */
+    protected function _setCurrentScript()
+    {
+        $className = end(explode('\\', get_class($this)));
+        $currentScript = strtolower(preg_replace('/([a-zA-Z])(?=[A-Z])/', '$1-', $className));
+        $this->response->_script = $currentScript;
+    }
+    
     public function forward()
     {
         $query = $this->getQuery();
         
+        $this->_setCurrentScript();
+        
         // invoke the forward hook
         $this->_hook();
-        
+                
         $paramsMapped = $this->_mapParams($query);
         
         if (!count($query) || $paramsMapped) {
@@ -239,7 +252,7 @@ abstract class Controller implements ControllerInterface
         $next = $query->shift();
         
         /* @var $controller Controller */
-        $controller = $this->_injector->create($this->_getNamespace() . '\\' . ucfirst($next));
+        $controller = $this->injector->create($this->_getNamespace() . '\\' . ucfirst($next));
         $controller->setRequest($this->getRequest())
                    ->setResponse($this->getResponse())
                    ->setPrevious($this);

@@ -32,7 +32,7 @@ class ClassRepository
      *
      * @var ReflectionCache
      */
-    protected static $_reflection = null;
+    protected static $reflection = null;
 
 	/**
      * Constructor
@@ -41,10 +41,10 @@ class ClassRepository
      */
     function __construct()
     {
-        if (null === self::$_reflection) {
-            self::$_reflection = new ReflectionCache();
+        if (null === self::$reflection) {
+            self::$reflection = new ReflectionCache();
         }
-        self::$_reflection->refresh();
+        self::$reflection->refresh();
     }
 
 	/**
@@ -55,10 +55,10 @@ class ClassRepository
      */
     public function candidatesFor($interface)
     {
-        self::$_reflection->refresh();
+        self::$reflection->refresh();
         
-        return array_merge(self::$_reflection->concreteSubgraphOf($interface), 
-                self::$_reflection->implementationsOf($interface));
+        return array_merge(self::$reflection->concreteSubgraphOf($interface), 
+                self::$reflection->implementationsOf($interface));
     }
 
 	/**
@@ -72,8 +72,8 @@ class ClassRepository
     {
         $supertypes = array_merge(
             array($class), 
-            self::$_reflection->interfacesOf($class), 
-            self::$_reflection->parentsOf($class)
+            self::$reflection->interfacesOf($class), 
+            self::$reflection->parentsOf($class)
         );
         return in_array($type, $supertypes);
     }
@@ -86,7 +86,7 @@ class ClassRepository
      */
     public function getConstructorParameters($class)
     {
-        $reflection = self::$_reflection->getReflection($class);
+        $reflection = self::$reflection->getReflection($class);
         $constructor = $reflection->getConstructor();
         if (empty($constructor)) {
             return array();
@@ -104,7 +104,7 @@ class ClassRepository
      */
     public function getParameters($class, $method)
     {
-        $reflection = self::$_reflection->getReflection($class);
+        $reflection = self::$reflection->getReflection($class);
         if (!$reflection->hasMethod($method)) {
             throw new DiException("Setter method '$method' not found in '$class'");
         }

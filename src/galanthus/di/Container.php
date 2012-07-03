@@ -35,42 +35,42 @@ class Container implements ContextInterface
      * 
      * @var ContextInterface
      */
-    protected $_top;
+    protected $top;
     
     /**
      * Named parameters to use for the next object instantiation
      * 
      * @var array
      */
-    protected $_namedParameters = array();
+    protected $namedParameters = array();
     
     /**
      * Unamed parameters to use for the next object instantiation
      *
      * @var array
      */
-    protected $_unnamedParameters = array();
+    protected $unnamedParameters = array();
     
     /**
      * Class repository
      * 
      * @var ClassRepository
      */
-    protected $_repository;
+    protected $repository;
     
     /**
      * Array with instances to use as shared objects
      * 
      * @var array
      */
-    protected $_instances = array();
+    protected $instances = array();
     
     /**
      * Array with aliases for the Service Locator
      * 
      * @var array
      */
-    protected $_aliases = array();
+    protected $aliases = array();
 
     /**
      * Constructor
@@ -81,7 +81,7 @@ class Container implements ContextInterface
      */
     public function __construct(array $config = null)
     {
-        $this->_top = new Context($this);
+        $this->top = new Context($this);
         if (null !== $config) {
             $this->setConfig($config, $this);
         }
@@ -143,7 +143,7 @@ class Container implements ContextInterface
      */
     public function setTop(ContextInterface $context)
     {
-        $this->_top = $context;
+        $this->top = $context;
         return $this;
     }
     
@@ -154,7 +154,7 @@ class Container implements ContextInterface
      */
     public function getTop()
     {
-        return $this->_top;
+        return $this->top;
     }
     
     /**
@@ -165,7 +165,7 @@ class Container implements ContextInterface
      */
     public function setNamedParameters(array $parameters)
     {
-        $this->_namedParameters = $parameters;
+        $this->namedParameters = $parameters;
         return $this;
     }
     
@@ -176,7 +176,7 @@ class Container implements ContextInterface
      */
     public function getNamedParameters()
     {
-        return $this->_namedParameters;
+        return $this->namedParameters;
     }
     
     /**
@@ -187,7 +187,7 @@ class Container implements ContextInterface
      */
     public function setUnnamedParameters(array $parameters)
     {
-        $this->_unnamedParameters = $parameters;
+        $this->unnamedParameters = $parameters;
         return $this;
     }
     
@@ -198,7 +198,7 @@ class Container implements ContextInterface
      */
     public function getUnnamedParameters()
     {
-        return $this->_unnamedParameters;
+        return $this->unnamedParameters;
     }
     
     /**
@@ -209,7 +209,7 @@ class Container implements ContextInterface
      */
     public function setRepository(ClassRepository $repository)
     {
-        $this->_repository = $repository;
+        $this->repository = $repository;
         return $this;
     }
     
@@ -220,7 +220,7 @@ class Container implements ContextInterface
      */
     public function getRepository()
     {
-        return $this->_repository;
+        return $this->repository;
     }
     
     /**
@@ -288,7 +288,7 @@ class Container implements ContextInterface
     {
         $values = func_get_args();
         $this->setUnnamedParameters(array_merge(
-            $this->_unnamedParameters, $values
+            $this->unnamedParameters, $values
         ));
         return $this;
     }
@@ -303,12 +303,12 @@ class Container implements ContextInterface
         $values = func_get_args();
         $type = array_shift($values);
         $this->setUnnamedParameters(array_merge(
-            $this->_unnamedParameters, $values
+            $this->unnamedParameters, $values
         ));
         $this->setRepository(new ClassRepository());
         
-        if (array_key_exists($type, $this->_aliases)) {
-            $type = $this->_aliases[$type];
+        if (array_key_exists($type, $this->aliases)) {
+            $type = $this->aliases[$type];
         }
         
         $object = $this->getTop()->create($type);
@@ -326,15 +326,15 @@ class Container implements ContextInterface
         $values = func_get_args();
         $type = $values[0];
         
-        if (array_key_exists($type, $this->_aliases)) {
-            $type = $this->_aliases[$type];
+        if (array_key_exists($type, $this->aliases)) {
+            $type = $this->aliases[$type];
         }
         
-        if (!array_key_exists($type, $this->_instances) || count($values) > 1) {
-            $this->_instances[$type] = call_user_func_array(array($this, 'create'), $values);
+        if (!array_key_exists($type, $this->instances) || count($values) > 1) {
+            $this->instances[$type] = call_user_func_array(array($this, 'create'), $values);
         }
         
-        return $this->_instances[$type];
+        return $this->instances[$type];
     }
 
     /**
@@ -351,7 +351,7 @@ class Container implements ContextInterface
             throw new DiException("Class with name '$alias' you are trying to set as alias exists");
         }
         
-        $this->_aliases[$alias] = $className;
+        $this->aliases[$alias] = $className;
         
         return $this;
     }
@@ -393,7 +393,7 @@ class Container implements ContextInterface
     public function useParameters(array $parameters)
     {
         $this->setNamedParameters(array_merge(
-            $this->_namedParameters, $parameters
+            $this->namedParameters, $parameters
         ));
         return $this;
     }
@@ -406,11 +406,11 @@ class Container implements ContextInterface
      */
     public function instantiateParameter(\ReflectionParameter $parameter, $nesting)
     {
-        if (isset($this->_namedParameters[$parameter->getName()])) {
-            return $this->_namedParameters[$parameter->getName()];
+        if (isset($this->namedParameters[$parameter->getName()])) {
+            return $this->namedParameters[$parameter->getName()];
         }
-        if (!empty($this->_unnamedParameters)) {
-            return array_shift($this->_unnamedParameters);
+        if (!empty($this->unnamedParameters)) {
+            return array_shift($this->unnamedParameters);
         }
         throw new DiException('Missing dependency with name ' . $parameter->getName());
     }

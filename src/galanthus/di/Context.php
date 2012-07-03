@@ -37,49 +37,49 @@ class Context implements ContextInterface
      * 
      * @var ContextInterface
      */
-    protected $_parent;
+    protected $parent;
 
     /**
      * Class repository
      * 
      * @var ClassRepository
      */
-    protected $_repository;
+    protected $repository;
 
     /**
      * Registered preferences
      * 
      * @var multitype:LifecycleInterface
      */
-    protected $_registry = array();
+    protected $registry = array();
     
     /**
      * Container for variable contexts
      * 
      * @var mutlitype:Variable
      */
-    protected $_variables = array();
+    protected $variables = array();
 
     /**
      * Container for contexts
      * 
      * @var multitype:ContextInterface
      */
-    protected $_contexts = array();
+    protected $contexts = array();
 
     /**
      * Container for types
      * 
      * @var multitype:Type
      */
-    protected $_types = array();
+    protected $types = array();
 
     /**
      * Container for wrappers
      * 
      * @var array
      */
-    protected $_wrappers = array();
+    protected $wrappers = array();
 
     /**
      * Consructor
@@ -90,7 +90,7 @@ class Context implements ContextInterface
      */
     public function __construct(ContextInterface $parent)
     {
-        $this->_parent = $parent;
+        $this->parent = $parent;
     }
     
     /**
@@ -100,7 +100,29 @@ class Context implements ContextInterface
      */
     public function getParent()
     {
-        return $this->_parent;
+        return $this->parent;
+    }
+    
+    /**
+     * Set context variables
+     * 
+     * @param array $variables
+     * @return Context
+     */
+    public function setVariables(array $variables)
+    {
+        $this->variables = $variables;
+        return $this;
+    }
+    
+    /**
+     * Get context variables
+     * 
+     * @return mutlitype:Variable
+     */
+    public function getVariables()
+    {
+        return $this->variables;
     }
     
     /**
@@ -118,7 +140,7 @@ class Context implements ContextInterface
         } else {
             $lifecycle = new Factory($preference);
         }
-        array_unshift($this->_registry, $lifecycle);
+        array_unshift($this->registry, $lifecycle);
     }
 
     /**
@@ -129,7 +151,7 @@ class Context implements ContextInterface
      */
     public function forVariable($name)
     {
-        return $this->_variables[$name] = new Variable($this);
+        return $this->variables[$name] = new Variable($this);
     }
 
     /**
@@ -140,10 +162,10 @@ class Context implements ContextInterface
      */
     public function whenCreating($type)
     {
-        if (! isset($this->_contexts[$type])) {
-            $this->_contexts[$type] = new self($this);
+        if (! isset($this->contexts[$type])) {
+            $this->contexts[$type] = new self($this);
         }
-        return $this->_contexts[$type];
+        return $this->contexts[$type];
     }
 
     /**
@@ -154,10 +176,10 @@ class Context implements ContextInterface
      */
     public function forType($type)
     {
-        if (! isset($this->_types[$type])) {
-            $this->_types[$type] = new Type();
+        if (! isset($this->types[$type])) {
+            $this->types[$type] = new Type();
         }
-        return $this->_types[$type];
+        return $this->types[$type];
     }
 
     /**
@@ -168,7 +190,7 @@ class Context implements ContextInterface
      */
     public function wrapWith($type)
     {
-        array_push($this->_wrappers, $type);
+        array_push($this->wrappers, $type);
     }
     
     /**
@@ -194,7 +216,7 @@ class Context implements ContextInterface
      */
     protected function _mergeVars(Context $from, Context $to)
     {
-        $to->variables = array_merge($from->variables, $to->variables);
+        $to->setVariables(array_merge($from->getVariables(), $to->getVariables()));
     }
     
     /**
@@ -208,13 +230,13 @@ class Context implements ContextInterface
     {
         $topContext = $this->_getTopContext($context);
         
-        if (!isset($topContext->_contexts[$type])) {
+        if (!isset($topContext->contexts[$type])) {
             return;
         }
         
-        $parentContext = $topContext->_contexts[$type];
-        
-        $this->_mergeVars($parentContext, $context);
+        $parentContext = $topContext->contexts[$type];
+                
+        $this->_mergeVars($topContext, $parentContext);
     }
 
     /**
@@ -349,13 +371,13 @@ class Context implements ContextInterface
         $interfaceSetters = array();
         
         foreach ($interfaces as $interface => $interfaceReflection) {
-            if (isset($this->_types[$interface])) {
+            if (isset($this->types[$interface])) {
                 $interfaceSetters = array_merge($interfaceSetters, 
-                        $this->_types[$interface]->getSetters());
+                        $this->types[$interface]->getSetters());
             }
         }
         
-        $setters = isset($this->_types[$class]) ? $this->_types[$class]->getSetters() : array();
+        $setters = isset($this->types[$class]) ? $this->types[$class]->getSetters() : array();
         return array_values(
             array_unique(
                 array_merge(
@@ -378,7 +400,7 @@ class Context implements ContextInterface
     {
         return array_values(
             array_merge(
-                $this->_wrappers, $this->getParent()->wrappersFor($type)
+                $this->wrappers, $this->getParent()->wrappersFor($type)
             )
         );
     }
@@ -419,26 +441,28 @@ class Context implements ContextInterface
     {
         $hint = $parameter->getClass();
         if (!empty($hint)) {
-            if (array_key_exists($parameter->getName(), $this->_variables)) {
-                if ($this->_variables[$parameter->getName()]->getPreference() instanceof LifecycleInterface) {
-                    return $this->_variables[$parameter->getName()]->getPreference()->instantiate(
+            if (array_key_exists($parameter->getName(), $this->variables)) {
+                if ($this->variables[$parameter->getName()]->getPreference() instanceof LifecycleInterface) {
+                    return $this->variables[$parameter->getName()]->getPreference()->instantiate(
                             array());
                 } elseif (!is_string(
-                        $this->_variables[$parameter->getName()]->getPreference())) {
-                    return $this->_variables[$parameter->getName()]->getPreference();
+                        $this->variables[$parameter->getName()]->getPreference())) {
+                    return $this->variables[$parameter->getName()]->getPreference();
                 }
             }
+            
             return $this->create($hint->getName(), $nesting);
-        } elseif (isset($this->_variables[$parameter->getName()])) {
-            if ($this->_variables[$parameter->getName()]->getPreference() instanceof LifecycleInterface) {
-                return $this->_variables[$parameter->getName()]->getPreference()->instantiate(
+        } elseif (isset($this->variables[$parameter->getName()])) {
+            
+            if ($this->variables[$parameter->getName()]->getPreference() instanceof LifecycleInterface) {
+                return $this->variables[$parameter->getName()]->getPreference()->instantiate(
                         array());
             } elseif (!is_string(
-                    $this->_variables[$parameter->getName()]->getPreference())) {
-                return $this->_variables[$parameter->getName()]->getPreference();
+                    $this->variables[$parameter->getName()]->getPreference())) {
+                return $this->variables[$parameter->getName()]->getPreference();
             }
             return $this->create(
-                    $this->_variables[$parameter->getName()]->getPreference(),
+                    $this->variables[$parameter->getName()]->getPreference(),
                     $nesting);
         }
         return $this->getParent()->instantiateParameter($parameter, $nesting);
@@ -453,7 +477,7 @@ class Context implements ContextInterface
      */
     protected function _determineContext($class)
     {
-        foreach ($this->_contexts as $type => $context) {
+        foreach ($this->contexts as $type => $context) {
             /* @var $context ContextInterface */
             if ($this->getRepository()->isSupertype($class, $type)) {
                 return $context;
@@ -485,7 +509,7 @@ class Context implements ContextInterface
      */
     public function preferFrom($candidates)
     {
-        foreach ($this->_registry as $preference) {
+        foreach ($this->registry as $preference) {
             /* @var $preference LifecycleInterface */
             if ($preference->isOneOf($candidates)) {
                 return $preference;
@@ -502,7 +526,7 @@ class Context implements ContextInterface
      */
     public function hasPreference($candidates)
     {
-        foreach ($this->_registry as $preference) {
+        foreach ($this->registry as $preference) {
             /* @var $preference LifecycleInterface */
             if ($preference->isOneOf($candidates)) {
                 return true;

@@ -1,11 +1,36 @@
 <?php
+/**
+ * Galanthus Framework © 2012
+ * Copyright © 2012 Sasquatch <Joan-Alexander Grigorov>
+ *                              http://bgscripts.com
+ *
+ * LICENSE
+ *
+ * This source file is subject to the GNU General Public License v3
+ * that is bundled with this package in the file LICENSE.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.gnu.org/copyleft/gpl.html
+ *
+ * @category   Galanthus
+ * @package    Galanthus Dispatcher
+ * @copyright  Copyright (c) 2012 Sasquatch, Elegance Team
+ */
 
 namespace galanthus\dispatcher;
 
 use galanthus\dispatcher\request\Query;
 
 /**
- * @todo Parses the requested url and finds the requested controller and etc.
+ * The standard request object
+ * 
+ * Resolves the requested URI
+ * 
+ * @todo Customizing route
+ * 
+ * @author     Joan-Alexander Grigorov http://bgscripts.com
+ * @category   Galanthus
+ * @package    Galanthus Dispatcher
+ * @copyright  Copyright (c) 2012 Sasquatch, Elegance Team
  */
 class Request implements RequestInterface
 {
@@ -15,15 +40,22 @@ class Request implements RequestInterface
      * 
      * @var Query
      */
-    protected $_query;
+    protected $query;
     
     protected function _resolveUri()
     {
-        $requestQuery = parse_url(
-            str_replace(dirname($_SERVER['SCRIPT_NAME']), '', 
-                    str_replace($_SERVER['SCRIPT_NAME'], '', $_SERVER['REQUEST_URI'])
-            )
-        );
+
+        if (dirname($_SERVER['SCRIPT_NAME']) != DS) {
+            $requestQuery = parse_url(
+                str_replace(dirname($_SERVER['SCRIPT_NAME']), '', 
+                        str_replace($_SERVER['SCRIPT_NAME'], '', $_SERVER['REQUEST_URI'])
+                )
+            );
+        } else {
+            $requestQuery = parse_url(
+                str_replace($_SERVER['SCRIPT_NAME'], '', $_SERVER['REQUEST_URI'])
+            );
+        }
         
         $path = explode('/', $requestQuery['path']);
         
@@ -32,7 +64,7 @@ class Request implements RequestInterface
                 if (empty($entity)) {
                     continue;
                 }
-                $this->_query->push($entity);
+                $this->query->push($entity);
             }
         }        
     }
@@ -44,7 +76,7 @@ class Request implements RequestInterface
      */
     public function __construct(Query $query)
     {
-        $this->_query = $query;
+        $this->query = $query;
         $this->_resolveUri();
     }
     
@@ -55,7 +87,7 @@ class Request implements RequestInterface
      */
     public function getQuery()
     {
-        return $this->_query;
+        return $this->query;
     }
     
 }

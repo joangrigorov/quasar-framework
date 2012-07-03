@@ -31,6 +31,13 @@ use galanthus\dispatcher\ResponseInterface;
 interface DecoratorInterface
 {
     
+    /**@#+
+     * Placement constants
+    */
+    const APPEND  = 'APPEND';
+    const PREPEND = 'PREPEND';
+    /**@#-*/
+    
     /**
      * Sets the response object
      * 
@@ -46,12 +53,34 @@ interface DecoratorInterface
      */
     public function getResponse();
     
+    /**
+     * Sets content placement
+     *
+     * @param string $placement
+     * @return DecoratorInterface
+     */
+    public function setPlacement($placement);
+    
+    /**
+     * Get content placement
+     *
+     * @return string
+     */
+    public function getPlacement();
+    
+    /**
+     * Set decorator options
+     * 
+     * @param array $options
+     * @return DecoratorInterface
+     */
+    public function setOptions(array $options);
     
     /**
      * Decorate content
      * 
      * @param string $content
-     * @return DecoratorInterface
+     * @return string
      */
     public function decorate($content);
     

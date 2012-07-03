@@ -32,14 +32,14 @@ class IncomingParameters
      * 
      * @var ContextInterface
      */
-    protected $_injector;
+    protected $injector;
 
     /**
      * Parameter names
      * 
      * @var array
      */
-    protected $_names = null;
+    protected $names = null;
     
     /**
      * Constructor
@@ -51,8 +51,8 @@ class IncomingParameters
      */
     public function __construct(array $names = array(), ContextInterface $injector)
     {
-        $this->_names = $names;
-        $this->_injector = $injector;
+        $this->names = $names;
+        $this->injector = $injector;
     }
     
     /**
@@ -62,7 +62,7 @@ class IncomingParameters
      */
     public function getInjector()
     {
-        return $this->_injector;
+        return $this->injector;
     }
 
     /**
@@ -74,6 +74,6 @@ class IncomingParameters
     {
         $values = func_get_args();
         $this->getInjector()->useParameters(array_combine($this->names, $values));
-        return $this->_injector;
+        return $this->injector;
     }
 }

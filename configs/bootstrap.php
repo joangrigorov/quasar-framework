@@ -23,5 +23,4 @@ $injector->forVariable('injector')->willUse($injector);
 // create the dispatcher object
 /* @var $dispatcher galanthus\dispatcher\Dispatcher */
 $dispatcher = $injector->create('dispatcher');
-$dispatcher->dispatch()
-           ->output();
+echo $dispatcher->dispatch()->output();
