@@ -1,4 +1,8 @@
 <?php
+/*
+ * This is not supposed to be edited. Use common.php 
+ * or enviornment specific configuration files.
+ */
 return array(
         
     // dispatcher configuration

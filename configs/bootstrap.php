@@ -8,6 +8,10 @@ set_include_path(implode(PATH_SEPARATOR, array(
 
 defined('DS') || define('DS', DIRECTORY_SEPARATOR);
 
+// Define application environment
+defined('APPLICATION_ENV')
+|| define('APPLICATION_ENV', (getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV') : 'production'));
+
 // register the autoloader function
 spl_autoload_register(include ROOT_PATH . '/configs/autoloader.php');
 
@@ -17,6 +21,12 @@ error_reporting(E_ALL);
 
 // create the injector
 $injector = new galanthus\di\Container(include ROOT_PATH . '/configs/di/global.php');
+
+// add common configuration
+$injector->addConfig(include ROOT_PATH . '/configs/di/common.php');
+// add environment specific configuration
+$injector->addConfig(include ROOT_PATH . '/configs/di/env.' . APPLICATION_ENV . '.php');
+
 // set the container to inject itself and use single instance
 $injector->forVariable('injector')->willUse($injector);
 
