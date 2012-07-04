@@ -83,18 +83,23 @@ class Container implements ContextInterface
     {
         $this->top = new Context($this);
         if (null !== $config) {
-            $this->setConfig($config, $this);
+            $this->addConfig($config, $this);
         }
     }
     
     /**
-     * Set container configuration
+     * Add container configuration
      * 
      * @param array $config
      * @param ContextInterface $context
      */
-    public function setConfig(array $config, ContextInterface $context)
+    public function addConfig(array $config, ContextInterface $context = null)
     {    
+        
+        if (null === $context) {
+            $context = $this;
+        }
+        
         foreach ($config as $class => $settings) {
             // Get configuration for injection methods
             if (!empty($settings['call'])) {
