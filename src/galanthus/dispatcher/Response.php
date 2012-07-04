@@ -188,6 +188,25 @@ class Response implements ResponseInterface
     }
     
     /**
+     * Overriding: allowing quick access to decorators
+     * 
+     * @param string $name
+     * @param array $arguments
+     * @return DecoratorInterface
+     */
+    public function __call($name, $arguments)
+    {
+        $pattern = '^get(?P<decorator>[a-zA-Z]+?)$';
+        if (preg_match($pattern, $name, $matches)) {
+            $decoratorName = $matches['decorator'];
+            if (array_key_exists($decoratorName, $this->decorators)) {
+                return $this->decorators[$decoratorName];
+            }
+        }
+        throw new ResponseException("Method '$name' is not defined");
+    }
+    
+    /**
      * Set action decorators
      *
      * @param array $decorators Array of decorators with options
@@ -248,7 +267,7 @@ class Response implements ResponseInterface
                 $decorator->setOptions($options);
             }
             
-            $this->decorators[$name] = $decorator;
+            $this->decorators[strtolower($name)] = $decorator;
         } else if (is_object($decorator)) {
             if ($decorator instanceof DecoratorInterface) {
                 if (null !== $options) {
