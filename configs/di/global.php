@@ -14,6 +14,11 @@ return array(
     'galanthus\dispatcher\Response' => array(
         'params' => array(
             'decorators' => array(
+                'httpHeaders' => array(
+                    'headers' => array(
+                        'Content-Type: text/html'
+                    )
+                ),
                 'renderer', 
                 'layout' => array(
                     'params' => array(
