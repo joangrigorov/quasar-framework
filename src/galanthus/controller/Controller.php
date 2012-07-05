@@ -41,13 +41,6 @@ abstract class Controller implements ControllerInterface
     protected $paramsMap = array();
     
     /**
-     * Assigned GET parameters
-     * 
-     * @var array
-     */
-    protected $params = array();
-    
-    /**
      * The request object
      * 
      * @var RequestInterface
@@ -174,34 +167,7 @@ abstract class Controller implements ControllerInterface
     }
     
     /**
-     * Map paramters from the query
-     * 
-     * @param Query $query
-     * @return boolean
-     */
-    protected function mapParams()
-    {
-        $query = $this->getQuery();
-        $paramsMapped = false;
-        $query->rewind();
-        foreach ($query as $key => $param) {
-            
-            if ($key&1) {
-                continue;
-            }
-            
-            if (array_key_exists($param, $this->paramsMap)) {
-                $query->next();
-                $this->params[$param] = $query->current();
-                $paramsMapped = true;
-            }
-        }
-        
-        return $paramsMapped;
-    }
-    
-    /**
-     * Get param
+     * Get request parameter
      * 
      * @param string $param
      * @param mixed $defaultValue
@@ -209,11 +175,20 @@ abstract class Controller implements ControllerInterface
      */
     protected function getParam($param, $defaultValue = null)
     {
-        if (array_key_exists($param, $this->params)) {
-            return $this->params[$param];
-        } else {
-            return $defaultValue;
-        }
+        return $this->request->getParam($param, $defaultValue);
+    }
+    
+    /**
+     * Set request parameter
+     * 
+     * @param string $name
+     * @param mixed $value
+     * @return Controller
+     */
+    protected function setParam($name, $value)
+    {
+        $this->request->setParam($name, $value);
+        return $this;
     }
     
     /**
@@ -225,7 +200,6 @@ abstract class Controller implements ControllerInterface
     
     /**
      * This is only used with the {@see \galanthus\view\Renderer}
-     * 
      */
     protected function setCurrentScript()
     {
@@ -243,7 +217,7 @@ abstract class Controller implements ControllerInterface
         // invoke the forward hook
         $this->hook();
                 
-        $paramsMapped = $this->mapParams($query);
+        $paramsMapped = $this->request->mapParams($this->paramsMap);
         
         if (!count($query) || $paramsMapped) {
             return $this;

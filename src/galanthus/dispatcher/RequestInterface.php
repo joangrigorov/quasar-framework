@@ -34,4 +34,30 @@ interface RequestInterface
      */
     public function getQuery();
     
+    /**
+     * Map paramters from the query
+     * 
+     * @param array $paramsMap Parameters to map
+     * @return boolean
+     */
+    public function mapParams(array $paramsMap);
+    
+    /**
+     * Set request parameter
+     * 
+     * @param string $name
+     * @param mixed $value
+     * @return Request
+     */
+    public function setParam($name, $value);
+    
+    /**
+     * Get param
+     * 
+     * @param string $param
+     * @param mixed $defaultValue
+     * @return mixed
+     */
+    public function getParam($param, $defaultValue = null);
+    
 }

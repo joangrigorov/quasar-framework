@@ -36,12 +36,33 @@ class Request implements RequestInterface
 {
     
     /**
-     * Query stack
+     * Query queue
      * 
      * @var Query
      */
     protected $query;
     
+    /**
+     * Request parameters
+     * 
+     * @var array
+     */
+    protected $params = array();
+    
+    /**
+     * Sets the request query queue object
+     * 
+     * @param Query $query
+     */
+    public function __construct(Query $query)
+    {
+        $this->query = $query;
+        $this->resolveUri();
+    }
+    
+    /**
+     * Parse URI and construct the Query queue object
+     */
     protected function resolveUri()
     {
 
@@ -70,18 +91,63 @@ class Request implements RequestInterface
     }
     
     /**
-     * Sets the request query stack object
+     * Set request parameter
      * 
-     * @param Query $query
+     * @param string $name
+     * @param mixed $value
+     * @return Request
      */
-    public function __construct(Query $query)
+    public function setParam($name, $value)
     {
-        $this->query = $query;
-        $this->resolveUri();
+        $this->params[$name] = $value;
+        return $this;
     }
     
     /**
-     * Get the query stack
+     * Get request parameter
+     * 
+     * @param string $param
+     * @param mixed $defaultValue
+     * @return mixed
+     */
+    public function getParam($param, $defaultValue = null)
+    {
+        if (array_key_exists($param, $this->params)) {
+            return $this->params[$param];
+        } else {
+            return $defaultValue;
+        }
+    }
+    
+    /**
+     * Map paramters from the query
+     * 
+     * @param array $paramsMap Parameters to map
+     * @return boolean
+     */
+    public function mapParams(array $paramsMap)
+    {
+        $query = $this->getQuery();
+        $paramsMapped = false;
+        $query->rewind();
+        foreach ($query as $key => $param) {
+            
+            if ($key&1) {
+                continue;
+            }
+            
+            if (array_key_exists($param, $paramsMap)) {
+                $query->next();
+                $this->params[$param] = $query->current();
+                $paramsMapped = true;
+            }
+        }
+        
+        return $paramsMapped;
+    }
+    
+    /**
+     * Get the query queue
      * 
      * @return Query
      */
