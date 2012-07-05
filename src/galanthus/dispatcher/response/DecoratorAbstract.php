@@ -53,7 +53,7 @@ abstract class DecoratorAbstract implements DecoratorInterface
      */
     public function getResponse()
     {
-        return $this->_response;
+        return $this->response;
     }
     
     /**
@@ -97,7 +97,7 @@ abstract class DecoratorAbstract implements DecoratorInterface
      */
     public function getPlacement()
     {
-        return $this->_placement;
+        return $this->placement;
     }
     
     /**

@@ -42,7 +42,7 @@ class Request implements RequestInterface
      */
     protected $query;
     
-    protected function _resolveUri()
+    protected function resolveUri()
     {
 
         if (dirname($_SERVER['SCRIPT_NAME']) != DS) {
@@ -77,7 +77,7 @@ class Request implements RequestInterface
     public function __construct(Query $query)
     {
         $this->query = $query;
-        $this->_resolveUri();
+        $this->resolveUri();
     }
     
     /**

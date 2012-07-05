@@ -199,12 +199,12 @@ class Context implements ContextInterface
      * @param Context $context
      * @return Context
      */
-    protected function _getTopContext(Context $context)
+    protected function getTopContext(Context $context)
     {
         if ($context->getParent() instanceof Container) {
             return $context;
         }
-        return $this->_getTopContext($context->getParent());
+        return $this->getTopContext($context->getParent());
     }
     
     /**
@@ -214,7 +214,7 @@ class Context implements ContextInterface
      * @param Context $to
      * @return void
      */
-    protected function _mergeVars(Context $from, Context $to)
+    protected function mergeVars(Context $from, Context $to)
     {
         $to->setVariables(array_merge($from->getVariables(), $to->getVariables()));
     }
@@ -226,9 +226,9 @@ class Context implements ContextInterface
      * @param Context $context
      * @return void
      */
-    protected function _inheritVars($type, Context $context)
+    protected function inheritVars($type, Context $context)
     {
-        $topContext = $this->_getTopContext($context);
+        $topContext = $this->getTopContext($context);
         
         if (!isset($topContext->contexts[$type])) {
             return;
@@ -236,7 +236,7 @@ class Context implements ContextInterface
         
         $parentContext = $topContext->contexts[$type];
                 
-        $this->_mergeVars($topContext, $parentContext);
+        $this->mergeVars($topContext, $parentContext);
     }
 
     /**
@@ -254,25 +254,25 @@ class Context implements ContextInterface
                 $this->getRepository()
                     ->candidatesFor($type));
         
-        $context = $this->_determineContext($lifecycle->getClass());
+        $context = $this->determineContext($lifecycle->getClass());
         
         if ($context->hasWrapper($type, $nesting)) {
             $wrapper = $context->getWrapper($type, $nesting);
-            return $this->create($wrapper, $this->_cons($wrapper, $nesting));
+            return $this->create($wrapper, $this->cons($wrapper, $nesting));
         }
         
-        $this->_inheritVars($type, $context);
+        $this->inheritVars($type, $context);
         
         $instance = $lifecycle->instantiate(
             $context->createDependencies(
                 $this->getRepository()
                      ->getConstructorParameters($lifecycle->getClass()), 
-                $this->_cons($lifecycle->getClass(), $nesting)
+                $this->cons($lifecycle->getClass(), $nesting)
             )
         );
         
         if ($lifecycle->shouldInvokeSetters()) {
-            $this->_invokeSetters($context, $nesting, $lifecycle->getClass(), $instance);
+            $this->invokeSetters($context, $nesting, $lifecycle->getClass(), $instance);
         }
         
         return $instance;
@@ -343,15 +343,15 @@ class Context implements ContextInterface
      * @param string $class
      * @param mixed $instance Instance, on which to invoke setters
      */
-    protected function _invokeSetters(ContextInterface $context, $nesting, $class, $instance)
+    protected function invokeSetters(ContextInterface $context, $nesting, $class, $instance)
     {
         foreach ($context->settersFor($class) as $setter) {
             
-            $context->_invoke(
+            $context->invoke(
                 $instance, $setter, $context->createDependencies(
                     $this->getRepository()
                          ->getParameters($class, $setter), 
-                    $this->_cons($class, $nesting)
+                    $this->cons($class, $nesting)
                 )
             );
         }
@@ -475,7 +475,7 @@ class Context implements ContextInterface
      * @param string $class
      * @return ContextInterface
      */
-    protected function _determineContext($class)
+    protected function determineContext($class)
     {
         foreach ($this->contexts as $type => $context) {
             /* @var $context ContextInterface */
@@ -494,7 +494,7 @@ class Context implements ContextInterface
      * @param array $arguments
      * @return void
      */
-    protected function _invoke($instance, $method, $arguments)
+    protected function invoke($instance, $method, $arguments)
     {
         call_user_func_array(array(
             $instance, $method
@@ -540,7 +540,7 @@ class Context implements ContextInterface
      * @param array $tail
      * @return array
      */
-    protected function _cons($head, $tail)
+    protected function cons($head, $tail)
     {
         array_unshift($tail, $head);
         return $tail;

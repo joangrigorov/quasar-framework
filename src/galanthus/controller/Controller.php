@@ -167,7 +167,7 @@ abstract class Controller implements ControllerInterface
      * 
      * @return string
      */
-    protected function _getNamespace()
+    protected function getNamespace()
     {
         $reflection = new \ReflectionClass(get_class($this));
         return $reflection->getNamespaceName();
@@ -179,7 +179,7 @@ abstract class Controller implements ControllerInterface
      * @param Query $query
      * @return boolean
      */
-    protected function _mapParams()
+    protected function mapParams()
     {
         $query = $this->getQuery();
         $paramsMapped = false;
@@ -207,7 +207,7 @@ abstract class Controller implements ControllerInterface
      * @param mixed $defaultValue
      * @return mixed
      */
-    protected function _getParam($param, $defaultValue = null)
+    protected function getParam($param, $defaultValue = null)
     {
         if (array_key_exists($param, $this->params)) {
             return $this->params[$param];
@@ -219,7 +219,7 @@ abstract class Controller implements ControllerInterface
     /**
      * Custom functionality before forwarding
      */
-    protected function _hook()
+    protected function hook()
     {
     }
     
@@ -227,7 +227,7 @@ abstract class Controller implements ControllerInterface
      * This is only used with the {@see \galanthus\view\Renderer}
      * 
      */
-    protected function _setCurrentScript()
+    protected function setCurrentScript()
     {
         $className = end(explode('\\', get_class($this)));
         $currentScript = strtolower(preg_replace('/([a-zA-Z])(?=[A-Z])/', '$1-', $className));
@@ -238,12 +238,12 @@ abstract class Controller implements ControllerInterface
     {
         $query = $this->getQuery();
         
-        $this->_setCurrentScript();
+        $this->setCurrentScript();
         
         // invoke the forward hook
-        $this->_hook();
+        $this->hook();
                 
-        $paramsMapped = $this->_mapParams($query);
+        $paramsMapped = $this->mapParams($query);
         
         if (!count($query) || $paramsMapped) {
             return $this;
@@ -252,7 +252,7 @@ abstract class Controller implements ControllerInterface
         $next = $query->shift();
         
         /* @var $controller Controller */
-        $controller = $this->injector->create($this->_getNamespace() . '\\' . ucfirst($next));
+        $controller = $this->injector->create($this->getNamespace() . '\\' . ucfirst($next));
         $controller->setRequest($this->getRequest())
                    ->setResponse($this->getResponse())
                    ->setPrevious($this);

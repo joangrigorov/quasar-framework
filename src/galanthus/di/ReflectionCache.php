@@ -67,7 +67,7 @@ class ReflectionCache
      */
     public function refresh()
     {
-        $this->_buildIndex(array_diff(get_declared_classes(), $this->_indexed()));
+        $this->buildIndex(array_diff(get_declared_classes(), $this->indexed()));
         $this->subclasses = array();
     }
 
@@ -110,11 +110,11 @@ class ReflectionCache
             return array();
         }
         if (!isset($this->subclasses[$class])) {
-            $this->subclasses[$class] = $this->_isConcrete($class) ? array(
+            $this->subclasses[$class] = $this->isConcrete($class) ? array(
                 $class
             ) : array();
-            foreach ($this->_indexed() as $candidate) {
-                if (is_subclass_of($candidate, $class) && $this->_isConcrete($candidate)) {
+            foreach ($this->indexed() as $candidate) {
+                if (is_subclass_of($candidate, $class) && $this->isConcrete($candidate)) {
                     $this->subclasses[$class][] = $candidate;
                 }
             }
@@ -156,7 +156,7 @@ class ReflectionCache
 	 * @param string $class
 	 * @return boolean
 	 */
-	protected function _isConcrete($class)
+	protected function isConcrete($class)
 	{
 		return !$this->getReflection($class)
 		             ->isAbstract();
@@ -167,7 +167,7 @@ class ReflectionCache
 	 * 
 	 * @return array
 	 */
-	protected function _indexed()
+	protected function indexed()
 	{
 		return array_keys($this->interfacesOf);
 	}
@@ -178,7 +178,7 @@ class ReflectionCache
 	 * @param array $classes
 	 * @return void
 	 */
-	protected function _buildIndex(array $classes)
+	protected function buildIndex(array $classes)
 	{
 		foreach ($classes as $class) {
 			$interfaces = array_values(class_implements($class));

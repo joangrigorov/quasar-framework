@@ -90,7 +90,7 @@ class Renderer implements RendererInterface
      * @throws RendererException
      * @return string
      */
-    protected function _chooseScriptPath($script)
+    protected function chooseScriptPath($script)
     {
         foreach ($this->scriptPaths as $path) {
             if (file_exists($path . DS . $script)) {
@@ -205,7 +205,7 @@ class Renderer implements RendererInterface
      */
     public function render($script)
     {
-        $scriptPath = $this->_chooseScriptPath($script);
+        $scriptPath = $this->chooseScriptPath($script);
         ob_start();
         include $scriptPath;
         $buffer = ob_get_clean();

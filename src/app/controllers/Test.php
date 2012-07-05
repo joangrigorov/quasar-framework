@@ -10,6 +10,6 @@ class Test extends Controller
     
     public function execute()
     {
-        $this->response->name = $this->_getParam('name');
+        $this->response->name = $this->getParam('name');
     }
 }
