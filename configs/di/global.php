@@ -37,5 +37,15 @@ return array(
                 ROOT_PATH . '/src/app/views/templates/'
             )
         )
+    ),
+        
+    // view helpers broker configuration
+    'galanthus\view\HelperBroker' => array(
+        'params' => array(
+            'namespaces' => array(
+                'app\helpers\view'
+            )
+        )
     )
+        
 );
