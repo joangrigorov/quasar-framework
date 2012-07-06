@@ -43,11 +43,26 @@ interface RequestInterface
     public function mapParams(array $paramsMap);
     
     /**
+     * Set response parameters
+     * 
+     * @param array $params
+     * @return RequestInterface
+     */
+    public function setParams(array $params);
+    
+    /**
+     * Get response parameters
+     * 
+     * @return array
+     */
+    public function getParams();
+    
+    /**
      * Set request parameter
      * 
      * @param string $name
      * @param mixed $value
-     * @return Request
+     * @return RequestInterface
      */
     public function setParam($name, $value);
     
@@ -59,5 +74,12 @@ interface RequestInterface
      * @return mixed
      */
     public function getParam($param, $defaultValue = null);
+    
+    /**
+     * Clear response parameters
+     * 
+     * @return RequestInterface
+     */
+    public function clearParams();
     
 }

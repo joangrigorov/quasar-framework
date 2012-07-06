@@ -76,7 +76,6 @@ abstract class Controller implements ControllerInterface
     public function __construct(Container $injector)
     {
         $this->injector = $injector;
-        $this->params = $this->paramsMap;
     }
     
     /**

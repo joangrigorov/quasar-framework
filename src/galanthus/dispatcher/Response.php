@@ -23,6 +23,8 @@ use galanthus\di\Container,
     galanthus\dispatcher\response\DecoratorInterface;
 
 /**
+ * Metallica - Battery (music)
+ * 
  * @author     Joan-Alexander Grigorov http://bgscripts.com
  * @category   Galanthus
  * @package    Galanthus Dispatcher
@@ -231,6 +233,18 @@ class Response implements ResponseInterface
     }
     
     /**
+     * Get decorator's class short name
+     * 
+     * @param DecoratorInterface $decorator
+     * @return string
+     */
+    protected function getShortName(DecoratorInterface $decorator)
+    {
+        $reflection = new \ReflectionClass($decorator);
+        return $reflection->getShortName();
+    }
+    
+    /**
      * Add decorator with options
      *
      * @param string|DecoratorInterface $decorator Decorator name or decorator object itself
@@ -262,19 +276,19 @@ class Response implements ResponseInterface
             }
             
             $decorator->setResponse($this);
-            
+                        
             if (null !== $options) {
                 $decorator->setOptions($options);
             }
             
-            $this->decorators[strtolower($name)] = $decorator;
+            $this->decorators[strtolower($this->getShortName($decorator))] = $decorator;
         } else if (is_object($decorator)) {
             if ($decorator instanceof DecoratorInterface) {
                 if (null !== $options) {
                     $decorator->setOptions($options);
                 }
                 $decorator->setResponse($this);
-                $this->decorators[get_class($decorator)] = $decorator;
+                $this->decorators[strtolower($this->getShortName($decorator))] = $decorator;
             } else {
                 throw new ResponseException("'$decorator' must implement galanthus\dispatcher\response\DecoratorInterface");
             }

@@ -92,4 +92,14 @@ interface RendererInterface
      */
     public function render($script);
     
+    /**
+     * Escape string content
+     * 
+     * Prevents XSS attacks
+     * 
+     * @param string $string
+     * @return string
+     */
+    public function escape($string);
+    
 }

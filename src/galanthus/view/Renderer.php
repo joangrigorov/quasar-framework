@@ -44,14 +44,24 @@ class Renderer implements RendererInterface
     protected $params = array();
     
     /**
+     * Broker for view helpers
+     * 
+     * @var HelperBrokerInterface
+     */
+    protected $helperBroker;
+    
+    /**
      * Constructor
      * 
-     * Sets view script paths
+     * Sets view helpers broker and view script paths
      * 
+     * @param HelperBroker $helperBroker
      * @param array $paths
      */
-    public function __construct(array $paths = null)
+    public function __construct(HelperBroker $helperBroker, array $paths = null)
     {
+        $this->helperBroker = $helperBroker;
+        
         if (null !== $paths) {
             $this->scriptPaths = $paths;
         }
@@ -168,6 +178,28 @@ class Renderer implements RendererInterface
     }
     
     /**
+     * Set the broker object for view helpers
+     * 
+     * @param HelperBrokerInterface $helperBroker
+     * @return Renderer
+     */
+    public function setHelperBroker(HelperBrokerInterface $helperBroker)
+    {
+        $this->helperBroker = $helperBroker;
+        return $this;
+    }
+    
+    /**
+     * Get the broker object for view helpers
+     * 
+     * @return HelperBrokerInterface
+     */
+    public function getHelperBroker()
+    {
+        return $this->helperBroker;
+    }
+    
+    /**
      * Overriding: allowing property access
      * 
      * Accessing renderer parameters
@@ -198,6 +230,23 @@ class Renderer implements RendererInterface
     }
     
     /**
+     * Overriding: calling helpers using the helper broker
+     * 
+     * @param string $helperName
+     * @param array $params
+     * @return void|mixed
+     */
+    public function __call($helperName, $params)
+    {
+        $helper = $this->helperBroker->getHelper($helperName);
+        if (null == $helper->getRenderer()) {
+            $helper->setRenderer($this);
+        }
+                
+        return call_user_func_array(array($helper, 'direct'), $params);
+    }
+    
+    /**
      * Render a view script
      * 
      * @param string $script
@@ -210,6 +259,19 @@ class Renderer implements RendererInterface
         include $scriptPath;
         $buffer = ob_get_clean();
         return $buffer;
+    }
+
+    /**
+     * Escape string content
+     *
+     * Prevents XSS attacks
+     *
+     * @param string $string
+     * @return string
+     */
+    public function escape($string)
+    {
+        return htmlspecialchars($string);
     }
     
 }

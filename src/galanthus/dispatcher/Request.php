@@ -120,6 +120,53 @@ class Request implements RequestInterface
     }
     
     /**
+     * Set response parameters
+     *
+     * @param array $params
+     * @return Request
+     */
+    public function setParams(array $params)
+    {
+        $this->params = $params;
+        return $this;
+    }
+    
+    /**
+     * Get response parameters
+     *
+     * @return array
+     */
+    public function getParams()
+    {
+        return $this->params;
+    }
+    
+    /**
+     * Clear response parameters
+     *
+     * @return Request
+     */
+    public function clearParams()
+    {
+        $this->params = array();
+        return $this;
+    }
+    
+    /**
+     * Add request parameters
+     * 
+     * @param array $params
+     * @return Request
+     */
+    protected function addParams(array $params)
+    {
+        foreach ($params as $name => $value) {
+            $this->setParam($name, $value);
+        }
+        return $this;
+    }
+    
+    /**
      * Map paramters from the query
      * 
      * @param array $paramsMap Parameters to map
@@ -127,6 +174,8 @@ class Request implements RequestInterface
      */
     public function mapParams(array $paramsMap)
     {
+        $this->addParams($paramsMap);
+        
         $query = $this->getQuery();
         $paramsMapped = false;
         $query->rewind();
