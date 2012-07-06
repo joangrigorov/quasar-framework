@@ -194,6 +194,30 @@ class Context implements ContextInterface
     }
     
     /**
+     * Check context existance
+     * 
+     * @param boolean $type
+     * @return boolean
+     */
+    public function hasContext($type)
+    {
+        return isset($this->contexts[$type]);
+    }
+    
+    public function getContext($type)
+    {
+        if ($this->hasContext($type)) {
+            return $this->contexts[$type];
+        }
+        return $this;    
+    }
+    
+    public function getContexts()
+    {    
+        return $this->contexts;
+    }
+    
+    /**
      * Find the top context in the chain
      * 
      * @param Context $context
@@ -219,6 +243,16 @@ class Context implements ContextInterface
         $to->setVariables(array_merge($from->getVariables(), $to->getVariables()));
     }
     
+    function get_object_id(&$obj) {
+        if(!is_object($obj))
+            return false;
+        ob_start();
+        var_dump($obj);// object(foo)#INSTANCE_ID (0) { }
+        preg_match('~^.+?#(\d+)~s', ob_get_clean(), $oid);
+        return $oid[1];
+    }
+    
+    
     /**
      * Inherit variables from a parent context
      * 
@@ -230,13 +264,15 @@ class Context implements ContextInterface
     {
         $topContext = $this->getTopContext($context);
         
-        if (!isset($topContext->contexts[$type])) {
+        if (!$topContext->hasContext($type)) {
             return;
         }
         
-        $parentContext = $topContext->contexts[$type];
-                
+        
+        $parentContext = $topContext->getContext($type);
+        
         $this->mergeVars($topContext, $parentContext);
+        $this->mergeVars($parentContext, $context);
     }
 
     /**
