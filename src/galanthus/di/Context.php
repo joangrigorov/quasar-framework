@@ -204,6 +204,12 @@ class Context implements ContextInterface
         return isset($this->contexts[$type]);
     }
     
+    /**
+     * Get context by type
+     * 
+     * @param string $type
+     * @return Context
+     */
     public function getContext($type)
     {
         if ($this->hasContext($type)) {
@@ -212,6 +218,11 @@ class Context implements ContextInterface
         return $this;    
     }
     
+    /**
+     * Get all contexts
+     * 
+     * @return multitype:Context
+     */
     public function getContexts()
     {    
         return $this->contexts;
