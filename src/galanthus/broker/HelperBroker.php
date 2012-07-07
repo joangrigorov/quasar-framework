@@ -12,7 +12,7 @@
  * http://www.gnu.org/copyleft/gpl.html
  *
  * @category   Galanthus
- * @package    Galanthus View
+ * @package    Galanthus Broker
  * @copyright  Copyright (c) 2012 Sasquatch, Elegance Team
  */
 
@@ -25,7 +25,7 @@ use galanthus\di\Container;
  *
  * @author     Joan-Alexander Grigorov http://bgscripts.com
  * @category   Galanthus
- * @package    Galanthus View
+ * @package    Galanthus Broker
  * @copyright  Copyright (c) 2012 Sasquatch, Elegance Team
  */
 class HelperBroker implements HelperBrokerInterface

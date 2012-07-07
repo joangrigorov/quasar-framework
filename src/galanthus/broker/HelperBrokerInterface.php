@@ -32,7 +32,7 @@ interface HelperBrokerInterface
 {
     
     /**
-     * Register view helpers namespace
+     * Register helpers namespace
      * 
      * @param string $namespace
      * @return HelperBrokerInterface
@@ -40,7 +40,7 @@ interface HelperBrokerInterface
     public function addNamespace($namespace);
     
     /**
-     * Remove view helpers namespace
+     * Remove helpers namespace
      * 
      * @param string $namespace
      * @return HelperBrokerInterface
@@ -63,7 +63,7 @@ interface HelperBrokerInterface
     public function clearNamespaces();
     
     /**
-     * Get view helper 
+     * Get helper 
      * 
      * If helper is not created - creates it
      * 
