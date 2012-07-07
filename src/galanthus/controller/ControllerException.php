@@ -12,22 +12,20 @@
  * http://www.gnu.org/copyleft/gpl.html
  *
  * @category   Galanthus
- * @package    Galanthus Dispatcher
- * @subpackage Response
+ * @package    Galanthus Controller
  * @copyright  Copyright (c) 2012 Sasquatch, Elegance Team
  */
 
-namespace galanthus\dispatcher\response;
+namespace galanthus\broker;
 
 use galanthus\exception\ErrorException;
 
 /**
  * @author     Joan-Alexander Grigorov http://bgscripts.com
  * @category   Galanthus
- * @package    Galanthus Dispatcher
- * @subpackage Response
+ * @package    Galanthus Controller
  * @copyright  Copyright (c) 2012 Sasquatch, Elegance Team
  */
-class ResponseException extends ErrorException
+class ControllerException extends ErrorException
 {
 }

@@ -18,7 +18,8 @@
 
 namespace galanthus\dispatcher;
 
-use galanthus\di\Container;
+use galanthus\broker\HelperBroker,
+    galanthus\di\Container;
 
 /**
  * The standard dispatcher object
@@ -46,6 +47,13 @@ class Dispatcher implements DispatcherInterface
     protected $response;
     
     /**
+     * Broker for controller helpers
+     * 
+     * @var \galanthus\broker\HelperBrokerInterface
+     */
+    protected $helperBroker;
+    
+    /**
      * The dependency injection container
      * 
      * @var Container
@@ -57,15 +65,20 @@ class Dispatcher implements DispatcherInterface
      * 
      * Sets dependencies
      * 
-     * @param Request $request
-     * @param Response $response
-     * @param Container $injector
+     * @param Request $request The request object
+     * @param Response $response The response object
+     * @param Container $injector Dependency Injection cotainer
+     * @param HelperBroker $helperBroker Controller helper's broker
      */
-    public function __construct(Request $request, Response $response, Container $injector)
+    public function __construct(Request $request, 
+                                Response $response, 
+                                Container $injector,
+                                HelperBroker $helperBroker)
     {
         $this->request = $request;
         $this->response = $response;
         $this->injector = $injector;
+        $this->helperBroker = $helperBroker;
     }
     
     /**
@@ -89,6 +102,16 @@ class Dispatcher implements DispatcherInterface
     }
     
     /**
+     * Get controller helper's broker
+     * 
+     * @return \galanthus\broker\HelperBrokerInterface
+     */
+    public function getHelperBroker()
+    {
+        return $this->helperBroker;
+    }
+    
+    /**
      * Dispatch controllers
      * 
      * @param string $rootController The first controller to dispatch
@@ -104,6 +127,7 @@ class Dispatcher implements DispatcherInterface
         
         $controller->setRequest($this->request)
                    ->setResponse($this->response)
+                   ->setHelperBroker($this->helperBroker)
                    ->forward()
                    ->execute();
         

@@ -57,14 +57,15 @@ interface ResponseInterface
      * @return ResponseInterface
      */
     public function setParam($name, $value);
-    
+
     /**
      * Get response parameter
-     * 
+     *
      * @param string $name
-     * @return mixed
+     * @param mixed $defaultValue
+     * @return mixed|null
      */
-    public function getParam($name);
+    public function getParam($name, $defaultValue = null);
     
     /**
      * Clear response parameters

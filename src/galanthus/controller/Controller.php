@@ -18,7 +18,9 @@
 
 namespace galanthus\controller;
 
-use galanthus\dispatcher\ResponseInterface,
+use galanthus\broker\HelperBrokerInterface,
+    galanthus\broker\ControllerException,
+    galanthus\dispatcher\ResponseInterface,
     galanthus\dispatcher\RequestInterface,
     galanthus\controller\ControllerInterface,
     galanthus\dispatcher\request\Query,
@@ -55,18 +57,25 @@ abstract class Controller implements ControllerInterface
     protected $response;
     
     /**
-     * Dependency Injection container
-     * 
-     * @var Container
-     */
-    protected $injector;
-    
-    /**
      * The previous controller in the chain
      * 
      * @var ControllerInterface
      */
     protected $previous;
+    
+    /**
+     * Broker for helpers
+     * 
+     * @var HelperBrokerInterface
+     */
+    protected $helperBroker;
+    
+    /**
+     * Dependency Injection container
+     * 
+     * @var Container
+     */
+    protected $injector;
     
     /**
      * Sets the dependency injection container instance
@@ -145,6 +154,28 @@ abstract class Controller implements ControllerInterface
     }
     
     /**
+     * Set broker for controller helpers
+     * 
+     * @param HelperBrokerInterface $helperBroker
+     * @return Controller
+     */
+    public function setHelperBroker(HelperBrokerInterface $helperBroker)
+    {
+        $this->helperBroker = $helperBroker;
+        return $this;
+    }
+    
+    /**
+     * Get the broker for controller helpers
+     * 
+     * @return HelperBrokerInterface
+     */
+    public function getHelperBroker()
+    {
+        return $this->helperBroker;
+    }
+    
+    /**
      * Get the request query object
      * 
      * @return Query
@@ -207,6 +238,12 @@ abstract class Controller implements ControllerInterface
         $this->response->_script = $currentScript;
     }
     
+    /**
+     * Forward to the next controller in the query
+     *
+     * @param Query $query
+     * @return ControllerInterface
+     */
     public function forward()
     {
         $query = $this->getQuery();
@@ -232,6 +269,32 @@ abstract class Controller implements ControllerInterface
         
         
         return $controller->forward($query);
+    }
+    
+    /**
+     * Overriding: calling helpers using the helper broker
+     * 
+     * @param string $helperName
+     * @param array $params
+     * @return void|mixed
+     */
+    public function __call($helperName, $params)
+    {
+        $helper = $this->helperBroker->getHelper($helperName);
+        
+        if (!$helper instanceof HelperInterface) {
+            throw new ControllerException("Controller helper '$helperName' doesn't implement galanthus\controller\HelperInterface");
+        }
+        
+        if (null == $helper->getRequest()) {
+            $helper->setRequest($this->request);
+        }
+        
+        if (null == $helper->getResponse()) {
+            $helper->setResponse($this->response);
+        }
+        
+        return call_user_func_array(array($helper, 'direct'), $params);
     }
     
 }

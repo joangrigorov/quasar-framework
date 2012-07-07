@@ -18,75 +18,49 @@
 
 namespace galanthus\controller;
 
-use galanthus\broker\HelperBrokerInterface,
-    galanthus\dispatcher\request\Query,
-    galanthus\dispatcher\ResponseInterface,
-    galanthus\dispatcher\RequestInterface;
+use galanthus\dispatcher\ResponseInterface,
+    galanthus\dispatcher\RequestInterface,
+    galanthus\broker\HelperInterface as GlobalHelperInterface;
 
 /**
+ * Helpers interface
+ *
  * @author     Joan-Alexander Grigorov http://bgscripts.com
  * @category   Galanthus
  * @package    Galanthus Controller
  * @copyright  Copyright (c) 2012 Sasquatch, Elegance Team
  */
-interface ControllerInterface
+interface HelperInterface extends GlobalHelperInterface
 {
     
     /**
-     * Sets the request object
+     * Set the request object
      * 
      * @param RequestInterface $request
-     * @return ControllerInterface
+     * @return HelperInterface
      */
     public function setRequest(RequestInterface $request);
     
     /**
-     * Retrieve the request object
+     * Get the request object
      * 
      * @return RequestInterface
      */
     public function getRequest();
     
     /**
-     * Sets the response object
+     * Set the response object
      * 
      * @param ResponseInterface $response
-     * @return ControllerInterface
+     * @return HelperInterface
      */
     public function setResponse(ResponseInterface $response);
-    
+
     /**
-     * Retrieve the response object
-     * 
+     * Get the response object
+     *
      * @return ResponseInterface
      */
     public function getResponse();
     
-    /**
-     * Set broker for controller helpers
-     * 
-     * @param HelperBrokerInterface $helperBroker
-     * @return ControllerInterface
-     */
-    public function setHelperBroker(HelperBrokerInterface $helperBroker);
-    
-    /**
-     * Get the broker for controller helpers
-     * 
-     * @return HelperBrokerInterface
-     */
-    public function getHelperBroker();
-    
-    /**
-     * Find the next controller
-     * 
-     * @param Query $query
-     * @return ControllerInterface
-     */
-    public function forward();
-    
-    /**
-     * Execute action controller
-     */
-    public function execute();
 }

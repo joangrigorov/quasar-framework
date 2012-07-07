@@ -19,7 +19,7 @@
 namespace galanthus\dispatcher;
 
 use galanthus\di\Container,
-    galanthus\dispatcher\response\ResponseException,
+    galanthus\dispatcher\ResponseException,
     galanthus\dispatcher\response\DecoratorInterface;
 
 /**
@@ -138,14 +138,15 @@ class Response implements ResponseInterface
      * Get response parameter
      *
      * @param string $name
+     * @param mixed $defaultValue
      * @return mixed|null
      */
-    public function getParam($name)
+    public function getParam($name, $defaultValue = null)
     {
         if (array_key_exists($name, $this->params)) {
             return $this->params[$name];
         }
-        return null;
+        return $defaultValue;
     }
     
     /**

@@ -39,12 +39,12 @@ class Layout extends DecoratorAbstract
     
     const DEFAULT_SUFFIX = 'phtml';
     
-    /**
-     * Reserved response param name for the view script name
-     * 
-     * @var string
-     */
+   /**@#+
+    * Reserved response param names
+    */
     const RESERVED_SCRIPT_PARAM_NAME = '_layout';
+    const RESERVED_LAYOUT_STATUS = '_layoutEnabled';
+    /**@#-*/
     
     /**
      * The default renderer object
@@ -154,9 +154,9 @@ class Layout extends DecoratorAbstract
     public function decorate($content)
     {
         $layout = $this->response->getParam(self::RESERVED_SCRIPT_PARAM_NAME);
+        $isEnabled = $this->response->getParam(self::RESERVED_LAYOUT_STATUS, true);
         
-        // if no layout script is set - disable layout
-        if (empty($layout)) {
+        if (!$isEnabled) {
             return $content;
         }
         

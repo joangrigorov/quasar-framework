@@ -39,12 +39,12 @@ class Renderer extends DecoratorAbstract
     
     const DEFAULT_SUFFIX = 'phtml';
     
-    /**
-     * Reserved response param name for the view script name
-     * 
-     * @var string
-     */
+   /**@#+
+    * Reserved response param names
+    */
     const RESERVED_SCRIPT_PARAM_NAME = '_script';
+    const RESERVED_RENDERER_STATUS = '_rendererEnabled';
+    /**@#-*/
     
     /**
      * The default renderer object
@@ -125,8 +125,9 @@ class Renderer extends DecoratorAbstract
     public function decorate($content)
     {
         $script = $this->response->getParam(self::RESERVED_SCRIPT_PARAM_NAME);
+        $isEnabled = $this->response->getParam(self::RESERVED_RENDERER_STATUS, true);
         
-        if (empty($script)) {
+        if (!$isEnabled) {
             return $content;
         }
         

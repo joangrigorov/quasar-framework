@@ -7,7 +7,16 @@ return array(
         
     // dispatcher configuration
     'galanthus\dispatcher\Dispatcher' => array(
-        'alias' => 'dispatcher'
+        'alias' => 'dispatcher',
+        'instances' => array(
+            'galanthus\broker\HelperBroker' => array(
+                'params' => array(
+                    'namespaces' => array(
+                        'galanthus\controller\helpers'
+                    )
+                )
+            )
+        )
     ),
     
     // response object configuration

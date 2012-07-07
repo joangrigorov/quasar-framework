@@ -19,7 +19,7 @@
 namespace galanthus\view;
 
 /**
- * View helpers interface
+ * View helpers abstract class
  *
  * @author     Joan-Alexander Grigorov http://bgscripts.com
  * @category   Galanthus
