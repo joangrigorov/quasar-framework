@@ -272,7 +272,7 @@ class Context implements ContextInterface
         
         $parentContext = $topContext->getContext($type);
         
-        $this->mergeVars($topContext, $parentContext);
+        //$this->mergeVars($topContext, $parentContext);
         $this->mergeVars($parentContext, $context);
     }
 
@@ -298,7 +298,7 @@ class Context implements ContextInterface
             return $this->create($wrapper, $this->cons($wrapper, $nesting));
         }
         
-        $this->inheritVars($type, $context);
+        //$this->inheritVars($type, $context);
         
         $instance = $lifecycle->instantiate(
             $context->createDependencies(
@@ -486,6 +486,8 @@ class Context implements ContextInterface
                         $this->variables[$parameter->getName()]->getPreference())) {
                     return $this->variables[$parameter->getName()]->getPreference();
                 }
+            } else if (!$this->getParent() instanceof Container) {
+                return $this->getParent()->instantiateParameter($parameter, $nesting);
             }
             
             return $this->create($hint->getName(), $nesting);
