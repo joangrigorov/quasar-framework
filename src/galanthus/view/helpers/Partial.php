@@ -35,7 +35,7 @@ class Partial extends HelperAbstract
             $renderer->setParams($arguments[1]);
         }
         
-        return $renderer->render('test-partial.phtml');
+        return $renderer->render($arguments[0]);
     }
     
 }

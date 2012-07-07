@@ -12,20 +12,28 @@
  * http://www.gnu.org/copyleft/gpl.html
  *
  * @category   Galanthus
- * @package    Galanthus Dispatcher
+ * @package    Galanthus Broker
  * @copyright  Copyright (c) 2012 Sasquatch, Elegance Team
  */
 
-namespace galanthus\view;
-
-use galanthus\exception\ErrorException;
+namespace galanthus\broker;
 
 /**
+ * Helpers interface
+ *
  * @author     Joan-Alexander Grigorov http://bgscripts.com
  * @category   Galanthus
- * @package    Galanthus Dispatcher
+ * @package    Galanthus Broker
  * @copyright  Copyright (c) 2012 Sasquatch, Elegance Team
  */
-class HelperBrokerException extends ErrorException
+interface HelperInterface
 {
+    
+    /**
+     * Implementing the strategy pattern
+     * 
+     * @return mixed|void
+     */
+    public function direct();
+    
 }

@@ -29,23 +29,23 @@ return array(
             'params' => array('_layout' => 'layout')
         )
     ),
-    
+        
     // standart view renderer configuration
     'galanthus\view\Renderer' => array(
         'params' => array(
             'paths' => array(
                 ROOT_PATH . '/src/app/views/templates/'
             )
-        )
-    ),
-        
-    // view helpers broker configuration
-    'galanthus\view\HelperBroker' => array(
-        'params' => array(
-            'namespaces' => array(
-                'app\helpers\view'
+        ),
+        'instances' => array(
+            'galanthus\broker\HelperBroker' => array(
+                'params' => array(
+                    'namespaces' => array(
+                        'galanthus\view\helpers'
+                    )
+                )
             )
         )
-    )
+    ),
         
 );

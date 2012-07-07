@@ -12,7 +12,7 @@
  * http://www.gnu.org/copyleft/gpl.html
  *
  * @category   Galanthus
- * @package    Galanthus Dispatcher
+ * @package    Galanthus View
  * @copyright  Copyright (c) 2012 Sasquatch, Elegance Team
  */
 
@@ -23,7 +23,7 @@ use galanthus\exception\ErrorException;
 /**
  * @author     Joan-Alexander Grigorov http://bgscripts.com
  * @category   Galanthus
- * @package    Galanthus Dispatcher
+ * @package    Galanthus View
  * @copyright  Copyright (c) 2012 Sasquatch, Elegance Team
  */
 class RendererException extends ErrorException

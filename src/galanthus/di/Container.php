@@ -134,7 +134,7 @@ class Container implements ContextInterface
             }
     
             if (isset($settings['instances'])) {
-                $this->setConfig($settings['instances'], $context->whenCreating($class));
+                $this->addConfig($settings['instances'], $context->whenCreating($class));
             }
     
         }

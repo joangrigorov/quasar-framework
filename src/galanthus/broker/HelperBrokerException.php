@@ -12,20 +12,20 @@
  * http://www.gnu.org/copyleft/gpl.html
  *
  * @category   Galanthus
- * @package    Galanthus View
+ * @package    Galanthus Broker
  * @copyright  Copyright (c) 2012 Sasquatch, Elegance Team
  */
 
-namespace galanthus\view;
+namespace galanthus\broker;
 
 use galanthus\exception\ErrorException;
 
 /**
  * @author     Joan-Alexander Grigorov http://bgscripts.com
  * @category   Galanthus
- * @package    Galanthus View
+ * @package    Galanthus Broker
  * @copyright  Copyright (c) 2012 Sasquatch, Elegance Team
  */
-class HelperException extends ErrorException
+class HelperBrokerException extends ErrorException
 {
 }

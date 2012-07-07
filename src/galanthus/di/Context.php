@@ -269,10 +269,8 @@ class Context implements ContextInterface
             return;
         }
         
-        
         $parentContext = $topContext->getContext($type);
         
-        //$this->mergeVars($topContext, $parentContext);
         $this->mergeVars($parentContext, $context);
     }
 
@@ -298,7 +296,7 @@ class Context implements ContextInterface
             return $this->create($wrapper, $this->cons($wrapper, $nesting));
         }
         
-        //$this->inheritVars($type, $context);
+        $this->inheritVars($type, $context);
         
         $instance = $lifecycle->instantiate(
             $context->createDependencies(
@@ -466,6 +464,25 @@ class Context implements ContextInterface
         
         return $values;
     }
+    
+    /**
+     * Search for parameter occurance up in the context tree
+     * 
+     * @param \ReflectionParameter $parameter
+     * @return boolean
+     */
+    protected function checkParameterInTree(\ReflectionParameter $parameter)
+    {
+        if (array_key_exists($parameter->getName(), $this->variables)) {
+            return true;
+        } else {
+            if (!$this->getParent() instanceof Container) {
+                return $this->getParent()->checkParameterInTree($parameter);
+            } else {
+                return false;
+            }
+        }
+    }
 
     /**
      * Instantiate parameter
@@ -486,7 +503,7 @@ class Context implements ContextInterface
                         $this->variables[$parameter->getName()]->getPreference())) {
                     return $this->variables[$parameter->getName()]->getPreference();
                 }
-            } else if (!$this->getParent() instanceof Container) {
+            } else if ($this->checkParameterInTree($parameter)) {
                 return $this->getParent()->instantiateParameter($parameter, $nesting);
             }
             
@@ -517,7 +534,7 @@ class Context implements ContextInterface
     protected function determineContext($class)
     {
         foreach ($this->contexts as $type => $context) {
-            /* @var $context ContextInterface */
+            /* @var $context Context */
             if ($this->getRepository()->isSupertype($class, $type)) {
                 return $context;
             }

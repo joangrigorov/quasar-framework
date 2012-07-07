@@ -18,6 +18,8 @@
 
 namespace galanthus\view;
 
+use galanthus\broker\HelperBroker;
+
 /**
  * Standard view renderer
  *
@@ -46,7 +48,7 @@ class Renderer implements RendererInterface
     /**
      * Broker for view helpers
      * 
-     * @var HelperBrokerInterface
+     * @var galanthus\broker\HelperBrokerInterface
      */
     protected $helperBroker;
     
@@ -239,6 +241,11 @@ class Renderer implements RendererInterface
     public function __call($helperName, $params)
     {
         $helper = $this->helperBroker->getHelper($helperName);
+        
+        if (!$helper instanceof HelperInterface) {
+            throw new RendererException("View helper '$helperName' doesn't implement galanthus\view\HelperInterface");
+        }
+        
         if (null == $helper->getRenderer()) {
             $helper->setRenderer($this);
         }

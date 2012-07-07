@@ -16,12 +16,12 @@
  * @copyright  Copyright (c) 2012 Sasquatch, Elegance Team
  */
 
-namespace galanthus\view;
+namespace galanthus\broker;
 
 use galanthus\di\Container;
 
 /**
- * Standard broker for view helpers
+ * Standard broker for helpers
  *
  * @author     Joan-Alexander Grigorov http://bgscripts.com
  * @category   Galanthus
@@ -32,14 +32,14 @@ class HelperBroker implements HelperBrokerInterface
 {
     
     /**
-     * Namespaces to use when calling view helpers
+     * Namespaces to use when calling helpers
      * 
      * @var array
      */
     protected $namespaces = array();
     
     /**
-     * View helper instances
+     * Helper instances
      * 
      * @var array
      */
@@ -70,7 +70,7 @@ class HelperBroker implements HelperBrokerInterface
     }
     
     /**
-     * Register view helpers namespace
+     * Register helpers namespace
      * 
      * @param string $namespace
      * @return HelperBroker
@@ -84,7 +84,7 @@ class HelperBroker implements HelperBrokerInterface
     }
     
     /**
-     * Remove view helpers namespace
+     * Remove helpers namespace
      * 
      * @param string $namespace
      * @return HelperBroker
@@ -135,7 +135,6 @@ class HelperBroker implements HelperBrokerInterface
     protected function locateHelper($helperName)
     {
         $namespaces = array_reverse($this->namespaces);
-        $namespaces[] = self::DEFAULT_NAMESPACE;
         
         foreach ($namespaces as $namespace) {
             $class = $namespace . '\\' . ucfirst($helperName);
@@ -144,7 +143,7 @@ class HelperBroker implements HelperBrokerInterface
             }
         }
         
-        throw new HelperBrokerException("View helper by the name of '$helperName' not found");
+        throw new HelperBrokerException("Helper by the name of '$helperName' not found");
     }
     
     /**
@@ -159,7 +158,7 @@ class HelperBroker implements HelperBrokerInterface
         $instance = $this->getInjector()->get($helperClass);
         
         if (!$instance instanceof HelperInterface) {
-            throw new HelperBrokerException("'$helperClass' doesn't implement galanthus\view\HelperInterface");
+            throw new HelperBrokerException("'$helperClass' doesn't implement galanthus\broker\HelperInterface");
         }
         
         return $instance;
@@ -178,7 +177,7 @@ class HelperBroker implements HelperBrokerInterface
     }
     
     /**
-     * Get view helper 
+     * Get helper 
      * 
      * If helper is not created - creates it
      * 

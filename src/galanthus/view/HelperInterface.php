@@ -18,15 +18,17 @@
 
 namespace galanthus\view;
 
+use galanthus\broker\HelperInterface as GlobalHelperInterface;
+
 /**
- * View helpers interface
+ * Helpers interface
  *
  * @author     Joan-Alexander Grigorov http://bgscripts.com
  * @category   Galanthus
  * @package    Galanthus View
  * @copyright  Copyright (c) 2012 Sasquatch, Elegance Team
  */
-interface HelperInterface
+interface HelperInterface extends GlobalHelperInterface
 {
     
     /**
@@ -43,12 +45,5 @@ interface HelperInterface
      * @return RendererInterface
      */
     public function getRenderer();
-    
-    /**
-     * Implementing the strategy pattern
-     * 
-     * @return mixed|void
-     */
-    public function direct();
     
 }
