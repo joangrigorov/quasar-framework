@@ -35,7 +35,7 @@ class Renderer extends HelperAbstract
 {
     
     /**
-     * Disable view renderer
+     * Set view renderer script
      * 
      * @param string $script View script name to set
      * @return Renderer

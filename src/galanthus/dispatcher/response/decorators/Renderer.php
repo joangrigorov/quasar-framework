@@ -104,9 +104,9 @@ class Renderer extends DecoratorAbstract
         return $this->suffix;
     }
 
-	/**
-	 * Set view scripts suffix
-	 * 
+    /**
+     * Set view scripts suffix
+     * 
      * @param string $suffix
      * @return Renderer
      */
@@ -116,7 +116,7 @@ class Renderer extends DecoratorAbstract
         return $this;
     }
 
-	/**
+    /**
      * Decorate response
      *
      * @param $content string

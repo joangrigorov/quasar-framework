@@ -101,9 +101,9 @@ class Layout extends DecoratorAbstract
         return $this->renderer;
     }
 
-	/**
-	 * Set view scripts suffix
-	 * 
+    /**
+     * Set view scripts suffix
+     * 
      * @param string $suffix
      * @return Renderer
      */
@@ -145,7 +145,7 @@ class Layout extends DecoratorAbstract
         return $this->params;
     }
     
-	/**
+    /**
      * Decorate response
      *
      * @param $content string

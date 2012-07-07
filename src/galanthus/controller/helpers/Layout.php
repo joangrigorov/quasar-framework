@@ -35,7 +35,7 @@ class Layout extends HelperAbstract
 {
     
     /**
-     * Disable layout
+     * Set layout script
      * 
      * @param string $script Layout script name to set
      * @return Layout
