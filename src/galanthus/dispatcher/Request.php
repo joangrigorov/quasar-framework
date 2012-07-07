@@ -115,7 +115,7 @@ class Request implements RequestInterface
         if (array_key_exists($param, $this->params)) {
             return $this->params[$param];
         } else {
-            return $defaultValue;
+            return isset($_GET[(string) $param]) ? $_GET[(string) $param] : $defaultValue;
         }
     }
     
@@ -193,6 +193,48 @@ class Request implements RequestInterface
         }
         
         return $paramsMapped;
+    }
+
+    /**
+     * Set POST values
+     *
+     * @param  string|array $spec
+     * @param  null|mixed $value
+     * @throws RequestException When invalid value is passed
+     * @return Request
+     */
+    public function setPost($spec, $value = null)
+    {
+        if ((null === $value) && !is_array($spec)) {
+            require_once 'Zend/Controller/Exception.php';
+            throw new RequestException('Invalid value passed to setPost(); must be either array of values or key/value pair');
+        }
+        if ((null === $value) && is_array($spec)) {
+            foreach ($spec as $key => $value) {
+                $this->setPost($key, $value);
+            }
+            return $this;
+        }
+        $_POST[(string) $spec] = $value;
+        return $this;
+    }
+
+    /**
+     * Retrieve a member of the $_POST superglobal
+     *
+     * If no $key is passed, returns the entire $_POST array.
+     *
+     * @param string $key
+     * @param mixed $default Default value to use if key not found
+     * @return mixed Returns null if key does not exist
+     */
+    public function getPost($key = null, $default = null)
+    {
+        if (null === $key) {
+            return $_POST;
+        }
+
+        return (isset($_POST[(string) $key])) ? $_POST[(string) $key] : $default;
     }
     
     /**
