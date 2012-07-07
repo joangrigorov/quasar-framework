@@ -252,17 +252,7 @@ class Context implements ContextInterface
     protected function mergeVars(Context $from, Context $to)
     {
         $to->setVariables(array_merge($from->getVariables(), $to->getVariables()));
-    }
-    
-    function get_object_id(&$obj) {
-        if(!is_object($obj))
-            return false;
-        ob_start();
-        var_dump($obj);// object(foo)#INSTANCE_ID (0) { }
-        preg_match('~^.+?#(\d+)~s', ob_get_clean(), $oid);
-        return $oid[1];
-    }
-    
+    }    
     
     /**
      * Inherit variables from a parent context
