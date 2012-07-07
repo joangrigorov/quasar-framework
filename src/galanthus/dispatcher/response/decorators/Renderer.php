@@ -124,8 +124,13 @@ class Renderer extends DecoratorAbstract
      */
     public function decorate($content)
     {
-        $viewScript = $this->response->getParam(self::RESERVED_SCRIPT_PARAM_NAME) 
-                        . '.' . $this->suffix;
+        $script = $this->response->getParam(self::RESERVED_SCRIPT_PARAM_NAME);
+        
+        if (empty($script)) {
+            return $content;
+        }
+        
+        $viewScript = $script . '.' . $this->suffix;
 
         $this->renderer->setParams($this->response->getParams());
         
