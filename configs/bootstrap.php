@@ -30,6 +30,9 @@ $injector->addConfig(include ROOT_PATH . '/configs/di/env.' . APPLICATION_ENV . 
 // set the container to inject itself and use single instance
 $injector->forVariable('injector')->willUse($injector);
 
+// first we create the environment configuration
+$injector->get('galanthus\env\Config');
+
 // create the dispatcher object
 /* @var $dispatcher galanthus\dispatcher\Dispatcher */
 $dispatcher = $injector->create('dispatcher');
