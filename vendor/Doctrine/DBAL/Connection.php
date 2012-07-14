@@ -1165,4 +1165,9 @@ class Connection implements DriverConnection
     {
         return new Query\QueryBuilder($this);
     }
+
+    public function rollBack()
+    {
+        
+    }
 }
