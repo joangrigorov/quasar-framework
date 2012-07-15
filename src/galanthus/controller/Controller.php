@@ -265,6 +265,7 @@ abstract class Controller implements ControllerInterface
         $controller = $this->injector->create($this->getNamespace() . '\\' . ucfirst($next));
         $controller->setRequest($this->getRequest())
                    ->setResponse($this->getResponse())
+                   ->setHelperBroker($this->helperBroker)
                    ->setPrevious($this);
         
         

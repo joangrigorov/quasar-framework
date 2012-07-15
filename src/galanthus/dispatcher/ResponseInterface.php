@@ -117,11 +117,30 @@ interface ResponseInterface
     public function removeDecorator($decorator);
     
     /**
+     * Check if a decorator is set
+     * 
+     * @param string $decorator
+     * @return boolean
+     */
+    public function hasDecorator($decorator);
+    
+    /**
+     * Get decorator
+     * 
+     * @param string $decorator
+     * @throws ResponseException When decorator is not found
+     * @return DecoratorInterface
+     */
+    public function getDecorator($decorator);
+    
+    /**
      * Remove all registered decorators
      *
+     * @param array $exceptions If set, it will clear all the decorators 
+     *                          except the specified in this array
      * @return ResponseInterface
      */
-    public function clearDecorators();
+    public function clearDecorators(array $exceptions = null);
     
     /**
      * Get decorated output

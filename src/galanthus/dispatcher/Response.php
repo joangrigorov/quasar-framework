@@ -350,13 +350,54 @@ class Response implements ResponseInterface
     }
     
     /**
+     * Check if a decorator is set
+     * 
+     * @param string $decorator
+     * @return boolean
+     */
+    public function hasDecorator($decorator)
+    {
+        if (array_key_exists(strtolower($decorator), $this->decorators)) {
+            return true;
+        }
+        return false;
+    }
+    
+    /**
+     * Get decorator
+     * 
+     * @param string $decorator
+     * @throws ResponseException When decorator is not found
+     * @return DecoratorInterface
+     */
+    public function getDecorator($decorator)
+    {
+        if (array_key_exists(strtolower($decorator), $this->decorators)) {
+            return $this->decorators[strtolower($decorator)];
+        }
+        throw new ResponseException("Decorator '$decorator' clould not be found (maybe it's not added)");
+    }
+    
+    /**
      * Remove all registered decorators
      *
+     * @param array $exceptions If set, it will clear all the decorators 
+     *                          except the specified in this array
      * @return Response
      */
-    public function clearDecorators()
+    public function clearDecorators(array $exceptions = null)
     {
-        $this->decorators = array();
+        if (null == $exceptions) {
+            $this->decorators = array();
+        } else {
+            foreach ($exceptions as $exception) {
+                $exception = strtolower($exception);
+                if (!array_key_exists($exception, $this->decorators)) {
+                    unset($this->decorators[$exception]);
+                }
+            }
+        }
+        
         return $this;
     }
     

@@ -115,6 +115,17 @@ class HttpHeaders extends DecoratorAbstract
         return $this->headers;
     }
     
+    /**
+     * Remove all headers
+     * 
+     * @return HttpHeaders
+     */
+    public function clearHeaders()
+    {
+        $this->headers = array();
+        return $this;
+    }
+    
 	/**
      * Decorate response
      *
