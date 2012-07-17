@@ -271,7 +271,9 @@ class Context implements ContextInterface
         
         $parentContext = $topContext->getContext($type);
         
-        $this->mergeVars($parentContext, $context);
+        if ($parentContext != $context) {
+            $this->mergeVars($parentContext, $context);
+        }
     }
 
     /**
