@@ -124,8 +124,9 @@ class Container implements ContextInterface
                     if (is_string($value)) {
                         $whenCreating->forVariable($param)
                                      ->useString($value);
-                    } elseif($value instanceof \galanthus\di\lifecycle\LifecycleInterface) {
-                        $whenCreating->willUse($value);
+                    } elseif ($value instanceof \galanthus\di\lifecycle\LifecycleInterface) {
+                        $whenCreating->forVariable($param)
+                                     ->willUse($value);
                     } else {
                         $whenCreating->forVariable($param)
                                      ->willUse($value);

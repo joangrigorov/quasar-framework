@@ -18,6 +18,8 @@
 
 namespace galanthus\di;
 
+use galanthus\di\lifecycle\WillUse;
+
 use galanthus\di\lifecycle\LifecycleInterface,
     galanthus\di\lifecycle\Shared,
     galanthus\di\lifecycle\Factory,
@@ -271,9 +273,7 @@ class Context implements ContextInterface
         
         $parentContext = $topContext->getContext($type);
         
-        if ($parentContext != $context) {
-            $this->mergeVars($parentContext, $context);
-        }
+        $this->mergeVars($parentContext, $context);
     }
 
     /**
@@ -287,10 +287,8 @@ class Context implements ContextInterface
     {
         class_exists($type, true);
         
-        $lifecycle = $this->pickFactory($type, 
-                $this->getRepository()
-                    ->candidatesFor($type));
-        
+        $lifecycle = $this->pickFactory($type, $this->getRepository()->candidatesFor($type));
+                
         $context = $this->determineContext($lifecycle->getClass());
         
         if ($context->hasWrapper($type, $nesting)) {
@@ -329,7 +327,11 @@ class Context implements ContextInterface
         } elseif ($this->hasPreference($candidates)) {
             return $this->preferFrom($candidates);
         } elseif (count($candidates) == 1) {
-            return new Factory($candidates[0]);
+            if ($this->getParent() instanceof Container) {
+                return new Factory($candidates[0]);
+            } else {
+                return $this->getParent()->pickFactory($type, $candidates);
+            }
         } else {
             return $this->getParent()
                         ->pickFactory($type, $candidates);
@@ -498,12 +500,13 @@ class Context implements ContextInterface
         $hint = $parameter->getClass();
         if (!empty($hint)) {
             if (array_key_exists($parameter->getName(), $this->variables)) {
-                if ($this->variables[$parameter->getName()]->getPreference() instanceof LifecycleInterface) {
-                    return $this->variables[$parameter->getName()]->getPreference()->instantiate(
-                            array());
-                } elseif (!is_string(
-                        $this->variables[$parameter->getName()]->getPreference())) {
-                    return $this->variables[$parameter->getName()]->getPreference();
+                $preference = $this->variables[$parameter->getName()]->getPreference();
+                if ($preference instanceof WillUse) {
+                    return $this->create($preference->getClass(), $nesting);
+                } elseif ($preference instanceof LifecycleInterface) {
+                    return $preference->instantiate(array());
+                } elseif (!is_string($preference)) {
+                    return $preference;
                 }
             } else if ($this->checkParameterInTree($parameter)) {
                 return $this->getParent()->instantiateParameter($parameter, $nesting);
@@ -511,17 +514,13 @@ class Context implements ContextInterface
             
             return $this->create($hint->getName(), $nesting);
         } elseif (isset($this->variables[$parameter->getName()])) {
-            
-            if ($this->variables[$parameter->getName()]->getPreference() instanceof LifecycleInterface) {
-                return $this->variables[$parameter->getName()]->getPreference()->instantiate(
-                        array());
-            } elseif (!is_string(
-                    $this->variables[$parameter->getName()]->getPreference())) {
-                return $this->variables[$parameter->getName()]->getPreference();
+            $preference = $this->variables[$parameter->getName()]->getPreference();
+            if ($preference instanceof LifecycleInterface) {
+                return $preference->instantiate(array());
+            } elseif (!is_string($preference)) {
+                return $preference;
             }
-            return $this->create(
-                    $this->variables[$parameter->getName()]->getPreference(),
-                    $nesting);
+            return $this->create($preference, $nesting);
         }
         return $this->getParent()->instantiateParameter($parameter, $nesting);
     }
