@@ -34,6 +34,13 @@ use galanthus\broker\HelperBrokerInterface,
  */
 abstract class Controller implements ControllerInterface
 {
+
+    /**
+     * Dependency Injection container
+     *
+     * @var Container
+     */
+    protected $injector;
     
     /**
      * GET parameters map
@@ -71,20 +78,25 @@ abstract class Controller implements ControllerInterface
     protected $helperBroker;
     
     /**
-     * Dependency Injection container
-     * 
-     * @var Container
-     */
-    protected $injector;
-    
-    /**
-     * Sets the dependency injection container instance
+     * Set the dependency injection container instance
      * 
      * @param Container $injector
+     * @return Controller
      */
-    public function __construct(Container $injector)
+    public function setInjector(Container $injector)
     {
         $this->injector = $injector;
+        return $this;
+    }
+    
+    /**
+     * Get the dependency injection container instance
+     * 
+     * @return Container
+     */
+    public function getInjector()
+    {
+        return $this->injector;
     }
     
     /**
@@ -266,7 +278,8 @@ abstract class Controller implements ControllerInterface
         $controller->setRequest($this->getRequest())
                    ->setResponse($this->getResponse())
                    ->setHelperBroker($this->helperBroker)
-                   ->setPrevious($this);
+                   ->setPrevious($this)
+                   ->setInjector($this->injector);
         
         
         return $controller->forward($query);

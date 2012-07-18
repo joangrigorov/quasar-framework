@@ -101,6 +101,11 @@ class Container implements ContextInterface
         }
         
         foreach ($config as $class => $settings) {
+            
+            if (array_key_exists($class, $this->aliases)) {
+                $class = $this->aliases[$class];
+            }
+        
             // Get configuration for injection methods
             if (!empty($settings['call'])) {
                 $type = $context->forType($class);

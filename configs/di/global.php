@@ -1,4 +1,7 @@
 <?php
+
+use galanthus\di\lifecycle\WillUse;
+
 /*
  * This is not supposed to be edited. Use common.php 
  * or enviornment specific configuration files.
@@ -56,5 +59,14 @@ return array(
             )
         )
     ),
-        
+
+    // DBAL configuration
+    'Doctrine\DBAL\Connection' => array(
+        'alias' => 'db-driver',
+        'params' => array(
+            'params' => array(),
+            'driver' => new WillUse('Doctrine\DBAL\Driver\PDOMySql\Driver'),
+        ),
+        'shared' => true
+    )
 );

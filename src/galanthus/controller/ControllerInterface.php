@@ -21,7 +21,8 @@ namespace galanthus\controller;
 use galanthus\broker\HelperBrokerInterface,
     galanthus\dispatcher\request\Query,
     galanthus\dispatcher\ResponseInterface,
-    galanthus\dispatcher\RequestInterface;
+    galanthus\dispatcher\RequestInterface,
+    galanthus\di\Container;
 
 /**
  * @author     Joan-Alexander Grigorov http://bgscripts.com
@@ -31,6 +32,21 @@ use galanthus\broker\HelperBrokerInterface,
  */
 interface ControllerInterface
 {
+    
+    /**
+     * Set the dependency injection container instance
+     * 
+     * @param Container $injector
+     * @return ControllerInterface
+     */
+    public function setInjector(Container $injector);
+    
+    /**
+     * Get the dependency injection container instance
+     * 
+     * @return Container
+     */
+    public function getInjector();
     
     /**
      * Sets the request object

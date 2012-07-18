@@ -36,7 +36,7 @@ interface Connection
     function lastInsertId($name = null);
     function beginTransaction();
     function commit();
-    function rollBack();
+    function rollback();
     function errorCode();
     function errorInfo();
 }

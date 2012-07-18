@@ -128,6 +128,7 @@ class Dispatcher implements DispatcherInterface
         $controller->setRequest($this->request)
                    ->setResponse($this->response)
                    ->setHelperBroker($this->helperBroker)
+                   ->setInjector($this->injector)
                    ->forward()
                    ->execute();
         
