@@ -843,7 +843,7 @@ class Connection implements DriverConnection
             $func($this);
             $this->commit();
         } catch (Exception $e) {
-            $this->rollback();
+            $this->rollBack();
             throw $e;
         }
     }
@@ -941,7 +941,7 @@ class Connection implements DriverConnection
      *
      * @throws ConnectionException If the rollback operation failed.
      */
-    public function rollback()
+    public function rollBack()
     {
         if ($this->_transactionNestingLevel == 0) {
             throw ConnectionException::noActiveTransaction();
@@ -951,7 +951,7 @@ class Connection implements DriverConnection
 
         if ($this->_transactionNestingLevel == 1) {
             $this->_transactionNestingLevel = 0;
-            $this->_conn->rollback();
+            $this->_conn->rollBack();
             $this->_isRollbackOnly = false;
         } else if ($this->_nestTransactionsWithSavepoints) {
             $this->rollbackSavepoint($this->_getNestedTransactionSavePointName());

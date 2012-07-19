@@ -125,7 +125,7 @@ class MysqliConnection implements Connection
      */
     public function rollBack()
     {
-        return $this->_conn->rollback();
+        return $this->_conn->rollBack();
     }
 
     /**
