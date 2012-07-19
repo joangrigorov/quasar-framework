@@ -32,11 +32,18 @@ class TableGateway implements TableGatewayInterface
 {
     
     /**
-     * Database connection driver
+     * Database connection
      * 
      * @var Connection
      */
-    protected $driver;
+    protected $connection;
+    
+    /**
+     * Default fetch style
+     * 
+     * @var string
+     */
+    protected $defaultFetchStyle = self::FETCH_ROW_OBJ;
     
     /**
      * Table name
@@ -48,14 +55,14 @@ class TableGateway implements TableGatewayInterface
     /**
      * Constructor. Sets dependencies.
      * 
-     * Sets database connection driver
+     * Sets database connection
      * 
-     * @param Connection $driver Doctrine DBAL connection driver
+     * @param Connection $connection Doctrine DBAL connection driver
      * @param string $table DB Table name
      */
-    public function __construct(Connection $driver, $table = null)
+    public function __construct(Connection $connection, $table = null)
     {
-        $this->driver = $driver;
+        $this->connection = $connection;
         
         if (null !== $table) {
             $this->table = $table;
@@ -63,25 +70,47 @@ class TableGateway implements TableGatewayInterface
     }
     
     /**
-     * Set the database connection driver
+     * Set the database connection
      * 
-     * @param DriverConnection $driver
+     * @param DriverConnection $connection
      * @return TableGateway
      */
-    public function setDriver(DriverConnection $driver)
+    public function setConnection(DriverConnection $connection)
     {
-        $this->driver = $driver;
+        $this->connection = $connection;
         return $this;
     }
     
     /**
-     * Get the database connection driver
+     * Get the database connection
      * 
      * @return DriverConnection
      */
-    public function getDriver()
+    public function getConnection()
     {
-        return $this->driver;
+        return $this->connection;
+    }
+    
+    /**
+     * Set default fetch style
+     * 
+     * @param string $fetchStyle
+     * @return TableGateway
+     */
+    public function setFetchStyle($fetchStyle)
+    {
+        $this->defaultFetchStyle = $fetchStyle;
+        return $this;
+    }
+    
+    /**
+     * Get default fetch style
+     * 
+     * @return string
+     */
+    public function getFetchStyle()
+    {
+        return $this->defaultFetchStyle;
     }
     
     /**
@@ -92,7 +121,7 @@ class TableGateway implements TableGatewayInterface
      */
     public function delete(array $identifier)
     {
-        return $this->driver->delete($this->table, $identifier);
+        return $this->connection->delete($this->table, $identifier);
     }
     
     /**
@@ -105,7 +134,7 @@ class TableGateway implements TableGatewayInterface
      */
     public function update(array $data, array $identifier, array $types = array())
     {
-        return $this->driver->update($this->table, $data, $identifier, $types);
+        return $this->connection->update($this->table, $data, $identifier, $types);
     }
 
     /**
@@ -117,8 +146,24 @@ class TableGateway implements TableGatewayInterface
      */
     public function insert(array $data, array $types = array())
     {
-        return $this->driver->insert($this->table, $data, $types);
+        return $this->connection->insert($this->table, $data, $types);
     }
+    
+    /**
+     * Convert array to stdClass object
+     * 
+     * @param array $array
+     * @return StdClass
+     */
+    protected function arrayToStdClassObject(array $array) 
+    {
+		if (is_array($array)) {
+			return (object) array_map(array($this, __METHOD__), $$array);
+		}
+		else {
+			return (object) $array;
+		}
+	}
     
     /**
      * Prepares and executes an SQL query and returns the result as rowset of row data gateways.
@@ -127,13 +172,29 @@ class TableGateway implements TableGatewayInterface
      * @return array
      * @todo Return rowset of row data gateways
      */
-    public function fetchAll(QueryBuilder $query = null)
+    public function fetchAll(QueryBuilder $query = null, $fetchStyle = null)
     {
         if (null === $query) {
             $query = $this->select();
         }
         
-        return $this->driver->fetchAll($query->getSQL());
+        $fetchStyle = (null === $fetchStyle) ? $this->defaultFetchStyle : $fetchStyle;
+        
+        $resultRows = $this->connection->fetchAll($query->getSQL());
+        
+        switch ($fetchStyle) {
+            case self::FETCH_ASSOC:
+                return $resultRows;
+            break;
+            case self::FETCH_STD_OBJECT:
+                return $this->arrayToStdClassObject($resultRows);
+            break;
+            default:
+                
+            break;
+        }
+        
+        return $this->connection->fetchAll($query->getSQL());
     }
     
     /**
@@ -149,18 +210,18 @@ class TableGateway implements TableGatewayInterface
             $query = $this->select();
         }
         
-        return $this->driver->fetchArray($query->getSQL());
+        return $this->connection->fetchArray($query->getSQL());
     }
     
     /**
      * Construct select query
      * 
      * @param mixed $select The selection expressions.
-     * @return \Doctrine\DBAL\Query\QueryBuilder
+     * @return QueryBuilder
      */
     public function select($select = '*')
     {
-        return $this->driver
+        return $this->connection
                     ->createQueryBuilder()
                     ->select('*')
                     ->from($this->table, null);

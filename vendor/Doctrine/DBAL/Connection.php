@@ -843,7 +843,7 @@ class Connection implements DriverConnection
             $func($this);
             $this->commit();
         } catch (Exception $e) {
-            $this->rollback();
+            $this->rollBack();
             throw $e;
         }
     }
@@ -951,7 +951,7 @@ class Connection implements DriverConnection
 
         if ($this->_transactionNestingLevel == 1) {
             $this->_transactionNestingLevel = 0;
-            $this->_conn->rollback();
+            $this->_conn->rollBack();
             $this->_isRollbackOnly = false;
         } else if ($this->_nestTransactionsWithSavepoints) {
             $this->rollbackSavepoint($this->_getNestedTransactionSavePointName());

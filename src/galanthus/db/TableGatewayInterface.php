@@ -31,21 +31,44 @@ use Doctrine\DBAL\Query\QueryBuilder,
 
 interface TableGatewayInterface
 {
+
+   /**@#+
+    * Fetch styles
+    */
+    const FETCH_ROW_OBJ = 'fetchRowObject';
+    const FETCH_ASSOC = 'fetchAssoc';
+    const FETCH_STD_OBJECT = 'fetchAssoc';
+    /**@#-*/
     
     /**
-     * Set the database connection driver
+     * Set the database connection
      * 
      * @param DriverConnection $driver
      * @return TableGatewayInterface
      */
-    public function setDriver(DriverConnection $driver);
+    public function setConnection(DriverConnection $connection);
     
     /**
-     * Get the database connection driver
+     * Get the database connection
      * 
      * @return DriverConnection
      */
-    public function getDriver();
+    public function getConnection();
+    
+    /**
+     * Set default fetch style
+     * 
+     * @param string $fetchStyle
+     * @return TableGatewayInterface
+     */
+    public function setFetchStyle($fetchStyle);
+    
+    /**
+     * Get default fetch style
+     * 
+     * @return string
+     */
+    public function getFetchStyle();
     
     /**
      * Delete from the table
