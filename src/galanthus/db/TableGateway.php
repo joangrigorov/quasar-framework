@@ -39,6 +39,13 @@ class TableGateway implements TableGatewayInterface
     protected $connection;
     
     /**
+     * Default fetch style
+     * 
+     * @var string
+     */
+    protected $defaultFetchStyle = self::FETCH_ROW_OBJ;
+    
+    /**
      * Table name
      * 
      * @var string
@@ -85,6 +92,28 @@ class TableGateway implements TableGatewayInterface
     }
     
     /**
+     * Set default fetch style
+     * 
+     * @param string $fetchStyle
+     * @return TableGateway
+     */
+    public function setFetchStyle($fetchStyle)
+    {
+        $this->defaultFetchStyle = $fetchStyle;
+        return $this;
+    }
+    
+    /**
+     * Get default fetch style
+     * 
+     * @return string
+     */
+    public function getFetchStyle()
+    {
+        return $this->defaultFetchStyle;
+    }
+    
+    /**
      * Delete from the table
      * 
      * @param array $identifier
@@ -121,16 +150,48 @@ class TableGateway implements TableGatewayInterface
     }
     
     /**
+     * Convert array to stdClass object
+     * 
+     * @param array $array
+     * @return StdClass
+     */
+    protected function arrayToStdClassObject(array $array) 
+    {
+		if (is_array($array)) {
+			return (object) array_map(array($this, __METHOD__), $$array);
+		}
+		else {
+			return (object) $array;
+		}
+	}
+    
+    /**
      * Prepares and executes an SQL query and returns the result as rowset of row data gateways.
      * 
      * @param QueryBuilder $query
      * @return array
      * @todo Return rowset of row data gateways
      */
-    public function fetchAll(QueryBuilder $query = null)
+    public function fetchAll(QueryBuilder $query = null, $fetchStyle = null)
     {
         if (null === $query) {
             $query = $this->select();
+        }
+        
+        $fetchStyle = (null === $fetchStyle) ? $this->defaultFetchStyle : $fetchStyle;
+        
+        $resultRows = $this->connection->fetchAll($query->getSQL());
+        
+        switch ($fetchStyle) {
+            case self::FETCH_ASSOC:
+                return $resultRows;
+            break;
+            case self::FETCH_STD_OBJECT:
+                return $this->arrayToStdClassObject($resultRows);
+            break;
+            default:
+                
+            break;
         }
         
         return $this->connection->fetchAll($query->getSQL());

@@ -1,6 +1,8 @@
 <?php
 namespace app\controllers;
 
+use galanthus\db\TableGatewayInterface;
+
 use galanthus\di\Container,
     galanthus\db\TableGateway,
     galanthus\controller\Controller;
@@ -12,7 +14,7 @@ class Test extends Controller
     
     public function __construct(TableGateway $gateway)
     {
-        var_dump($gateway->fetchAll());
+        var_dump($gateway->fetchAll($gateway->select(), TableGatewayInterface::FETCH_ASSOC));
         die;
     }
     
