@@ -32,11 +32,11 @@ class TableGateway implements TableGatewayInterface
 {
     
     /**
-     * Database connection driver
+     * Database connection
      * 
      * @var Connection
      */
-    protected $driver;
+    protected $connection;
     
     /**
      * Table name
@@ -48,14 +48,14 @@ class TableGateway implements TableGatewayInterface
     /**
      * Constructor. Sets dependencies.
      * 
-     * Sets database connection driver
+     * Sets database connection
      * 
-     * @param Connection $driver Doctrine DBAL connection driver
+     * @param Connection $connection Doctrine DBAL connection driver
      * @param string $table DB Table name
      */
-    public function __construct(Connection $driver, $table = null)
+    public function __construct(Connection $connection, $table = null)
     {
-        $this->driver = $driver;
+        $this->connection = $connection;
         
         if (null !== $table) {
             $this->table = $table;
@@ -63,25 +63,25 @@ class TableGateway implements TableGatewayInterface
     }
     
     /**
-     * Set the database connection driver
+     * Set the database connection
      * 
-     * @param DriverConnection $driver
+     * @param DriverConnection $connection
      * @return TableGateway
      */
-    public function setDriver(DriverConnection $driver)
+    public function setConnection(DriverConnection $connection)
     {
-        $this->driver = $driver;
+        $this->connection = $connection;
         return $this;
     }
     
     /**
-     * Get the database connection driver
+     * Get the database connection
      * 
      * @return DriverConnection
      */
-    public function getDriver()
+    public function getConnection()
     {
-        return $this->driver;
+        return $this->connection;
     }
     
     /**
@@ -92,7 +92,7 @@ class TableGateway implements TableGatewayInterface
      */
     public function delete(array $identifier)
     {
-        return $this->driver->delete($this->table, $identifier);
+        return $this->connection->delete($this->table, $identifier);
     }
     
     /**
@@ -105,7 +105,7 @@ class TableGateway implements TableGatewayInterface
      */
     public function update(array $data, array $identifier, array $types = array())
     {
-        return $this->driver->update($this->table, $data, $identifier, $types);
+        return $this->connection->update($this->table, $data, $identifier, $types);
     }
 
     /**
@@ -117,7 +117,7 @@ class TableGateway implements TableGatewayInterface
      */
     public function insert(array $data, array $types = array())
     {
-        return $this->driver->insert($this->table, $data, $types);
+        return $this->connection->insert($this->table, $data, $types);
     }
     
     /**
@@ -133,7 +133,7 @@ class TableGateway implements TableGatewayInterface
             $query = $this->select();
         }
         
-        return $this->driver->fetchAll($query->getSQL());
+        return $this->connection->fetchAll($query->getSQL());
     }
     
     /**
@@ -149,18 +149,18 @@ class TableGateway implements TableGatewayInterface
             $query = $this->select();
         }
         
-        return $this->driver->fetchArray($query->getSQL());
+        return $this->connection->fetchArray($query->getSQL());
     }
     
     /**
      * Construct select query
      * 
      * @param mixed $select The selection expressions.
-     * @return \Doctrine\DBAL\Query\QueryBuilder
+     * @return QueryBuilder
      */
     public function select($select = '*')
     {
-        return $this->driver
+        return $this->connection
                     ->createQueryBuilder()
                     ->select('*')
                     ->from($this->table, null);
