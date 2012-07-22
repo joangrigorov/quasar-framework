@@ -153,8 +153,8 @@ class Layout extends DecoratorAbstract
      */
     public function decorate($content)
     {
-        $layout = $this->response->getParam(self::RESERVED_SCRIPT_PARAM_NAME);
-        $isEnabled = $this->response->getParam(self::RESERVED_LAYOUT_STATUS, true);
+        $layout = $this->response->getInstruction(self::RESERVED_SCRIPT_PARAM_NAME);
+        $isEnabled = $this->response->getInstruction(self::RESERVED_LAYOUT_STATUS, true);
         
         if (!$isEnabled) {
             return $content;

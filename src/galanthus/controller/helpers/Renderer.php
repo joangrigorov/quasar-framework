@@ -44,7 +44,7 @@ class Renderer extends HelperAbstract
     {
         if (null !== $script) {
             $scriptParamName = RendererDecorator::RESERVED_SCRIPT_PARAM_NAME;
-            $this->response->{$scriptParamName} = $script;
+            $this->response->setInstruction($scriptParamName, $script);
         }
         
         return $this;
@@ -58,7 +58,7 @@ class Renderer extends HelperAbstract
     public function disable()
     {
         $statusParamName = RendererDecorator::RESERVED_RENDERER_STATUS;
-        $this->response->{$statusParamName} = false;
+        $this->response->setInstruction($statusParamName, false);
         return $this;
     }
     
@@ -70,7 +70,7 @@ class Renderer extends HelperAbstract
     public function enable()
     {
         $statusParamName = RendererDecorator::RESERVED_RENDERER_STATUS;
-        $this->response->{$statusParamName} = true;
+        $this->response->setInstruction($statusParamName, true);
         return $this;
     }
     

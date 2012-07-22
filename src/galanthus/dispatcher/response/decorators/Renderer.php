@@ -124,8 +124,8 @@ class Renderer extends DecoratorAbstract
      */
     public function decorate($content)
     {
-        $script = $this->response->getParam(self::RESERVED_SCRIPT_PARAM_NAME);
-        $isEnabled = $this->response->getParam(self::RESERVED_RENDERER_STATUS, true);
+        $script = $this->response->getInstruction(self::RESERVED_SCRIPT_PARAM_NAME);
+        $isEnabled = $this->response->getInstruction(self::RESERVED_RENDERER_STATUS, true);
         
         if (!$isEnabled) {
             return $content;

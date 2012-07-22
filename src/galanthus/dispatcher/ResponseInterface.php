@@ -73,7 +73,48 @@ interface ResponseInterface
      * @return ResponseInterface
      */
     public function clearParams();
-        
+
+
+    /**
+     * Set response instructions
+     *
+     * @param array $instructions
+     * @return Response
+     */
+    public function setInstructions(array $instructions);
+    
+    /**
+     * Get response instructions
+     *
+     * @return array
+     */
+    public function getInstructions();
+    
+    /**
+     * Set instruction
+     *
+     * @param string $name
+     * @param mixed $value
+     * @return Response
+     */
+    public function setInstruction($name, $value);
+    
+    /**
+     * Get instructions
+     *
+     * @param string $name
+     * @param mixed $defaultValue
+     * @return mixed|null
+     */
+    public function getInstruction($name, $defaultValue = null);
+    
+    /**
+     * Clear instructions
+     *
+     * @return Response
+     */
+    public function clearInstructions();
+    
     /**
      * Set action decorators
      *

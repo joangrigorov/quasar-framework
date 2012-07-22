@@ -48,6 +48,16 @@ class Response implements ResponseInterface
     protected $params = array();
     
     /**
+     * Instructions 
+     * 
+     * Used for communication between the response object
+     * and the response decorators
+     * 
+     * @var array
+     */
+    protected $instructions = array();
+    
+    /**
      * Response decorators
      * 
      * @var array
@@ -157,6 +167,67 @@ class Response implements ResponseInterface
     public function clearParams()
     {
         $this->params = array();
+        return $this;
+    }
+    
+    /**
+     * Set response instructions
+     *
+     * @param array $instructions
+     * @return Response
+     */
+    public function setInstructions(array $instructions)
+    {
+        $this->instructions = $instructions;
+        return $this;
+    }
+    
+    /**
+     * Get response instructions
+     *
+     * @return array
+     */
+    public function getInstructions()
+    {
+        return $this->instructions;
+    }
+    
+    /**
+     * Set instruction
+     *
+     * @param string $name
+     * @param mixed $value
+     * @return Response
+     */
+    public function setInstruction($name, $value)
+    {
+        $this->instructions[$name] = $value;
+        return $this;
+    }
+    
+    /**
+     * Get instructions
+     *
+     * @param string $name
+     * @param mixed $defaultValue
+     * @return mixed|null
+     */
+    public function getInstruction($name, $defaultValue = null)
+    {
+        if (array_key_exists($name, $this->instructions)) {
+            return $this->instructions[$name];
+        }
+        return $defaultValue;
+    }
+    
+    /**
+     * Clear instructions
+     *
+     * @return Response
+     */
+    public function clearInstructions()
+    {
+        $this->instructions = array();
         return $this;
     }
     

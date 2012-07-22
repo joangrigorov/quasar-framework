@@ -49,7 +49,6 @@ class Json extends DecoratorAbstract
     public function decorate($content)
     {
         $parameters = $this->response->getParams();
-        $resetHeaders = $this->response->getParam(self::RESERVED_RESET_HEADERS, true);
 
         if ($this->getResponse()->hasDecorator('HttpHeaders')) {
             /* @var $headersDecorator \galanthus\dispatcher\response\decorators\HttpHeaders */

@@ -44,7 +44,7 @@ class Layout extends HelperAbstract
     {
         if (null !== $script) {
             $scriptParamName = LayoutDecorator::RESERVED_SCRIPT_PARAM_NAME;
-            $this->response->{$scriptParamName} = $script;
+            $this->response->setInstruction($scriptParamName, $script);
         }
         
         return $this;
@@ -58,7 +58,7 @@ class Layout extends HelperAbstract
     public function disable()
     {
         $statusParamName = LayoutDecorator::RESERVED_LAYOUT_STATUS;
-        $this->response->{$statusParamName} = false;
+        $this->response->setInstruction($statusParamName, false);
         return $this;
     }
     
@@ -70,7 +70,7 @@ class Layout extends HelperAbstract
     public function enable()
     {
         $statusParamName = LayoutDecorator::RESERVED_LAYOUT_STATUS;
-        $this->response->{$statusParamName} = true;
+        $this->response->setInstruction($statusParamName, true);
         return $this;
     }
     
