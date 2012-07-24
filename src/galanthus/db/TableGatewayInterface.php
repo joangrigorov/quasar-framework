@@ -37,7 +37,7 @@ interface TableGatewayInterface
     */
     const FETCH_ROW_OBJ = 'fetchRowObject';
     const FETCH_ASSOC = 'fetchAssoc';
-    const FETCH_STD_OBJECT = 'fetchAssoc';
+    const FETCH_STD_OBJECT = 'fetchStdClassObject';
     /**@#-*/
     
     /**

@@ -11,7 +11,7 @@ return array(
     'db-driver' => array(
         'params' => array(
             'params' => array(
-                'dbname' => 'test',
+                'dbname' => 'databg_cloud_service',
                 'user' => 'root',
                 'password' => '',
                 'host' => 'localhost',
@@ -22,7 +22,7 @@ return array(
         
     'galanthus\db\TableGateway' => array(
         'params' => array(
-            'table' => 'my_fav_albums'
+            'table' => 'files'
         )
     )
 );

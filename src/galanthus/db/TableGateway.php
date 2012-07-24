@@ -155,13 +155,13 @@ class TableGateway implements TableGatewayInterface
      * @param array $array
      * @return StdClass
      */
-    protected function arrayToStdClassObject(array $array) 
+    protected function arrayToStdClassObject($array) 
     {
 		if (is_array($array)) {
-			return (object) array_map(array($this, __METHOD__), $$array);
+			return (object) array_map(array($this, __METHOD__), $array);
 		}
 		else {
-			return (object) $array;
+			return $array;
 		}
 	}
     
@@ -187,14 +187,15 @@ class TableGateway implements TableGatewayInterface
                 return $resultRows;
             break;
             case self::FETCH_STD_OBJECT:
-                return $this->arrayToStdClassObject($resultRows);
+                foreach ($resultRows as &$row) {
+                    $row = $this->arrayToStdClassObject($row);
+                }
+                return $resultRows;
             break;
             default:
                 
             break;
         }
-        
-        return $this->connection->fetchAll($query->getSQL());
     }
     
     /**

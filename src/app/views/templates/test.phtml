@@ -1,3 +1,4 @@
 <?php
-/* @var $this galanthus\view\Renderer */
-echo $this->name;
+foreach ($this->files as $file) {
+    echo $file->originalName . ', ' . $file->size . '<br />';
+}

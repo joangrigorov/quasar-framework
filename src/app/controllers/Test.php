@@ -12,14 +12,17 @@ class Test extends Controller
     
     protected $paramsMap = array('name' => 'Joan-Alexander Grigorov');
     
-    public function __construct(TableGateway $gateway)
+    protected $gateway;
+    
+    public function __construct(TableGateway $gateway = null)
     {
-        var_dump($gateway->fetchAll($gateway->select(), TableGatewayInterface::FETCH_ASSOC));
-        die;
+        $this->gateway = $gateway;
     }
     
     public function execute()
     {
+        $gateway = $this->gateway;
+        $this->response->files = $gateway->fetchAll($gateway->select(), TableGatewayInterface::FETCH_STD_OBJECT);
         $this->response->name = $this->getParam('name');
     }
 }
