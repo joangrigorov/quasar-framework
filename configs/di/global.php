@@ -38,7 +38,7 @@ return array(
                     )
                 )
             ),
-            'params' => array('_layout' => 'layout')
+            'instructions' => array('_layout' => 'layout')
         )
     ),
         

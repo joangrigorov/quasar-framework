@@ -18,6 +18,10 @@
 
 namespace galanthus\db;
 
+use galanthus\db\tableGateway\Rowset;
+
+use galanthus\db\tableGateway\RowsetInterface;
+
 use Doctrine\DBAL\Query\QueryBuilder,
     Doctrine\DBAL\Connection,
     Doctrine\DBAL\Driver\Connection as DriverConnection;
@@ -46,6 +50,13 @@ class TableGateway implements TableGatewayInterface
     protected $defaultFetchStyle = self::FETCH_ROW_OBJ;
     
     /**
+     * Rowset prototype object
+     * 
+     * @var RowsetInterface
+     */
+    protected $rowsetObjectPrototype;
+    
+    /**
      * Table name
      * 
      * @var string
@@ -60,13 +71,17 @@ class TableGateway implements TableGatewayInterface
      * @param Connection $connection Doctrine DBAL connection driver
      * @param string $table DB Table name
      */
-    public function __construct(Connection $connection, $table = null)
+    public function __construct(Connection $connection, RowsetInterface $rowsetObjectPrototype = null, $table = null)
     {
         $this->connection = $connection;
         
         if (null !== $table) {
             $this->table = $table;
         }
+        
+        $this->rowsetObjectPrototype = (null === $rowsetObjectPrototype)
+                                        ? new Rowset(array(), $this)
+                                        : $rowsetObjectPrototype;
     }
     
     /**
@@ -111,6 +126,28 @@ class TableGateway implements TableGatewayInterface
     public function getFetchStyle()
     {
         return $this->defaultFetchStyle;
+    }
+    
+    /**
+     * Set the rowset prototype object
+     * 
+     * @param RowsetInterface $prototype
+     * @return TableGateway
+     */
+    public function setRowsetObjectPrototype(RowsetInterface $prototype)
+    {
+        $this->rowsetObjectPrototype = $prototype;
+        return $this;
+    }
+    
+    /**
+     * Get the rowset prototype object
+     * 
+     * @return RowsetInterface
+     */
+    public function getRowsetObjectPrototype()
+    {
+        return $this->rowsetObjectPrototype;
     }
     
     /**
@@ -193,7 +230,9 @@ class TableGateway implements TableGatewayInterface
                 return $resultRows;
             break;
             default:
-                
+                $rowset = clone $this->rowsetObjectPrototype;
+                $rowset->init($resultRows);
+                return $rowset;
             break;
         }
     }

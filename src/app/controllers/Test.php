@@ -22,7 +22,7 @@ class Test extends Controller
     public function execute()
     {
         $gateway = $this->gateway;
-        $this->response->files = $gateway->fetchAll($gateway->select(), TableGatewayInterface::FETCH_STD_OBJECT);
+        $this->response->files = $gateway->fetchAll();
         $this->response->name = $this->getParam('name');
     }
 }

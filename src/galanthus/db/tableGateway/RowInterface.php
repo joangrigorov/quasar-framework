@@ -2,7 +2,7 @@
 
 namespace galanthus\db\tableGateway;
 
-use Doctrine\DBAL\Driver\Connection;
+use galanthus\db\TableGatewayInterface;
 
 interface RowInterface
 {
@@ -31,10 +31,15 @@ interface RowInterface
     public function setData(array $data);
     
     /**
-     * Set row data
-     *
+     * Get data as array
+     * 
      * @return array
      */
-    public function getData();
+    public function toArray();
+    
+    
+//     public function save();
+    
+//     public function delete();
     
 }

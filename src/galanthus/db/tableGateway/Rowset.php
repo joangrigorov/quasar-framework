@@ -3,10 +3,9 @@
 namespace galanthus\db\tableGateway;
 
 use galanthus\db\TableGatewayInterface,
-    Doctrine\DBAL\Driver\Connection,
-    galanthus\dispatcher\RowsetException;
+    galanthus\db\tableGateway\RowsetException;
 
-class Rowset implements RowsetInterface
+class Rowset implements RowsetInterface, \Iterator, \SeekableIterator, \Countable, \ArrayAccess
 {
     
     /**
@@ -54,23 +53,47 @@ class Rowset implements RowsetInterface
     protected $count;
     
     /**
+     * Is rowset initiliazed? (is the data array set)
+     * 
+     * @var boolean
+     */
+    protected $isInitialized = false;
+    
+    /**
      * Contructor
      * 
      * Sets dependencies
      * 
      * @param array $data Rows data
-     * @param Connection $connection Connection object
+     * @param TableGatewayInterface $tableGateway
      * @param RowInterface $rowObjectPrototype Row Data Gateway prototype object
      */
-    public function __construct(array $data, Connection $connection = null, RowInterface $rowObjectPrototype = null)
+    public function __construct(array $data, TableGatewayInterface $tableGateway = null, RowInterface $rowObjectPrototype = null)
     {
         $this->data = $data;
         $this->count = count($data);
         
         $this->rowObjectPrototype = (null === $rowObjectPrototype) ? new Row : $rowObjectPrototype;
-        if (null !== $connection) {
-            $this->rowObjectPrototype->setConnection($connection);
+        if (null !== $tableGateway) {
+            $this->rowObjectPrototype->setTableGateway($tableGateway);
         }
+    }
+    
+    /**
+     * Initialize rowset data
+     * 
+     * @param array $data
+     * @return Rowset
+     */
+    public function init(array $data)
+    {
+        if ($this->isInitialized) {
+            return $this;
+        }
+        
+        $this->isInitialized = true;
+        $this->data = $data;
+        return $this;
     }
     
     /**
@@ -256,7 +279,8 @@ class Rowset implements RowsetInterface
         
         $row = clone $this->rowObjectPrototype;
         $row->setData($this->data[$offset]);
-        
+                
         $this->rows[$offset] = $row;
+        return $row;
     }
 }

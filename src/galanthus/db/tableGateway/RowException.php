@@ -28,6 +28,6 @@ use galanthus\exception\ErrorException;
  * @subpackage Table Data Gateway
  * @copyright  Copyright (c) 2012 Sasquatch, Elegance Team
  */
-class RowsetException extends ErrorException
+class RowException extends ErrorException
 {
 }

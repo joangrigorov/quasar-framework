@@ -2,9 +2,11 @@
 
 namespace galanthus\db\tableGateway;
 
-use galanthus\db\TableGatewayInterface;
+use galanthus\db\TableGatewayInterface,
+    \ArrayAccess,
+    \Countable;
 
-class Row implements RowInterface
+class Row implements RowInterface, ArrayAccess, Countable
 {
     
     /**
@@ -63,13 +65,99 @@ class Row implements RowInterface
     }
     
     /**
-     * Set row data
+     * Get row data as array
      * 
      * @return array
      */
-    public function getData()
+    public function toArray()
     {
         return $this->data;
     }
 
+    /**
+     * Offset Exists
+     *
+     * @param  string $offset
+     * @return boolean
+     */
+    public function offsetExists($offset)
+    {
+        return array_key_exists($offset, $this->data);
+    }
+
+    /**
+     * Offset get
+     *
+     * @param  string $offset
+     * @return mixed
+     */
+    public function offsetGet($offset)
+    {
+        return $this->data[$offset];
+    }
+
+    /**
+     * Offset set
+     *
+     * @param  string $offset
+     * @param  mixed $value
+     * @return Row
+     */
+    public function offsetSet($offset, $value)
+    {
+        $this->data[$offset] = $value;
+        return $this;
+    }
+
+    /**
+     * Offset unset
+     *
+     * @param  string $offset
+     * @return Row
+     */
+    public function offsetUnset($offset)
+    {
+        $this->data[$offset] = null;
+        return $this;
+    }
+
+    /**
+     * @return integer
+     */
+    public function count()
+    {
+        return count($this->data);
+    }
+
+    /**
+     * Overriding: allowing row data access (reading)
+     *
+     * @param  string $name
+     * @return mixed
+     */
+    public function __get($name)
+    {
+        if (array_key_exists($name, $this->data)) {
+            return $this->data[$name];
+        } else {
+            throw new RowException("'$name' is not a valid column name");
+        }
+    }
+    
+    /**
+     * Overriding: allowing row data acces (writing)
+     * 
+     * @param string $name
+     * @param mixed $value
+     * @throws RowException
+     */
+    public function __set($name, $value)
+    {
+        if (array_key_exists($name, $this->data)) {
+            $this->offsetSet($name, $value);
+        } else {
+            throw new RowException("'$name' is not a valid column name");
+        }
+    }
+    
 }

@@ -73,7 +73,8 @@ class Response implements ResponseInterface
      */
     public function __construct(Container $injector, 
                                 array $decorators = null,
-                                array $params = null)
+                                array $params = null,
+                                array $instructions = null)
     {
         $this->injector = $injector;
         
@@ -83,6 +84,10 @@ class Response implements ResponseInterface
         
         if (null != $params)  {
             $this->setParams($params);
+        }
+        
+        if (null != $instructions)  {
+            $this->setInstructions($instructions);
         }
         
     }

@@ -455,12 +455,24 @@ class Context implements ContextInterface
     {
         $values = array();
         foreach ($parameters as $parameter) {
-            /* @var $parameter ReflectionParameter */
+            /* @var $parameter \ReflectionParameter */
             try {
                 $values[] = $this->instantiateParameter($parameter, $nesting);
             } catch (\Exception $e) {
+                                
                 if ($parameter->isOptional()) {
-                    break;
+                    $defaultValue = $parameter->getDefaultValue();
+                    
+                    if (!$parameter->isArray()) {
+                        $values[] = $defaultValue;
+                    } else {
+                        if (is_null($defaultValue)) {
+                            $values[] = array();
+                        } else {
+                            $values[] = $defaultValue;
+                        }
+                    }
+                    continue;
                 }
                 throw $e;
             }

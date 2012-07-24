@@ -247,7 +247,7 @@ abstract class Controller implements ControllerInterface
     {
         $className = end(explode('\\', get_class($this)));
         $currentScript = strtolower(preg_replace('/([a-zA-Z])(?=[A-Z])/', '$1-', $className));
-        $this->response->_script = $currentScript;
+        $this->response->setInstruction(\galanthus\dispatcher\response\decorators\Renderer::RESERVED_SCRIPT_PARAM_NAME, $currentScript);
     }
     
     /**
