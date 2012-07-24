@@ -3,9 +3,12 @@
 namespace galanthus\db\tableGateway;
 
 use galanthus\db\TableGatewayInterface,
-    galanthus\db\tableGateway\RowsetException;
+    galanthus\db\tableGateway\RowsetException,
+    \SeekableIterator,
+    \Countable,
+    \ArrayAccess;
 
-class Rowset implements RowsetInterface, \Iterator, \SeekableIterator, \Countable, \ArrayAccess
+class Rowset implements RowsetInterface, SeekableIterator, Countable, ArrayAccess
 {
     
     /**
@@ -70,9 +73,10 @@ class Rowset implements RowsetInterface, \Iterator, \SeekableIterator, \Countabl
      */
     public function __construct(array $data, TableGatewayInterface $tableGateway = null, RowInterface $rowObjectPrototype = null)
     {
-        $this->data = $data;
-        $this->count = count($data);
-        
+        if (!empty($data)) {
+            $this->init($data);
+        }
+        \ArrayObject;
         $this->rowObjectPrototype = (null === $rowObjectPrototype) ? new Row : $rowObjectPrototype;
         if (null !== $tableGateway) {
             $this->rowObjectPrototype->setTableGateway($tableGateway);
@@ -93,6 +97,7 @@ class Rowset implements RowsetInterface, \Iterator, \SeekableIterator, \Countabl
         
         $this->isInitialized = true;
         $this->data = $data;
+        $this->count = count($data);
         return $this;
     }
     
@@ -154,6 +159,7 @@ class Rowset implements RowsetInterface, \Iterator, \SeekableIterator, \Countabl
      */
     public function current()
     {
+        
         if ($this->valid() === false) {
             return null;
         }
@@ -267,6 +273,13 @@ class Rowset implements RowsetInterface, \Iterator, \SeekableIterator, \Countabl
     {
     }
     
+    /**
+     * Get (or create) row data gateway instance by given offset
+     * 
+     * @param integer $offset
+     * @throws RowsetException When wrong offset is given
+     * @return RowInterface
+     */
     protected function getRowInstance($offset)
     {
         if (!array_key_exists($offset, $this->data)) {

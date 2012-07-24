@@ -11,7 +11,7 @@ return array(
     'db-driver' => array(
         'params' => array(
             'params' => array(
-                'dbname' => 'databg_cloud_service',
+                'dbname' => 'proventus',
                 'user' => 'root',
                 'password' => '',
                 'host' => 'localhost',
@@ -22,7 +22,7 @@ return array(
         
     'galanthus\db\TableGateway' => array(
         'params' => array(
-            'table' => 'files'
+            'table' => 'cities'
         )
     )
 );

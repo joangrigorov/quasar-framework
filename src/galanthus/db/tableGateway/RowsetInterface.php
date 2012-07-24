@@ -17,4 +17,11 @@ interface RowsetInterface
      */
     public function init(array $data);
     
+    /**
+     * Get 
+     * 
+     * @return array
+     */
+    public function toArray();
+    
 }
