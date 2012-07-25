@@ -18,7 +18,7 @@ interface RowsetInterface
     public function init(array $data);
     
     /**
-     * Get 
+     * Get rowset as array of arrays
      * 
      * @return array
      */

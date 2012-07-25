@@ -296,4 +296,18 @@ class Rowset implements RowsetInterface, SeekableIterator, Countable, ArrayAcces
         $this->rows[$offset] = $row;
         return $row;
     }
+    
+    /**
+     * Get rowset as array of arrays
+     * 
+     * @return array
+     */
+    public function toArray()
+    {
+        $result = array();
+        foreach ($this as $row) {
+            $result[] = $row->toArray();
+        }
+        return $result;
+    }
 }
