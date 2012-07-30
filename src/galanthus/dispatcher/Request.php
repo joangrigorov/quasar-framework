@@ -187,7 +187,7 @@ class Request implements RequestInterface
             
             if (array_key_exists($param, $paramsMap)) {
                 $query->next();
-                $this->params[$param] = $query->current();
+                $this->params[$param] = urldecode($query->current());
                 $paramsMapped = true;
             }
         }
