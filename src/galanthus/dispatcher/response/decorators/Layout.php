@@ -73,10 +73,14 @@ class Layout extends DecoratorAbstract
      * Sets dependencies
      * 
      * @param StandardRenderer $viewRenderer
+     * @param array $params
      */
-    public function __construct(StandardRenderer $renderer)
+    public function __construct(StandardRenderer $renderer, array $params = null)
     {
         $this->renderer = $renderer;
+        if (null !== $params) {
+            $this->setParams($params);
+        }
     }
 
     /**
