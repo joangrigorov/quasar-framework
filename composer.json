@@ -1,0 +1,14 @@
+{
+    "name": "quasar-framework/quasar-framework",
+    "description": "Quasar Framework",
+    "type": "library",
+    "require": {
+        "php": ">=5.3.3",
+        "doctrine/dbal": "2.2.*"
+    },
+    "autoload": {
+        "psr-0": {
+            "Quasar": "src/"
+        }
+    }
+}
