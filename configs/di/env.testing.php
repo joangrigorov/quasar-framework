@@ -1,6 +1,6 @@
 <?php
 return array(
-    'galanthus\env\config\CoreSettings' => array(
+    'Quasar\Env\Config\CoreSettings' => array(
         'params' => array(
             'displayErrors' => true,
             'logErrors' => true,

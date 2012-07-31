@@ -1,6 +1,6 @@
 <?php
 
-use galanthus\di\lifecycle\WillUse;
+use Quasar\Di\Lifecycle\WillUse;
 
 /*
  * This is not supposed to be edited. Use common.php 
@@ -9,13 +9,13 @@ use galanthus\di\lifecycle\WillUse;
 return array(
         
     // dispatcher configuration
-    'galanthus\dispatcher\Dispatcher' => array(
+    'Quasar\Dispatcher\Dispatcher' => array(
         'alias' => 'dispatcher',
         'instances' => array(
-            'galanthus\broker\HelperBroker' => array(
+            'Quasar\Broker\HelperBroker' => array(
                 'params' => array(
                     'namespaces' => array(
-                        'galanthus\controller\helpers'
+                        'Quasar\Controller\Helper'
                     )
                 )
             )
@@ -23,7 +23,7 @@ return array(
     ),
     
     // response object configuration
-    'galanthus\dispatcher\Response' => array(
+    'Quasar\Dispatcher\Response' => array(
         'params' => array(
             'decorators' => array(
                 'httpHeaders' => array(
@@ -34,7 +34,7 @@ return array(
                 'renderer', 
                 'layout' => array(
                     'params' => array(
-                        'title' => 'Galanthus Framework'
+                        'title' => 'Quasar Framework'
                     )
                 )
             ),
@@ -43,17 +43,17 @@ return array(
     ),
         
     // standart view renderer configuration
-    'galanthus\view\Renderer' => array(
+    'Quasar\View\Renderer' => array(
         'params' => array(
             'paths' => array(
                 ROOT_PATH . '/src/app/views/templates/'
             )
         ),
         'instances' => array(
-            'galanthus\broker\HelperBroker' => array(
+            'Quasar\Broker\HelperBroker' => array(
                 'params' => array(
                     'namespaces' => array(
-                        'galanthus\view\helpers'
+                        'Quasar\View\Helper'
                     )
                 )
             )

@@ -1,6 +1,6 @@
 <?php
 return array(
-    'galanthus\env\config\IncludePath' => array(
+    'Quasar\Env\Config\IncludePath' => array(
         'params' => array(
             'paths' => array(
                 ROOT_PATH . '/vendor/'
@@ -20,7 +20,7 @@ return array(
         )
     ),
         
-    'galanthus\db\TableGateway' => array(
+    'Quasar\Db\TableGateway' => array(
         'params' => array(
             'table' => 'cities'
         )
