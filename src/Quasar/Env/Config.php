@@ -36,10 +36,8 @@ class Config
      * Using just for instantiating configuration classes
      * 
      * @param CoreSettings $coreSettings
-     * @param IncludePath $autoload
      */
-    public function __construct(CoreSettings $coreSettings, 
-                                IncludePath $autoload)
+    public function __construct(CoreSettings $coreSettings)
     {
     }
     
