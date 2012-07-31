@@ -37,7 +37,7 @@ interface DispatcherInterface
      * 
      * @var string
      */
-    const DEFAULT_ROOT_CONTROLLER = 'App\Controllers\Index';
+    const DEFAULT_ROOT_CONTROLLER = 'App\Controller\Index';
     
     /**
      * Get the request object

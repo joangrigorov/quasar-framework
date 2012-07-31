@@ -46,7 +46,7 @@ return array(
     'Quasar\View\Renderer' => array(
         'params' => array(
             'paths' => array(
-                ROOT_PATH . '/src/app/views/templates/'
+                ROOT_PATH . '/src/App/views/templates/'
             )
         ),
         'instances' => array(
