@@ -76,7 +76,6 @@ class Rowset implements RowsetInterface, SeekableIterator, Countable, ArrayAcces
         if (!empty($data)) {
             $this->init($data);
         }
-        \ArrayObject;
         $this->rowObjectPrototype = (null === $rowObjectPrototype) ? new Row : $rowObjectPrototype;
         if (null !== $tableGateway) {
             $this->rowObjectPrototype->setTableGateway($tableGateway);
