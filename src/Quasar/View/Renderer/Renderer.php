@@ -16,9 +16,11 @@
  * @copyright  Copyright (c) 2012 Sasquatch
  */
 
-namespace Quasar\View;
+namespace Quasar\View\Renderer;
 
-use Quasar\Broker\HelperBroker;
+use Quasar\Broker\HelperBroker,
+    Quasar\Broker\HelperBrokerInterface,
+    Quasar\View\Helper\HelperInterface;
 
 /**
  * Standard view renderer
@@ -243,7 +245,7 @@ class Renderer implements RendererInterface
         $helper = $this->helperBroker->getHelper($helperName);
         
         if (!$helper instanceof HelperInterface) {
-            throw new RendererException("View helper '$helperName' doesn't implement Quasar\View\HelperInterface");
+            throw new RendererException("View helper '$helperName' doesn't implement Quasar\View\Helper\HelperInterface");
         }
         
         if (null == $helper->getRenderer()) {

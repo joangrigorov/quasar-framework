@@ -13,19 +13,22 @@
  *
  * @category   Quasar
  * @package    Quasar Dispatcher
+ * @subpackage Request
  * @copyright  Copyright (c) 2012 Sasquatch
  */
 
-namespace Quasar\Dispatcher;
-
-use Quasar\Exceptions\ErrorException;
+namespace Quasar\Dispatcher\Request\Query;
 
 /**
+ * Queue containg the request query
+ *
  * @author     Joan-Alexander Grigorov http://bgscripts.com
  * @category   Quasar
  * @package    Quasar Dispatcher
+ * @subpackage Request
  * @copyright  Copyright (c) 2012 Sasquatch
  */
-class RequestException extends ErrorException
+class Query extends \SplQueue
 {
+
 }

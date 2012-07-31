@@ -20,7 +20,7 @@
 namespace Quasar\Controller\Helper;
 
 use Quasar\Dispatcher\Response\Decorator\Layout as LayoutDecorator,
-    Quasar\Controller\HelperAbstract;
+    Quasar\Controller\Helper\HelperAbstract;
 
 /**
  * Helper for quick layout settings

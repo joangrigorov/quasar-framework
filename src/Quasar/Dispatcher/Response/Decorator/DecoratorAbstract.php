@@ -17,10 +17,10 @@
  * @copyright  Copyright (c) 2012 Sasquatch
  */
 
-namespace Quasar\Dispatcher\Response;
+namespace Quasar\Dispatcher\Response\Decorator;
 
-use Quasar\Dispatcher\ResponseInterface,
-    Quasar\Dispatcher\Response\DecoratorInterface;
+use Quasar\Dispatcher\Response\ResponseInterface,
+    Quasar\Dispatcher\Response\Decorator\DecoratorInterface;
 
 /**
  * @author     Joan-Alexander Grigorov http://bgscripts.com

@@ -23,7 +23,7 @@ return array(
     ),
     
     // response object configuration
-    'Quasar\Dispatcher\Response' => array(
+    'Quasar\Dispatcher\Response\Response' => array(
         'params' => array(
             'decorators' => array(
                 'httpHeaders' => array(
@@ -43,7 +43,7 @@ return array(
     ),
         
     // standart view renderer configuration
-    'Quasar\View\Renderer' => array(
+    'Quasar\View\Renderer\Renderer' => array(
         'params' => array(
             'paths' => array(
                 ROOT_PATH . '/src/App/views/templates/'
@@ -53,7 +53,7 @@ return array(
             'Quasar\Broker\HelperBroker' => array(
                 'params' => array(
                     'namespaces' => array(
-                        'Quasar\View\Helper'
+                        'Quasar\View\Helper\Helper'
                     )
                 )
             )

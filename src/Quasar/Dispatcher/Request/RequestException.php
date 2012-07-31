@@ -12,20 +12,20 @@
  * http://www.gnu.org/copyleft/gpl.html
  *
  * @category   Quasar
- * @package    Quasar View
+ * @package    Quasar Dispatcher
  * @copyright  Copyright (c) 2012 Sasquatch
  */
 
-namespace Quasar\View;
+namespace Quasar\Dispatcher\Request;
 
 use Quasar\Exceptions\ErrorException;
 
 /**
  * @author     Joan-Alexander Grigorov http://bgscripts.com
  * @category   Quasar
- * @package    Quasar View
+ * @package    Quasar Dispatcher
  * @copyright  Copyright (c) 2012 Sasquatch
  */
-class RendererException extends ErrorException
+class RequestException extends ErrorException
 {
 }

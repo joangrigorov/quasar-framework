@@ -12,22 +12,20 @@
  * http://www.gnu.org/copyleft/gpl.html
  *
  * @category   Quasar
- * @package    Quasar Database
- * @subpackage Table Data Gateway
+ * @package    Quasar View
  * @copyright  Copyright (c) 2012 Sasquatch
  */
 
-namespace Quasar\Db\TableGateway;
+namespace Quasar\View\Helper;
 
 use Quasar\Exceptions\ErrorException;
 
 /**
  * @author     Joan-Alexander Grigorov http://bgscripts.com
  * @category   Quasar
- * @package    Quasar Database
- * @subpackage Table Data Gateway
+ * @package    Quasar View
  * @copyright  Copyright (c) 2012 Sasquatch
  */
-class RowException extends ErrorException
+class HelperException extends ErrorException
 {
 }

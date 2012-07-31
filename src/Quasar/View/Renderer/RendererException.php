@@ -16,7 +16,7 @@
  * @copyright  Copyright (c) 2012 Sasquatch
  */
 
-namespace Quasar\View;
+namespace Quasar\View\Renderer;
 
 use Quasar\Exceptions\ErrorException;
 
@@ -26,6 +26,6 @@ use Quasar\Exceptions\ErrorException;
  * @package    Quasar View
  * @copyright  Copyright (c) 2012 Sasquatch
  */
-class HelperException extends ErrorException
+class RendererException extends ErrorException
 {
 }

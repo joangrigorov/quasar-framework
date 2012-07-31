@@ -19,8 +19,8 @@
 
 namespace Quasar\View\Helper;
 
-use Quasar\View\HelperException,
-    Quasar\View\HelperAbstract;
+use Quasar\View\Helper\HelperException,
+    Quasar\View\Helper\HelperAbstract;
 
 /**
  * View helper for rendering partial view scripts

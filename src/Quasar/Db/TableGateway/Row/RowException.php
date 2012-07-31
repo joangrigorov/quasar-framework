@@ -12,23 +12,22 @@
  * http://www.gnu.org/copyleft/gpl.html
  *
  * @category   Quasar
- * @package    Quasar Dispatcher
- * @subpackage Request
+ * @package    Quasar Database
+ * @subpackage Table Data Gateway
  * @copyright  Copyright (c) 2012 Sasquatch
  */
 
-namespace Quasar\Dispatcher\Request;
+namespace Quasar\Db\TableGateway\Row;
+
+use Quasar\Exceptions\ErrorException;
 
 /**
- * Queue containg the request query
- *
  * @author     Joan-Alexander Grigorov http://bgscripts.com
  * @category   Quasar
- * @package    Quasar Dispatcher
- * @subpackage Request
+ * @package    Quasar Database
+ * @subpackage Table Data Gateway
  * @copyright  Copyright (c) 2012 Sasquatch
  */
-class Query extends \SplQueue
+class RowException extends ErrorException
 {
-
 }

@@ -19,7 +19,7 @@
 
 namespace Quasar\Dispatcher\Response\Decorator;
 
-use Quasar\Dispatcher\Response\DecoratorAbstract;
+use Quasar\Dispatcher\Response\Decorator\DecoratorAbstract;
 
 
 /**

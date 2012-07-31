@@ -20,10 +20,10 @@ namespace Quasar\Controller;
 
 use Quasar\Broker\HelperBrokerInterface,
     Quasar\Broker\ControllerException,
-    Quasar\Dispatcher\ResponseInterface,
-    Quasar\Dispatcher\RequestInterface,
+    Quasar\Dispatcher\Response\ResponseInterface,
+    Quasar\Dispatcher\Request\RequestInterface,
     Quasar\Controller\ControllerInterface,
-    Quasar\Dispatcher\Request\Query,
+    Quasar\Dispatcher\Request\Query\Query,
     Quasar\Di\Container;
 
 /**
@@ -241,7 +241,7 @@ abstract class Controller implements ControllerInterface
     }
     
     /**
-     * This is only used with the {@see \Quasar\View\Renderer}
+     * This is only used with the {@see \Quasar\View\Renderer\Renderer}
      */
     protected function setCurrentScript()
     {
@@ -296,7 +296,7 @@ abstract class Controller implements ControllerInterface
     {
         $helper = $this->helperBroker->getHelper($helperName);
         
-        if (!$helper instanceof HelperInterface) {
+        if (!$helper instanceof Helper\HelperInterface) {
             throw new ControllerException("Controller helper '$helperName' doesn't implement Quasar\Controller\HelperInterface");
         }
         

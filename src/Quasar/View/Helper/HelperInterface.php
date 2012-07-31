@@ -12,55 +12,38 @@
  * http://www.gnu.org/copyleft/gpl.html
  *
  * @category   Quasar
- * @package    Quasar Controller
+ * @package    Quasar View
  * @copyright  Copyright (c) 2012 Sasquatch
  */
 
-namespace Quasar\Controller;
+namespace Quasar\View\Helper;
 
-use Quasar\Dispatcher\ResponseInterface,
-    Quasar\Dispatcher\RequestInterface,
-    Quasar\Broker\HelperInterface as GlobalHelperInterface;
+use Quasar\Broker\HelperInterface as GlobalHelperInterface;
 
 /**
  * Helpers interface
  *
  * @author     Joan-Alexander Grigorov http://bgscripts.com
  * @category   Quasar
- * @package    Quasar Controller
+ * @package    Quasar View
  * @copyright  Copyright (c) 2012 Sasquatch
  */
 interface HelperInterface extends GlobalHelperInterface
 {
     
     /**
-     * Set the request object
+     * Set view renderer instance
      * 
-     * @param RequestInterface $request
+     * @param RendererInterface $renderer
      * @return HelperInterface
      */
-    public function setRequest(RequestInterface $request);
+    public function setRenderer(RendererInterface $renderer);
     
     /**
-     * Get the request object
+     * Get view renderer instance
      * 
-     * @return RequestInterface
+     * @return RendererInterface
      */
-    public function getRequest();
-    
-    /**
-     * Set the response object
-     * 
-     * @param ResponseInterface $response
-     * @return HelperInterface
-     */
-    public function setResponse(ResponseInterface $response);
-
-    /**
-     * Get the response object
-     *
-     * @return ResponseInterface
-     */
-    public function getResponse();
+    public function getRenderer();
     
 }

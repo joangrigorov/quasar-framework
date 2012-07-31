@@ -19,7 +19,7 @@
 
 namespace Quasar\View\Helper;
 
-use Quasar\View\HelperAbstract;
+use Quasar\View\Helper\HelperAbstract;
 
 /**
  * @author     Joan-Alexander Grigorov http://bgscripts.com

@@ -12,38 +12,22 @@
  * http://www.gnu.org/copyleft/gpl.html
  *
  * @category   Quasar
- * @package    Quasar View
+ * @package    Quasar Dispatcher
+ * @subpackage Response
  * @copyright  Copyright (c) 2012 Sasquatch
  */
 
-namespace Quasar\View;
+namespace Quasar\Dispatcher\Response;
 
-use Quasar\Broker\HelperInterface as GlobalHelperInterface;
+use Quasar\Exceptions\ErrorException;
 
 /**
- * Helpers interface
- *
  * @author     Joan-Alexander Grigorov http://bgscripts.com
  * @category   Quasar
- * @package    Quasar View
+ * @package    Quasar Dispatcher
+ * @subpackage Response
  * @copyright  Copyright (c) 2012 Sasquatch
  */
-interface HelperInterface extends GlobalHelperInterface
+class ResponseException extends ErrorException
 {
-    
-    /**
-     * Set view renderer instance
-     * 
-     * @param RendererInterface $renderer
-     * @return HelperInterface
-     */
-    public function setRenderer(RendererInterface $renderer);
-    
-    /**
-     * Get view renderer instance
-     * 
-     * @return RendererInterface
-     */
-    public function getRenderer();
-    
 }

@@ -35,14 +35,14 @@ class Dispatcher implements DispatcherInterface
     /**
      * The request object
      * 
-     * @var RequestInterface
+     * @var \Quasar\Dispatcher\Request\RequestInterface
      */
     protected $request;
     
     /**
      * The response object
      * 
-     * @var ResponseInterface
+     * @var \Quasar\Dispatcher\Response\ResponseInterface
      */
     protected $response;
     
@@ -65,13 +65,13 @@ class Dispatcher implements DispatcherInterface
      * 
      * Sets dependencies
      * 
-     * @param Request $request The request object
-     * @param Response $response The response object
+     * @param \Quasar\Dispatcher\Request\Request $request The request object
+     * @param \Quasar\Dispatcher\Response\Response $response The response object
      * @param Container $injector Dependency Injection cotainer
      * @param HelperBroker $helperBroker Controller helper's broker
      */
-    public function __construct(Request $request, 
-                                Response $response, 
+    public function __construct(Request\Request $request, 
+                                Response\Response $response, 
                                 Container $injector,
                                 HelperBroker $helperBroker)
     {

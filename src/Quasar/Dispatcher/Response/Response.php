@@ -16,11 +16,11 @@
  * @copyright  Copyright (c) 2012 Sasquatch
  */
 
-namespace Quasar\Dispatcher;
+namespace Quasar\Dispatcher\Response;
 
 use Quasar\Di\Container,
-    Quasar\Dispatcher\ResponseException,
-    Quasar\Dispatcher\Response\DecoratorInterface;
+    Quasar\Dispatcher\Response\ResponseException,
+    Quasar\Dispatcher\Response\Decorator\DecoratorInterface;
 
 /**
  * Metallica - Battery (music)

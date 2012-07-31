@@ -42,14 +42,14 @@ interface DispatcherInterface
     /**
      * Get the request object
      * 
-     * @return \Quasar\Dispatcher\RequestInterface
+     * @return \Quasar\Dispatcher\Request\RequestInterface
      */
     public function getRequest();
     
     /**
      * Get the response object
      * 
-     * @return \Quasar\Dispatcher\ResponseInterface
+     * @return \Quasar\Dispatcher\Response\ResponseInterface
      */
     public function getResponse();
     

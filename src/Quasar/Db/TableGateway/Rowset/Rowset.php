@@ -1,9 +1,11 @@
 <?php
 
-namespace Quasar\Db\TableGateway;
+namespace Quasar\Db\TableGateway\Rowset;
 
-use Quasar\Db\TableGatewayInterface,
-    Quasar\Db\TableGateway\RowsetException,
+use Quasar\Db\TableGateway\TableGatewayInterface,
+    Quasar\Db\TableGateway\Row\Row,
+    Quasar\Db\TableGateway\Row\RowInterface,
+    Quasar\Db\TableGateway\Rowset\RowsetException,
     \SeekableIterator,
     \Countable,
     \ArrayAccess;

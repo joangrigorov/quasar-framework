@@ -19,10 +19,10 @@
 
 namespace Quasar\Dispatcher\Response\Decorator;
 
-use Quasar\View\Renderer as StandardRenderer,
-    Quasar\View\RendererInterface,
-    Quasar\Dispatcher\ResponseInterface,
-    Quasar\Dispatcher\Response\DecoratorAbstract;
+use Quasar\View\Renderer\Renderer as StandardRenderer,
+    Quasar\View\Renderer\RendererInterface,
+    Quasar\Dispatcher\Response\ResponseInterface,
+    Quasar\Dispatcher\Response\Decorator\DecoratorAbstract;
 
 
 /**

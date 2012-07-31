@@ -16,7 +16,7 @@
  * @copyright  Copyright (c) 2012 Sasquatch
  */
 
-namespace Quasar\Dispatcher;
+namespace Quasar\Dispatcher\Response;
 
 /**
  * @author     Joan-Alexander Grigorov http://bgscripts.com
@@ -95,7 +95,7 @@ interface ResponseInterface
      *
      * @param string $name
      * @param mixed $value
-     * @return Response
+     * @return ResponseInterface
      */
     public function setInstruction($name, $value);
     
@@ -111,7 +111,7 @@ interface ResponseInterface
     /**
      * Clear instructions
      *
-     * @return Response
+     * @return ResponseInterface
      */
     public function clearInstructions();
     

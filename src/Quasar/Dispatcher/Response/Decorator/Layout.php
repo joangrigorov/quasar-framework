@@ -19,10 +19,10 @@
 
 namespace Quasar\Dispatcher\Response\Decorator;
 
-use Quasar\View\Renderer as StandardRenderer,
-    Quasar\View\RendererInterface,
-    Quasar\Dispatcher\ResponseInterface,
-    Quasar\Dispatcher\Response\DecoratorAbstract;
+use Quasar\View\Renderer\Renderer as StandardRenderer,
+    Quasar\View\Renderer\RendererInterface,
+    Quasar\Dispatcher\Response\ResponseInterface,
+    Quasar\Dispatcher\Response\Decorator\DecoratorAbstract;
 
 
 /**
@@ -87,7 +87,7 @@ class Layout extends DecoratorAbstract
      * Set the renderer instance
      * 
      * @param RendererInterface $renderer
-     * @return Renderer
+     * @return Layout
      */
     public function setRenderer(RendererInterface $renderer)
     {
@@ -109,7 +109,7 @@ class Layout extends DecoratorAbstract
      * Set view scripts suffix
      * 
      * @param string $suffix
-     * @return Renderer
+     * @return Layout
      */
     public function setSuffix($suffix)
     {

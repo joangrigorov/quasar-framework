@@ -19,7 +19,7 @@
 
 namespace Quasar\Dispatcher\Response\Decorator;
 
-use Quasar\Dispatcher\Response\DecoratorAbstract;
+use Quasar\Dispatcher\Response\Decorator\DecoratorAbstract;
 
 
 /**
@@ -75,7 +75,7 @@ class HttpHeaders extends DecoratorAbstract
      * Set headers
      * 
      * @param array $headers
-     * @return \Quasar\Dispatcher\Response\Decorator\HttpHeaders
+     * @return HttpHeaders
      */
     public function setHeaders(array $headers)
     {

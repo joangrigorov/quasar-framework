@@ -1,8 +1,8 @@
 <?php
 
-namespace Quasar\Db\TableGateway;
+namespace Quasar\Db\TableGateway\Row;
 
-use Quasar\Db\TableGatewayInterface,
+use Quasar\Db\TableGateway\TableGatewayInterface,
     \ArrayAccess,
     \Countable;
 

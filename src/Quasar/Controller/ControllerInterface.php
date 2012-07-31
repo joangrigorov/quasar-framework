@@ -19,9 +19,9 @@
 namespace Quasar\Controller;
 
 use Quasar\Broker\HelperBrokerInterface,
-    Quasar\Dispatcher\Request\Query,
-    Quasar\Dispatcher\ResponseInterface,
-    Quasar\Dispatcher\RequestInterface,
+    Quasar\Dispatcher\Request\Query\Query,
+    Quasar\Dispatcher\Response\ResponseInterface,
+    Quasar\Dispatcher\Request\RequestInterface,
     Quasar\Di\Container;
 
 /**

@@ -16,7 +16,7 @@
  * @copyright  Copyright (c) 2012 Sasquatch
  */
 
-namespace Quasar\View;
+namespace Quasar\View\Renderer;
 
 /**
  * View renderer interface

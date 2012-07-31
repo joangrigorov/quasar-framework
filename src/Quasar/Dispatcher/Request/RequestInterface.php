@@ -16,7 +16,7 @@
  * @copyright  Copyright (c) 2012 Sasquatch
  */
 
-namespace Quasar\Dispatcher;
+namespace Quasar\Dispatcher\Request;
 
 /**
  * @author     Joan-Alexander Grigorov http://bgscripts.com
@@ -30,7 +30,7 @@ interface RequestInterface
     /**
      * Get the request query object
      * 
-     * @return \Quasar\Dispatcher\Request\Query
+     * @return \Quasar\Dispatcher\Request\Query\Query
      */
     public function getQuery();
     

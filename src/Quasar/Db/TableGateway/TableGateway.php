@@ -16,13 +16,11 @@
  * @copyright  Copyright (c) 2012 Sasquatch
  */
 
-namespace Quasar\Db;
+namespace Quasar\Db\TableGateway;
 
-use Quasar\Db\TableGateway\Rowset;
-
-use Quasar\Db\TableGateway\RowsetInterface;
-
-use Doctrine\DBAL\Query\QueryBuilder,
+use Quasar\Db\TableGateway\Rowset\Rowset,
+    Quasar\Db\TableGateway\Rowset\RowsetInterface,
+    Doctrine\DBAL\Query\QueryBuilder,
     Doctrine\DBAL\Connection,
     Doctrine\DBAL\Driver\Connection as DriverConnection;
 

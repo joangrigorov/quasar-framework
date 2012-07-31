@@ -16,9 +16,9 @@
  * @copyright  Copyright (c) 2012 Sasquatch
  */
 
-namespace Quasar\Dispatcher;
+namespace Quasar\Dispatcher\Request;
 
-use Quasar\Dispatcher\Request\Query;
+use Quasar\Dispatcher\Request\Query\Query;
 
 /**
  * The standard request object

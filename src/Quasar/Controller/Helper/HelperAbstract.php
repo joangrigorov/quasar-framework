@@ -16,10 +16,10 @@
  * @copyright  Copyright (c) 2012 Sasquatch
  */
 
-namespace Quasar\Controller;
+namespace Quasar\Controller\Helper;
 
-use Quasar\Dispatcher\ResponseInterface,
-    Quasar\Dispatcher\RequestInterface;
+use Quasar\Dispatcher\Response\ResponseInterface,
+    Quasar\Dispatcher\Request\RequestInterface;
 
 /**
  * Helpers abstract class

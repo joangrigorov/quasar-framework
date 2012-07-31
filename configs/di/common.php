@@ -20,7 +20,7 @@ return array(
         )
     ),
         
-    'Quasar\Db\TableGateway' => array(
+    'Quasar\Db\TableGateway\TableGateway' => array(
         'params' => array(
             'table' => 'cities'
         )

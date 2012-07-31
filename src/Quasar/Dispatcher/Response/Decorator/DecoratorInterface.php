@@ -17,9 +17,9 @@
  * @copyright  Copyright (c) 2012 Sasquatch
  */
 
-namespace Quasar\Dispatcher\Response;
+namespace Quasar\Dispatcher\Response\Decorator;
 
-use Quasar\Dispatcher\ResponseInterface;
+use Quasar\Dispatcher\Response\ResponseInterface;
 
 /**
  * @author     Joan-Alexander Grigorov http://bgscripts.com

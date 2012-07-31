@@ -17,7 +17,7 @@
  * @copyright  Copyright (c) 2012 Sasquatch
  */
 
-namespace Quasar\Db\TableGateway;
+namespace Quasar\Db\TableGateway\Rowset;
 
 use Quasar\Exceptions\ErrorException;
 
