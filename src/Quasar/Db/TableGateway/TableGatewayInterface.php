@@ -13,6 +13,7 @@
  *
  * @category   Quasar
  * @package    Quasar Database
+ * @subpackage Table Data Gateway
  * @copyright  Copyright (c) 2012 Sasquatch
  */
 
@@ -22,6 +23,7 @@ namespace Quasar\Db\TableGateway;
  * @author     Joan-Alexander Grigorov http://bgscripts.com
  * @category   Quasar
  * @package    Quasar Database
+ * @subpackage Table Data Gateway
  * @copyright  Copyright (c) 2012 Sasquatch
  */
 
