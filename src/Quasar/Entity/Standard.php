@@ -54,7 +54,23 @@ abstract class Standard implements Populatable, Arrayable
      */
     public function toArray()
     {
-        return $this->data;
+        $data = array();
+        
+        $methods = get_class_methods($this);
+        $methodPattern = '@^set([a-zA-Z0-9]+)$@';
+        
+        foreach ($methods as $method) {
+            if (preg_match($methodPattern, $method, $matches)) {
+                $methodShortName = $matches[1];
+                $getter = 'get' . $methodShortName;
+                
+                if (method_exists($this, $getter)) {
+                    $data[lcfirst($methodShortName)] = $this->$getter();
+                }
+            }
+        }
+        
+        return $data;
     }
     
     /**

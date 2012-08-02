@@ -63,7 +63,11 @@ class Url extends HelperAbstract
         $controllers = func_get_arg(0);
         $params = func_get_arg(1);
 
-        $url = empty(self::$baseUrl) ? dirname($_SERVER['SCRIPT_NAME']) : self::$baseUrl;
+        if (empty(self::$baseUrl)) {
+            self::$baseUrl = dirname($_SERVER['SCRIPT_NAME']) == '/' ? '' : dirname($_SERVER['SCRIPT_NAME']);
+        }
+        
+        $url = self::$baseUrl;
         
         if (!is_null($controllers) && !is_array($controllers)) {
             throw new InvalidArgumentException('Ivalid argument provided for controllers list');

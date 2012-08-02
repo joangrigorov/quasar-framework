@@ -51,7 +51,7 @@ class BaseUrl extends HelperAbstract
             throw new InvalidArgumentException('Path must be string');
         }
         
-        $baseUrl = empty(self::$baseUrl) ? dirname($_SERVER['SCRIPT_NAME']) : self::$baseUrl;
+        $baseUrl = empty(self::$baseUrl) ? self::$baseUrl = dirname($_SERVER['SCRIPT_NAME']) : self::$baseUrl;
         
         $path = empty($path) ? '' : $path;
         
