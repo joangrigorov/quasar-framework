@@ -1,4 +1,20 @@
 <?php
+/**
+ * Quasar Framework © 2012
+ * Copyright © 2012 Sasquatch <Joan-Alexander Grigorov>
+ *                              http://bgscripts.com
+ *
+ * LICENSE
+ *
+ * This source file is subject to the GNU General Public License v3
+ * that is bundled with this package in the file LICENSE.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.gnu.org/copyleft/gpl.html
+ *
+ * @category   Quasar
+ * @package    Quasar Entity
+ * @copyright  Copyright (c) 2012 Sasquatch
+ */
 
 namespace Quasar\Entity;
 
@@ -6,6 +22,12 @@ use \ArrayAccess,
     \IteratorAggregate,
     \ArrayIterator;
 
+/**
+ * @author     Joan-Alexander Grigorov http://bgscripts.com
+ * @category   Quasar
+ * @package    Quasar Entity
+ * @copyright  Copyright (c) 2012 Sasquatch
+ */
 abstract class Quick implements Populatable, Arrayable, ArrayAccess, IteratorAggregate
 {
     
@@ -19,11 +41,11 @@ abstract class Quick implements Populatable, Arrayable, ArrayAccess, IteratorAgg
     /**
      * Temporary copy of the original data values
      *
-     * Needed for the reset() method
+     * Needed for the {@see reset()} method
      *
      * @var array
      */
-    protected $defaultValues;
+    protected $defaultValues = null;
     
     /**
      * Populate entity's data
@@ -96,6 +118,15 @@ abstract class Quick implements Populatable, Arrayable, ArrayAccess, IteratorAgg
      */
     public function reset()
     {
+        
+        if (is_null($this->defaultValues)) {
+            $classReflection = new \ReflectionClass($this);
+            $defaultProperties = $classReflection->getDefaultProperties();
+            if (isset($defaultProperties['data'])) {
+                $this->defaultValues = $defaultProperties['data'];
+            }
+        }
+        
         $this->data = $this->defaultValues;
         return $this;
     }
