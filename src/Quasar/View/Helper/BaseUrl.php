@@ -57,7 +57,7 @@ class BaseUrl extends HelperAbstract
         
         $firstChar = substr($path, 0, 1);
         
-        if ('/' != $firstChar) {
+        if ('/' != $firstChar && '/' != $baseUrl) {
             $path = '/' . $path;
         }
         
