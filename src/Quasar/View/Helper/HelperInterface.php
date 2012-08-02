@@ -18,7 +18,8 @@
 
 namespace Quasar\View\Helper;
 
-use Quasar\Broker\HelperInterface as GlobalHelperInterface;
+use Quasar\View\Renderer\RendererInterface,
+    Quasar\Broker\HelperInterface as GlobalHelperInterface;
 
 /**
  * Helpers interface
