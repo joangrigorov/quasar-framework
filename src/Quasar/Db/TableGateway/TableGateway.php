@@ -184,7 +184,7 @@ class TableGateway implements TableGatewayInterface
      * 
      * @return RowInterface
      */
-    public function getRowsetObjectPrototype()
+    public function getRowObjectPrototype()
     {
         return $this->rowObjectPrototype;
     }
