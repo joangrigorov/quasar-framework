@@ -18,6 +18,8 @@
 
 namespace Quasar\View\Helper;
 
+use Quasar\View\Renderer\RendererInterface;
+
 /**
  * View helpers abstract class
  *

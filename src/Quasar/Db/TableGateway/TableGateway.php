@@ -13,10 +13,15 @@
  *
  * @category   Quasar
  * @package    Quasar Database
+ * @subpackage Table Data Gateway
  * @copyright  Copyright (c) 2012 Sasquatch
  */
 
 namespace Quasar\Db\TableGateway;
+
+use Quasar\Db\TableGateway\Row\Row;
+
+use Quasar\Db\TableGateway\Row\RowInterface;
 
 use Quasar\Db\TableGateway\Rowset\Rowset,
     Quasar\Db\TableGateway\Rowset\RowsetInterface,
@@ -28,6 +33,7 @@ use Quasar\Db\TableGateway\Rowset\Rowset,
  * @author     Joan-Alexander Grigorov http://bgscripts.com
  * @category   Quasar
  * @package    Quasar Database
+ * @subpackage Table Data Gateway
  * @copyright  Copyright (c) 2012 Sasquatch
  */
 class TableGateway implements TableGatewayInterface
@@ -55,6 +61,13 @@ class TableGateway implements TableGatewayInterface
     protected $rowsetObjectPrototype;
     
     /**
+     * Row data gateway prototype object
+     * 
+     * @var RowInterface
+     */
+    protected $rowObjectPrototype;
+    
+    /**
      * Table name
      * 
      * @var string
@@ -69,7 +82,7 @@ class TableGateway implements TableGatewayInterface
      * @param Connection $connection Doctrine DBAL connection driver
      * @param string $table DB Table name
      */
-    public function __construct(Connection $connection, RowsetInterface $rowsetObjectPrototype = null, $table = null)
+    public function __construct(Connection $connection, RowsetInterface $rowsetObjectPrototype = null, RowInterface $rowObjectPrototype = null, $table = null)
     {
         $this->connection = $connection;
         
@@ -80,6 +93,12 @@ class TableGateway implements TableGatewayInterface
         $this->rowsetObjectPrototype = (null === $rowsetObjectPrototype)
                                         ? new Rowset(array(), $this)
                                         : $rowsetObjectPrototype;
+        
+        $this->rowObjectPrototype = (null === $rowObjectPrototype)
+                                     ? new Row
+                                     : $rowObjectPrototype;
+        
+        $this->rowObjectPrototype->setTableGateway($this);
     }
     
     /**
@@ -149,6 +168,28 @@ class TableGateway implements TableGatewayInterface
     }
     
     /**
+     * Set the row data gateway prototype object
+     * 
+     * @param RowInterface $prototype
+     * @return TableGateway
+     */
+    public function setRowObjectPrototype(RowInterface $prototype)
+    {
+        $this->rowObjectPrototype = $prototype;
+        return $this;
+    }
+    
+    /**
+     * Get the row data gateway prototype object
+     * 
+     * @return RowInterface
+     */
+    public function getRowObjectPrototype()
+    {
+        return $this->rowObjectPrototype;
+    }
+    
+    /**
      * Delete from the table
      * 
      * @param array $identifier
@@ -205,7 +246,6 @@ class TableGateway implements TableGatewayInterface
      * 
      * @param QueryBuilder $query
      * @return array
-     * @todo Return rowset of row data gateways
      */
     public function fetchAll(QueryBuilder $query = null, $fetchStyle = null)
     {
@@ -213,9 +253,9 @@ class TableGateway implements TableGatewayInterface
             $query = $this->select();
         }
         
-        $fetchStyle = (null === $fetchStyle) ? $this->defaultFetchStyle : $fetchStyle;
-        
         $resultRows = $this->connection->fetchAll($query->getSQL());
+        
+        $fetchStyle = (null === $fetchStyle) ? $this->defaultFetchStyle : $fetchStyle;
         
         switch ($fetchStyle) {
             case self::FETCH_ASSOC:
@@ -240,7 +280,6 @@ class TableGateway implements TableGatewayInterface
      * 
      * @param QueryBuilder $query
      * @return array
-     * @todo Return row data gateway
      */
     public function fetchRow(QueryBuilder $query = null)
     {
@@ -248,7 +287,23 @@ class TableGateway implements TableGatewayInterface
             $query = $this->select();
         }
         
-        return $this->connection->fetchArray($query->getSQL());
+        $resultRow = $this->connection->fetchArray($query->getSQL());
+        
+        $fetchStyle = (null === $fetchStyle) ? $this->defaultFetchStyle : $fetchStyle;
+        
+        switch ($fetchStyle) {
+            case self::FETCH_ASSOC:
+                return $resultRow;
+                break;
+            case self::FETCH_STD_OBJECT:
+                return $this->arrayToStdClassObject($resultRow);
+                break;
+            default:
+                $row = clone $this->rowObjectPrototype;
+                $row->setData($resultRow);
+                return $row;
+                break;
+        }
     }
     
     /**
