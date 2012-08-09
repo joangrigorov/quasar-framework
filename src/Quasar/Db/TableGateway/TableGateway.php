@@ -245,15 +245,17 @@ class TableGateway implements TableGatewayInterface
      * Prepares and executes an SQL query and returns the result as rowset of row data gateways.
      * 
      * @param QueryBuilder $query
-     * @return array
+     * @param array $params Parameters to bind
+     * @param string $fetchStyle Fetching style to use
+     * @return array|Rowset
      */
-    public function fetchAll(QueryBuilder $query = null, $fetchStyle = null)
+    public function fetchAll(QueryBuilder $query = null, array $params = array(), $fetchStyle = null)
     {
         if (null === $query) {
             $query = $this->select();
         }
-        
-        $resultRows = $this->connection->fetchAll($query->getSQL());
+                
+        $resultRows = $this->connection->fetchAll($query->getSQL(), $params);
         
         $fetchStyle = (null === $fetchStyle) ? $this->defaultFetchStyle : $fetchStyle;
         
@@ -279,15 +281,16 @@ class TableGateway implements TableGatewayInterface
      * Prepares and executes an SQL query and returns the result as row data gateway.
      * 
      * @param QueryBuilder $query
-     * @return array
+     * @param array $params Parameters to bind
+     * @return array|Row|StdClass
      */
-    public function fetchRow(QueryBuilder $query = null)
+    public function fetchRow(QueryBuilder $query = null, array $params = array(), $fetchStyle = null)
     {
         if (null === $query) {
             $query = $this->select();
         }
         
-        $resultRow = $this->connection->fetchArray($query->getSQL());
+        $resultRow = $this->connection->fetchArray($query->getSQL(), $params);
         
         $fetchStyle = (null === $fetchStyle) ? $this->defaultFetchStyle : $fetchStyle;
         
