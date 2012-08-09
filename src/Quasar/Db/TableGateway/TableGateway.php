@@ -290,7 +290,7 @@ class TableGateway implements TableGatewayInterface
             $query = $this->select();
         }
         
-        $resultRow = $this->connection->fetchArray($query->getSQL(), $params);
+        $resultRow = $this->connection->fetchAssoc($query->getSQL(), $params);
         
         $fetchStyle = (null === $fetchStyle) ? $this->defaultFetchStyle : $fetchStyle;
         
