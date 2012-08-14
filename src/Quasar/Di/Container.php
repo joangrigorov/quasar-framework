@@ -18,7 +18,8 @@
 
 namespace Quasar\Di;
 
-use Quasar\Di\Context,
+use Quasar\Di\Lifecycle\Callback,
+    Quasar\Di\Context,
     Quasar\Di\Lifecycle\LifecycleInterface;
 
 /**
@@ -129,6 +130,9 @@ class Container implements ContextInterface
                     if (is_string($value)) {
                         $whenCreating->forVariable($param)
                                      ->useString($value);
+                    } elseif (is_callable($value)) {
+                        $whenCreating->forVariable($param)
+                                     ->willUse(new Callback($value));
                     } elseif ($value instanceof \Quasar\Di\Lifecycle\LifecycleInterface) {
                         $whenCreating->forVariable($param)
                                      ->willUse($value);
@@ -424,5 +428,15 @@ class Container implements ContextInterface
             return array_shift($this->unnamedParameters);
         }
         throw new DiException('Missing dependency with name ' . $parameter->getName());
+    }
+    
+    /**
+     * Get the dependency injection container instance
+     * 
+     * @return Container
+     */
+    public function getContainer()
+    {
+        return $this;
     }
 }

@@ -251,6 +251,17 @@ abstract class Controller implements ControllerInterface
     }
     
     /**
+     * Convert dash cased string to camel case
+     * 
+     * @param string $string
+     * @return mixed
+     */
+    protected function dashToCamelCase($string)
+    {
+        return preg_replace('/\-(.)/e', "strtoupper('\\1')", $string);
+    }
+    
+    /**
      * Forward to the next controller in the query
      *
      * @param Query $query
@@ -274,7 +285,7 @@ abstract class Controller implements ControllerInterface
         $next = $query->shift();
         
         /* @var $controller Controller */
-        $controller = $this->injector->create($this->getNamespace() . '\\' . ucfirst($next));
+        $controller = $this->injector->create($this->getNamespace() . '\\' . ucfirst($this->dashToCamelCase($next)));
         $controller->setRequest($this->getRequest())
                    ->setResponse($this->getResponse())
                    ->setHelperBroker($this->helperBroker)

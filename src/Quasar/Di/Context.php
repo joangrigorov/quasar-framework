@@ -18,6 +18,8 @@
 
 namespace Quasar\Di;
 
+use Quasar\Di\Lifecycle\Callback;
+
 use Quasar\Di\Lifecycle\WillUse;
 
 use Quasar\Di\Lifecycle\LifecycleInterface,
@@ -242,6 +244,17 @@ class Context implements ContextInterface
             return $context;
         }
         return $this->getTopContext($context->getParent());
+    }
+    
+    /**
+     * Get the dependency injection container instance
+     * 
+     * @return Container
+     */
+    public function getContainer()
+    {
+        $topContext = $this->getTopContext($this);
+        return $topContext->getParent();
     }
     
     /**
@@ -515,6 +528,8 @@ class Context implements ContextInterface
                 $preference = $this->variables[$parameter->getName()]->getPreference();
                 if ($preference instanceof WillUse) {
                     return $this->create($preference->getClass(), $nesting);
+                } elseif ($preference instanceof Callback) {
+                    return $preference->instantiate($this);
                 } elseif ($preference instanceof LifecycleInterface) {
                     return $preference->instantiate(array());
                 } elseif (!is_string($preference)) {

@@ -92,4 +92,11 @@ interface ContextInterface
      */
     public function instantiateParameter(\ReflectionParameter $parameter, $nesting);
     
+    /**
+     * Get the dependency injection container instance
+     * 
+     * @return Container
+     */
+    public function getContainer();
+    
 }
