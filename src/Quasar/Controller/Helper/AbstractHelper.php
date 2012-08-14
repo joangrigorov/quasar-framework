@@ -29,7 +29,7 @@ use Quasar\Dispatcher\Response\ResponseInterface,
  * @package    Quasar Controller
  * @copyright  Copyright (c) 2012 Sasquatch
  */
-abstract class HelperAbstract implements HelperInterface
+abstract class AbstractHelper implements HelperInterface
 {
     
     /**
@@ -50,7 +50,7 @@ abstract class HelperAbstract implements HelperInterface
      * Set the request object
      *
      * @param RequestInterface $request
-     * @return HelperAbstract
+     * @return AbstractHelper
      */
     public function setRequest(RequestInterface $request)
     {
@@ -72,7 +72,7 @@ abstract class HelperAbstract implements HelperInterface
      * Set the response object
      *
      * @param ResponseInterface $response
-     * @return HelperAbstract
+     * @return AbstractHelper
     */
     public function setResponse(ResponseInterface $response)
     {

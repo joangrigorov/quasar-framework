@@ -19,7 +19,7 @@
 
 namespace Quasar\Dispatcher\Response\Decorator;
 
-use Quasar\Dispatcher\Response\Decorator\DecoratorAbstract;
+use Quasar\Dispatcher\Response\Decorator\AbstractDecorator;
 
 
 /**
@@ -31,7 +31,7 @@ use Quasar\Dispatcher\Response\Decorator\DecoratorAbstract;
  * @subpackage Response
  * @copyright  Copyright (c) 2012 Sasquatch
  */
-class Json extends DecoratorAbstract
+class Json extends AbstractDecorator
 {
 
    /**@#+

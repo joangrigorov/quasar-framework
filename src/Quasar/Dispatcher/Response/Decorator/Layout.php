@@ -22,7 +22,7 @@ namespace Quasar\Dispatcher\Response\Decorator;
 use Quasar\View\Renderer\Renderer as StandardRenderer,
     Quasar\View\Renderer\RendererInterface,
     Quasar\Dispatcher\Response\ResponseInterface,
-    Quasar\Dispatcher\Response\Decorator\DecoratorAbstract;
+    Quasar\Dispatcher\Response\Decorator\AbstractDecorator;
 
 
 /**
@@ -34,7 +34,7 @@ use Quasar\View\Renderer\Renderer as StandardRenderer,
  * @subpackage Response
  * @copyright  Copyright (c) 2012 Sasquatch
  */
-class Layout extends DecoratorAbstract
+class Layout extends AbstractDecorator
 {
     
     const DEFAULT_SUFFIX = 'phtml';

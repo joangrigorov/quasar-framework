@@ -28,7 +28,7 @@ use Quasar\View\Renderer\RendererInterface;
  * @package    Quasar View
  * @copyright  Copyright (c) 2012 Sasquatch
  */
-abstract class HelperAbstract implements HelperInterface
+abstract class AbstractHelper implements HelperInterface
 {
     
     /**
@@ -42,7 +42,7 @@ abstract class HelperAbstract implements HelperInterface
      * Set view renderer instance
      * 
      * @param RendererInterface $renderer
-     * @return HelperAbstract
+     * @return AbstractHelper
      */
     public function setRenderer(RendererInterface $renderer)
     {

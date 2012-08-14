@@ -20,7 +20,7 @@
 namespace Quasar\Controller\Helper;
 
 use Quasar\Dispatcher\Response\Decorator\Renderer as RendererDecorator,
-    Quasar\Controller\Helper\HelperAbstract;
+    Quasar\Controller\Helper\AbstractHelper;
 
 /**
  * Helper for quick renderer settings
@@ -31,7 +31,7 @@ use Quasar\Dispatcher\Response\Decorator\Renderer as RendererDecorator,
  * @subpackage Helpers
  * @copyright  Copyright (c) 2012 Sasquatch
  */
-class Renderer extends HelperAbstract
+class Renderer extends AbstractHelper
 {
     
     /**

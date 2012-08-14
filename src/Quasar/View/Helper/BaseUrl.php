@@ -19,7 +19,7 @@
 
 namespace Quasar\View\Helper;
 
-use Quasar\View\Helper\HelperAbstract;
+use Quasar\View\Helper\AbstractHelper;
 
 /**
  * @author     Joan-Alexander Grigorov http://bgscripts.com
@@ -28,7 +28,7 @@ use Quasar\View\Helper\HelperAbstract;
  * @subpackage Helpers
  * @copyright  Copyright (c) 2012 Sasquatch
  */
-class BaseUrl extends HelperAbstract
+class BaseUrl extends AbstractHelper
 {
     
     /**

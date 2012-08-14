@@ -20,7 +20,7 @@
 namespace Quasar\Controller\Helper;
 
 use Quasar\Dispatcher\Response\Decorator\Json as JsonDecorator,
-    Quasar\Controller\Helper\HelperAbstract;
+    Quasar\Controller\Helper\AbstractHelper;
 
 /**
  * Helper for quick JSON settings
@@ -31,7 +31,7 @@ use Quasar\Dispatcher\Response\Decorator\Json as JsonDecorator,
  * @subpackage Helpers
  * @copyright  Copyright (c) 2012 Sasquatch
  */
-class Json extends HelperAbstract
+class Json extends AbstractHelper
 {
     
     /**

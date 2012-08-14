@@ -20,7 +20,7 @@
 namespace Quasar\View\Helper;
 
 use Quasar\View\Helper\HelperException,
-    Quasar\View\Helper\HelperAbstract;
+    Quasar\View\Helper\AbstractHelper;
 
 /**
  * View helper for rendering partial view scripts
@@ -31,7 +31,7 @@ use Quasar\View\Helper\HelperException,
  * @subpackage Helpers
  * @copyright  Copyright (c) 2012 Sasquatch
  */
-class Partial extends HelperAbstract
+class Partial extends AbstractHelper
 {
 
     /**

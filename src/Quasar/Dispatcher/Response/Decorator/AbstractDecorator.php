@@ -29,7 +29,7 @@ use Quasar\Dispatcher\Response\ResponseInterface,
  * @subpackage Response
  * @copyright  Copyright (c) 2012 Sasquatch
  */
-abstract class DecoratorAbstract implements DecoratorInterface
+abstract class AbstractDecorator implements DecoratorInterface
 {
     
     /**
@@ -60,7 +60,7 @@ abstract class DecoratorAbstract implements DecoratorInterface
      * Set the response object
      *
      * @param $response ResponseInterface
-     * @return DecoratorAbstract
+     * @return AbstractDecorator
      */
     public function setResponse(ResponseInterface $response)
     {
@@ -72,7 +72,7 @@ abstract class DecoratorAbstract implements DecoratorInterface
      * Sets content placement
      *
      * @param string $placement
-     * @return DecoratorAbstract
+     * @return AbstractDecorator
      */
     public function setPlacement($placement)
     {

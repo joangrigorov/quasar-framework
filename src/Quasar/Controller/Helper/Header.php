@@ -20,7 +20,7 @@
 namespace Quasar\Controller\Helper;
 
 use Quasar\Dispatcher\Response\Decorator\HttpHeaders,
-    Quasar\Controller\Helper\HelperAbstract;
+    Quasar\Controller\Helper\AbstractHelper;
 
 /**
  * Helper for quick http headers manipulation
@@ -31,7 +31,7 @@ use Quasar\Dispatcher\Response\Decorator\HttpHeaders,
  * @subpackage Helpers
  * @copyright  Copyright (c) 2012 Sasquatch
  */
-class Header extends HelperAbstract
+class Header extends AbstractHelper
 {
     
     /**
