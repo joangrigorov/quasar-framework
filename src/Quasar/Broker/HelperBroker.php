@@ -70,6 +70,16 @@ class HelperBroker implements HelperBrokerInterface
     }
     
     /**
+     * Get all registered namespaces
+     * 
+     * @return array
+     */
+    public function getNamespaces()
+    {
+        return $this->namespaces;
+    }
+    
+    /**
      * Register helpers namespace
      * 
      * @param string $namespace
@@ -91,8 +101,10 @@ class HelperBroker implements HelperBrokerInterface
      */
     public function removeNamespace($namespace)
     {
-        if (in_array($namespace, $this->namespaces)) {
-            unset($this->namespaces);
+        $key = array_search($namespace, $this->namespaces);
+        
+        if (false !== $key) {
+            unset($this->namespaces[$key]);
         }
         return $this;
     }
@@ -177,6 +189,16 @@ class HelperBroker implements HelperBrokerInterface
     }
     
     /**
+     * Get all registered helpers
+     * 
+     * @return array
+     */
+    public function getHelpers()
+    {
+        return $this->helpers;
+    }
+    
+    /**
      * Get helper 
      * 
      * If helper is not created - creates it
@@ -218,6 +240,17 @@ class HelperBroker implements HelperBrokerInterface
         }
         
         $this->helpers[$helperFixedName] = $helper;        
+        return $this;
+    }
+    
+    /**
+     * Remove all registered helpers
+     * 
+     * @return HelperBroker
+     */
+    public function clearHelpers()
+    {
+        $this->helpers = array();
         return $this;
     }
     
