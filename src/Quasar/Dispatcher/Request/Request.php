@@ -66,7 +66,7 @@ class Request implements RequestInterface
     protected function resolveUri()
     {
 
-        if (dirname($_SERVER['SCRIPT_NAME']) != DS) {
+        if (dirname($_SERVER['SCRIPT_NAME']) != DIRECTORY_SEPARATOR) {
             $requestQuery = parse_url(
                 str_replace(dirname($_SERVER['SCRIPT_NAME']), '', 
                         str_replace($_SERVER['SCRIPT_NAME'], '', $_SERVER['REQUEST_URI'])
@@ -245,6 +245,26 @@ class Request implements RequestInterface
     public function getQuery()
     {
         return $this->query;
+    }
+    
+    /**
+     * Check is request method POST
+     * 
+     * @return boolean
+     */
+    public function isPost()
+    {
+        return 'POST' === $_SERVER['REQUEST_METHOD'];
+    }
+    
+    /**
+     * Check is request method GET
+     * 
+     * @return boolean
+     */
+    public function isGet()
+    {
+        return 'GET' === $_SERVER['REQUEST_METHOD'];
     }
     
 }
