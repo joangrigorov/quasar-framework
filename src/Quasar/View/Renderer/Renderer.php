@@ -107,8 +107,8 @@ class Renderer implements RendererInterface
     protected function chooseScriptPath($script)
     {
         foreach ($this->scriptPaths as $path) {
-            if (file_exists($path . DS . $script)) {
-                return realpath($path . DS . $script);
+            if (file_exists($path . DIRECTORY_SEPARATOR . $script)) {
+                return realpath($path . DIRECTORY_SEPARATOR . $script);
             }
         }
         throw new RendererException("Script '$script' not found");
