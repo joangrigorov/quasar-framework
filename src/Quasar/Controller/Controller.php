@@ -204,8 +204,7 @@ abstract class Controller implements ControllerInterface
      */
     protected function getNamespace()
     {
-        $reflection = new \ReflectionClass(get_class($this));
-        return $reflection->getNamespaceName();
+        return get_class($this);
     }
     
     /**
@@ -241,12 +240,44 @@ abstract class Controller implements ControllerInterface
     }
     
     /**
+     * Get the first controller instance
+     * 
+     * @return ControllerInterface
+     */
+    protected function getTopController()
+    {
+        $controller = $this;
+        
+        while (null != $controller->getPrevious()) {
+            $controller = $controller->getPrevious();
+        }
+        
+        return $controller;
+    }
+    
+    /**
      * This is only used with the {@see \Quasar\View\Renderer\Renderer}
      */
     protected function setCurrentScript()
     {
-        $className = end(explode('\\', get_class($this)));
-        $currentScript = strtolower(preg_replace('/([a-zA-Z])(?=[A-Z])/', '$1-', $className));
+        $formatScriptName = function ($name) {
+            return strtolower(preg_replace('/([a-zA-Z])(?=[A-Z])/', '$1-', $name));
+        };
+        
+        $firstController = $this->getTopController();
+        
+        $reflection = new \ReflectionClass(get_class($firstController));
+        $namespace = $reflection->getNamespaceName();
+        
+        $className = str_replace($namespace, '', get_class($this));
+        $classNameParts = explode('\\', $className);
+        
+        foreach ($classNameParts as &$name) {
+            $name = $formatScriptName($name);
+        }
+        
+        $currentScript = implode(DIRECTORY_SEPARATOR, $classNameParts);
+        
         $this->response->setInstruction(\Quasar\Dispatcher\Response\Decorator\Renderer::RESERVED_SCRIPT_PARAM_NAME, $currentScript);
     }
     
@@ -259,6 +290,31 @@ abstract class Controller implements ControllerInterface
     protected function dashToCamelCase($string)
     {
         return preg_replace('/\-(.)/e', "strtoupper('\\1')", $string);
+    }
+    
+    /**
+     * Controller class creator
+     * 
+     * @param string $controller Controller short name
+     * @return ControllerInterface Created controller
+     */
+    protected function createController($controller)
+    {
+        $fullControllerName = $this->getNamespace() . '\\' . ucfirst($this->dashToCamelCase($controller));
+        /* @var $controller Controller */
+        $controller = $this->injector->create($fullControllerName);
+        
+        if (!$controller instanceof ControllerInterface) {
+            // TODO Throw exception
+        }
+        
+        $controller->setRequest($this->getRequest())
+                   ->setResponse($this->getResponse())
+                   ->setHelperBroker($this->helperBroker)
+                   ->setPrevious($this)
+                   ->setInjector($this->injector);
+        
+        return $controller;
     }
     
     /**
@@ -285,15 +341,9 @@ abstract class Controller implements ControllerInterface
         $next = $query->shift();
         
         /* @var $controller Controller */
-        $controller = $this->injector->create($this->getNamespace() . '\\' . ucfirst($this->dashToCamelCase($next)));
-        $controller->setRequest($this->getRequest())
-                   ->setResponse($this->getResponse())
-                   ->setHelperBroker($this->helperBroker)
-                   ->setPrevious($this)
-                   ->setInjector($this->injector);
+        $controller = $this->createController($next);
         
-        
-        return $controller->forward($query);
+        return $controller->forward();
     }
     
     /**
