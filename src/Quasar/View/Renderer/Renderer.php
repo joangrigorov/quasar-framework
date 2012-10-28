@@ -256,6 +256,17 @@ class Renderer implements RendererInterface
     }
     
     /**
+     * Overloading: allowing usage of isset()
+     * 
+     * @param string $name
+     * @return boolean
+     */
+    public function __isset($name)
+    {
+        return array_key_exists($name, $this->params);
+    }
+    
+    /**
      * Render a view script
      * 
      * @param string $script
