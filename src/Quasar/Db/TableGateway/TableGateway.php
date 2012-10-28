@@ -256,6 +256,10 @@ class TableGateway implements TableGatewayInterface
         }
                 
         $resultRows = $this->connection->fetchAll($query->getSQL(), $params);
+
+        if (!$resultRows) {
+            $resultRows = array();
+        }
         
         $fetchStyle = (null === $fetchStyle) ? $this->defaultFetchStyle : $fetchStyle;
         
@@ -282,7 +286,7 @@ class TableGateway implements TableGatewayInterface
      * 
      * @param QueryBuilder $query
      * @param array $params Parameters to bind
-     * @return array|Row|StdClass
+     * @return array|Row|StdClass|null
      */
     public function fetchRow(QueryBuilder $query = null, array $params = array(), $fetchStyle = null)
     {
@@ -291,6 +295,10 @@ class TableGateway implements TableGatewayInterface
         }
         
         $resultRow = $this->connection->fetchAssoc($query->getSQL(), $params);
+        
+        if (!$resultRow) {
+            return null;
+        }
         
         $fetchStyle = (null === $fetchStyle) ? $this->defaultFetchStyle : $fetchStyle;
         
