@@ -75,6 +75,13 @@ class TableGateway implements TableGatewayInterface
     protected $table;
     
     /**
+     * Primary key field(s)
+     * 
+     * @var string|array
+     */
+    protected $primaryKey = 'id';
+    
+    /**
      * Constructor. Sets dependencies.
      * 
      * Sets database connection
@@ -187,6 +194,16 @@ class TableGateway implements TableGatewayInterface
     public function getRowObjectPrototype()
     {
         return $this->rowObjectPrototype;
+    }
+    
+    /**
+     * Get primary key field(s)
+     * 
+     * @return string|array
+     */
+    public function getPrimaryKey()
+    {
+        return $this->primaryKey;
     }
     
     /**

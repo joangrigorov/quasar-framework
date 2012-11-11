@@ -73,6 +73,13 @@ interface TableGatewayInterface
     public function getFetchStyle();
     
     /**
+     * Get primary key field(s)
+     * 
+     * @return string|array
+     */
+    public function getPrimaryKey();
+    
+    /**
      * Delete from the table
      * 
      * @param array $identifier

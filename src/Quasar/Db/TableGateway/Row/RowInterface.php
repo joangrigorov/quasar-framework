@@ -55,14 +55,36 @@ interface RowInterface
     public function setData(array $data);
     
     /**
+     * Sets row existance in database
+     * 
+     * @param boolean $existsInDatabase
+     * @return RowInterface
+     */
+    public function setExistsInDatabase($existsInDatabase = true);
+    
+    /**
      * Get data as array
      * 
      * @return array
      */
     public function toArray();
     
-    
-//     public function save();
+    /**
+     * Populate with new data
+     * 
+     * @param array $data
+     * @return RowInterface
+     */
+    public function populate(array $data);
+
+    /**
+     * Save data to the database table
+     * 
+     * If row doesn't exist - creates it
+     * 
+     * @return integer
+     */
+    public function save();
     
 //     public function delete();
     

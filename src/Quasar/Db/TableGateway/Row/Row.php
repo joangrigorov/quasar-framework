@@ -53,6 +53,35 @@ class Row implements RowInterface, ArrayAccess, Countable
      * @var TableGatewayInterface
      */
     protected $gateway;
+
+    /**
+     * True if row exists in the database table
+     * 
+     * @var boolean
+     */
+    protected $existsInDatabase = false;
+    
+    /**
+     * Consutrctor
+     * 
+     * @param boolean $existsInDatabase
+     */
+    public function __construct($existsInDatabase = true)
+    {
+        $this->existsInDatabase = $existsInDatabase;
+    }
+    
+    /**
+     * Sets row existance in database
+     * 
+     * @param boolean $existsInDatabase
+     * @return Row
+     */
+    public function setExistsInDatabase($existsInDatabase = true)
+    {
+        $this->existsInDatabase = (boolean) $existsInDatabase;
+        return $this;
+    }
     
     /**
      * Set the Table Data Gateway instance
@@ -85,6 +114,23 @@ class Row implements RowInterface, ArrayAccess, Countable
     public function setData(array $data)
     {
         $this->data = $data;
+        return $this;
+    }
+    
+    /**
+     * Populate with new data
+     * 
+     * @param array $data
+     * @return Row
+     */
+    public function populate(array $data)
+    {
+        foreach ($data as $key => $value) {
+            if (array_key_exists($key, $this->data)) {
+                $this->data[$key] = $value;
+            }
+        }
+        
         return $this;
     }
     
@@ -184,6 +230,30 @@ class Row implements RowInterface, ArrayAccess, Countable
         }
     }
     
-    
+    /**
+     * Save data to the database table
+     *
+     * If row doesn't exist - creates it
+     *
+     * @return integer
+     */
+    public function save()
+    {
+        $this->originalData = $this->data;
+        
+        if (!$this->existsInDatabase) {
+            return $this->gateway->insert($this->data);
+        }
+        
+        $primaryKeys = (array) $this->gateway->getPrimaryKey();
+        
+        $where = array();
+        
+        foreach ($primaryKeys as $key) {
+            $where[$key] = $this->data[$key];
+        }
+        
+        return $this->gateway->update($this->data, $where);
+    }
     
 }
