@@ -60,8 +60,8 @@ class Url extends AbstractHelper
      */
     public function direct()
     {
-        $controllers = func_get_arg(0);
-        $params = func_get_arg(1);
+        $controllers = func_num_args() ? func_get_arg(0) : null;
+        $params = func_num_args() > 1 ? func_get_arg(1) : null;
 
         if (empty(self::$baseUrl)) {
             self::$baseUrl = dirname($_SERVER['SCRIPT_NAME']) == '/' ? '' : dirname($_SERVER['SCRIPT_NAME']);
