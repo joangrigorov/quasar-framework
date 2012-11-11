@@ -348,4 +348,16 @@ class TableGateway implements TableGatewayInterface
                     ->from($this->table, null);
     }
     
+    /**
+     * Returns the ID of the last inserted row, or the last value from a sequence object,
+     * depending on the underlying driver.
+     * 
+     * @param string $seqName Name of the sequence object from which the ID should be returned.
+     * @return string
+     */
+    public function lastInsertId($seqName = null)
+    {
+        return $this->connection->lastInsertId($seqName);
+    }
+    
 }
